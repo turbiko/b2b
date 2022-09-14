@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static wagtailimages_tags wagtailcore_tags %}
 
 {% block body_class %}template-homepage{% endblock %}
 
@@ -8,5 +8,36 @@
 {% endblock extra_css %}
 
 {% block content %}
-
+{% if request.user.is_authenticated %}
+<!-- Section Projects -->
+        <section class="py-5"> Projects
+            <div class="container px-4 px-lg-5 mt-5">
+                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                    {% for p in self.get_children %}{% for project in p.get_children.live %}
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Project image-->
+                            {% image  project.specific.representative_image original as tizer %}
+                            <img class="card-img-top" src="{{ tizer.url }}" alt="{{ project.title}}" />
+                            <!-- Project details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Project name-->
+                                    <h5 class="fw-bolder">{{ project.title|striptags|truncatechars:20 }}</h5>
+                                    {{ project.specific.body|striptags|truncatechars:55 }}
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ project.full_url }}">View details</a></div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}{% endfor %}
+                </div>
+            </div>
+        </section>
+{% else %}
+    <a>You are not loggin in. Please, <a href="/login/">login</a></p>
+{% endif %}
 {% endblock content %}

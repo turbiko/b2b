@@ -12,13 +12,5 @@ def file_path(instance, filename):
     return 'projects/{project_filename}{ext}'.format( project_filename= filename, ext= file_extension)
 
 
-class Projects(Page):
-    template = 'projectsinfo'+os.sep+'projects.html'
-    max_count = 1
-    subpage_types = ['Project']
-    parent_page_types = ['home.HomePage']
-    page_description = "Projects index page"
 
 
-class Project(Page):
-	template = 'projectsinfo' + os.sep + 'project.html'

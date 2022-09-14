@@ -60,7 +60,24 @@
 </nav>
 <hr>
 {% endblock navbar %}
+        
         {% block content %}{% endblock %}
+
+{% block footer %}
+        <hr>
+    <footer>
+        <div class="row">
+            <div class="col-md-6">
+                <p>Copyright &copy; {% now 'Y' %} Film.ua Group</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <a href="#" class="text-dark">Terms of Use</a>
+                <span class="text-muted mx-2">|</span>
+                <a href="#" class="text-dark">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
+{% endblock footer %}
 
         {# Global javascript #}
         <script type="text/javascript" src="{% static 'js/core.js' %}"></script>
