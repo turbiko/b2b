@@ -10,17 +10,17 @@ services:
       - 8010:8000
     env_file:
       - .env.dev
-    depends_on:
-      - dbd
-  dbd:
-    image: postgres:12.12-alpine
-    restart: always
-    ports:
-      - "5434:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
-    env_file:
-      - .env.db
-# /var/lib/docker/volumes
-volumes:
-    postgres_data:
+#    depends_on:
+#      - dbd
+#  dbd:
+#    image: postgres:12.12-alpine
+#    restart: always
+#    ports:
+#      - "5434:5432"
+#    volumes:
+#      - postgres_data:/var/lib/postgresql/data/
+#    env_file:
+#      - .env.db
+## /var/lib/docker/volumes
+#volumes:
+#    postgres_data:
