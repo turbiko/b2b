@@ -28,21 +28,21 @@
     </section>
 
             {# files list #}
-
+    <!-- files -->
     <div class="container">
          {%for file_item in self.file_in_folder.all%}
         <div class="px-4">
-            <div class="">
+        {% if forloop.first %}Files:<br>  {% endif %}
+        </div>
+        <div class="px-4">
                 <a target="_blank" href="{{file_item.file.url}}">
             {%if file_item.can_preview%}
-                <img class="placeholder col-2" src="{{file_item.file.url}}" alt="{{file_item.id}}" />
+                <img class="card-img-left mb-5 mb-md-0 col-2" src="{{file_item.file.url}}" alt="{{file_item.id}}" />
             {%else%}
                 {{file_item.name}}
             {%endif%}
             </a>
-
-            </div>
-            {{file_item.file.url}}
+            {% if forloop.last %} {% else %}<br> {% endif %} {% endfor %}
         </div>
         {%endfor%}
     </div>
