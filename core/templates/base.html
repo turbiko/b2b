@@ -61,6 +61,8 @@
 </nav>
 <hr>
 <nav aria-label="breadcrumb">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="row gx-4 gx-lg-5 align-items-center">
     {% if self.get_ancestors|length > 1 %}
         <ol class="breadcrumb">
             {% for p in self.get_ancestors %}
@@ -71,6 +73,8 @@
             <li  class="breadcrumb-item active" aria-current="page">{{ self.title }}</li>
         </ol>
     {% endif %}
+        </div>
+    </div>
 </nav>
 {% endblock navbar %}
 
