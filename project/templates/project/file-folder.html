@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static wagtailimages_tags wagtailcore_tags %}
+
+{% block body_class %}template-homepage{% endblock body_class %}
+{% block extra_css %}{% endblock extra_css %}
+{% block content %}
+<!-- Section-PROJECT-PAGE -->
+<section class="py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="row gx-4 gx-lg-5 align-items-center">
+
+            <div class="col-md-4">
+                {% image page.get_parent.specific.representative_image max-600x700 as tizer %}
+                <img class="card-img-top mb-5 mb-md-0" src="{{ tizer.url }}" alt="{{ project.title }}" /></div>
+            <div class="col-md-8">
+                <div class="small mb-1">Created: {{ page.specific.folder_date }}</div>
+                <h1 class="display-5 fw-bolder">{{ page.get_parent.title }} - {{ page.title }}</h1>
+                <div class="fs-5 mb-5">
+                    <span>Genres: {% for genre in page.get_parent.specific.project_genres.all %}{{ genre.genre.name }}
+                        {% if forloop.last %} {% else %}, {% endif %}
+                        {% endfor %}
+                    </span>
+                </div>
+                <p class="lead">{{ page.specific.description | safe }}</p>
+            </div>
+        </div>
+    </div>
+    </section>
+
+            {# files list #}
+         <div>
+        {% for file_item in self.file_in_folder.all %}
+            {% if forloop.first %}Files:<br>  {% endif %}
+            <a target="_blank" href="/media/{{file_item.file}}">
+                <img class="card-img-left mb-5 mb-md-0 col-2" src="/media/{{file_item.file}}" alt="{{ file.description }}" />
+            </a>
+            {% if forloop.last %} {% else %}<br> {% endif %} {% endfor %}
+         </div>
+    <!-- files -->
+    <div class="container">
+         {%for file_item in self.file_in_folder.all%}
+        <div class="px-4">
+            <div class="">
+                <a target="_blank" href="{{file_item.file.url}}">
+            {%if file_item.can_preview%}
+                <img class="placeholder col-2" src="{{file_item.file.url}}" alt="{{file_item.id}}" />
+            {%else%}
+                {{file_item.name}}
+            {%endif%}
+            </a>
+
+            </div>
+            {{file_item.file.url}}
+        </div>
+        {%endfor%}
+    </div>
+<!-- files 2 -->
+
+
+
+{% endblock content %}

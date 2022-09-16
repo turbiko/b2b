@@ -8,13 +8,16 @@ from django.utils.translation import activate, gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel, InlinePanel, StreamFieldPanel, TabbedInterface, ObjectList
+from wagtail.documents.blocks import DocumentChooserBlock
 from wagtail.fields import RichTextField, StreamField
+from wagtail.images.blocks import ImageChooserBlock
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.documents.edit_handlers import DocumentChooserPanel
+from wagtail.documents.models import Document, AbstractDocument
 
 from wagtail.models import Page, Orderable
-from .tools import file_path
-
+from . import blocks
+from core import tools
 
 # Genres functionality
 class Genre(models.Model):
@@ -31,13 +34,13 @@ class ProjectGenres(Orderable):
     panels = [
         FieldPanel('genre'),
     ]
-
+# Genres functionality end
 
 class Project(Page):
     template = 'project' + os.sep + 'project.html'
     parent_page_types = ['Projects']
-    # subpage_types = ['ProjectNews', 'ProjectFiles']
-    date = models.DateField(auto_now_add=False, blank=True, null=True)
+
+    date = models.DateField(verbose_name=_('Started'), auto_now_add=False, blank=True, null=True, )
     representative_image = models.ForeignKey(
             'wagtailimages.Image',
             null=True,
@@ -48,18 +51,22 @@ class Project(Page):
     body = RichTextField(blank=True)
 
     content_panels = Page.content_panels + [
-        FieldPanel('date'),
-        FieldPanel('body'),
-        FieldPanel('representative_image'),
+        MultiFieldPanel([
+            FieldPanel('date'),
+            FieldPanel('body'),
+            FieldPanel('representative_image'),
+        ],
+                heading=_("Project Options"),
+        ),
         MultiFieldPanel(
-                [InlinePanel("project_genres", label="Genre")],
-                heading="Genres",
+                [InlinePanel("project_genres", label=_("Genre"))],
+                heading=_("Additional data"),
         ),
     ]
 
     def get_context(self, request):  # https://stackoverflow.com/questions/32626815/wagtail-views-extra-context
         context = super(Project, self).get_context(request)
-        # context['files'] = self.get_children().type(ProjectFiles)
+        context['folders'] = self.get_children().type(FileFolder)
         return context
 
     class Meta:
@@ -70,4 +77,54 @@ class Projects(Page):
     max_count = 1
     subpage_types = ['Project']
     parent_page_types = ['home.HomePage']
-    page_description = "Projects index page"
+    page_description = _("Projects index page")
+
+
+class ProjectFile(models.Model):
+    item = models.FileField(upload_to=tools.file_path, blank=True, null=True)
+    page = ParentalKey('project.FileFolder', related_name='folder_file')
+
+    panels = [
+        FieldPanel('item'),
+    ]
+
+
+class FileFolder(Page):
+    template = 'project' + os.sep + 'file-folder.html'
+    parent_page_types = ['Project']
+
+    folder_date = models.DateField(auto_now_add=True)
+    description = RichTextField(blank=True)
+
+    class Meta:
+        verbose_name = "Project folder"
+        verbose_name_plural = "Project folders"
+
+    def get_project(self):
+        return self
+
+    content_panels = Page.content_panels + [
+        FieldPanel('description'),
+        MultiFieldPanel(
+                [InlinePanel("folder_file", label=_("File"))],
+                heading=_("Files"),
+        ),
+        InlinePanel('file_in_folder', heading=_("File header"), label=_("File label")),
+    ]
+    def get_context(self, request):  # https://stackoverflow.com/questions/32626815/wagtail-views-extra-context
+        context = super().get_context(request)
+
+        return context
+
+
+class FileInFolder(Orderable):  # TODO: create page for file if can_preview like /filefolder/file/<pk>
+    page = ParentalKey(FileFolder, on_delete=models.CASCADE, related_name='file_in_folder')
+    name = models.CharField(max_length=255)
+    can_preview = models.BooleanField(default=False)  # TODO: if picture = auto set to True
+    file = models.FileField(upload_to=tools.file_path)  # TODO: upload_to method need to know project and folder name for create dirs
+
+    panels = [
+        FieldPanel('name'),
+        FieldPanel('file'),
+        FieldPanel('can_preview'),
+    ]

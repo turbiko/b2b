@@ -1,0 +1,25 @@
+{% load wagtailimages_tags %}
+
+<!-- =========== -->
+    <h2 class="accordion-header" id="flush-heading{{self.block_number}}">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{self.block_number}}" aria-expanded="false" aria-controls="flush-collapse{{self.block_number}}">
+        {{self.block_number}}. {{self.title}}
+      </button>
+    </h2>
+    <div id="flush-collapse{{self.block_number}}" class="accordion-collapse collapse album py-5 bg-light" aria-labelledby="flush-heading{{self.block_number}}" data-bs-parent="#accordionFlush1">
+      <div class="accordion-body row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+          {% for card in self.cards %}
+              {{ card.url }}<br>
+            <div class="col">
+                <div class="card shadow-sm">
+                    <a target="_blank" href="{{img.url}}" alt="{{ card.title }}">
+                        {{img.url}}
+                    </a>
+                </div>
+            </div>
+          {% endfor %}
+      </div>
+    </div>
+
+
+<!-- =========== -->

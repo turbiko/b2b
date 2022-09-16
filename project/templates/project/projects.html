@@ -1,7 +1,11 @@
-{% extends "base.html" %} {% load static wagtailimages_tags %} {% block extra_css %}
+{% extends "base.html" %}
+{% load static wagtailimages_tags wagtailcore_tags %}
+
+{% block body_class %}template-homepage{% endblock %}
+{% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/project.css' %}" />
 {% endblock extra_css %} {% block content %}
-<!-- Section-->
+<!-- Section-PROJECTS-PAGE -->
 <section class="py-5">
     <div class="container px-4 px-lg-5 mt-5">
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
@@ -31,6 +35,5 @@
         </div>
     </div>
 </section>
-
 
 {% endblock content %}
