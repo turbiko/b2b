@@ -3,7 +3,7 @@ import os
 from .base import *
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 print('DEBUG= ', DEBUG)
 
 # SECURITY WARNING: keep the secret key used in production secret!

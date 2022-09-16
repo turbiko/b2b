@@ -26,4 +26,3 @@ https://www.phooky.com/blog/dockerize-wagtail-postgresql-as-a-development-enviro
 docker-compose up -d --build
 
 docker-compose exec web python manage.py createsuperuser --settings=core.settings.dev
-
