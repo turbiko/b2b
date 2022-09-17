@@ -80,15 +80,6 @@ class Projects(Page):
     page_description = _("Projects index page")
 
 
-class ProjectFile(models.Model):
-    item = models.FileField(upload_to=tools.file_path, blank=True, null=True)
-    page = ParentalKey('project.FileFolder', related_name='folder_file')
-
-    panels = [
-        FieldPanel('item'),
-    ]
-
-
 class FileFolder(Page):
     template = 'project' + os.sep + 'file-folder.html'
     parent_page_types = ['Project']
@@ -105,10 +96,6 @@ class FileFolder(Page):
 
     content_panels = Page.content_panels + [
         FieldPanel('description'),
-        MultiFieldPanel(
-                [InlinePanel("folder_file", label=_("File"))],
-                heading=_("Files"),
-        ),
         InlinePanel('file_in_folder', heading=_("File header"), label=_("File label")),
     ]
     def get_context(self, request):  # https://stackoverflow.com/questions/32626815/wagtail-views-extra-context
