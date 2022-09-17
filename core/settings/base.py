@@ -177,8 +177,6 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'noreply@argentum.ua'
 EMAIL_HOST_PASSWORD = '8gZ3yN8uYrvXXhL'
 
-
-
 # https://learnwagtail.com/tutorials/adding-user-authentication-registration-and-login-your-wagtail-website/
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
