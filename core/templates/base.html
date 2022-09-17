@@ -31,7 +31,7 @@
     </head>
 
     <body class="{% block body_class %}{% endblock %}">
-        {% wagtailuserbar %}
+
 
 {% block navbar %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -60,6 +60,7 @@
     </div>
 </nav>
 <hr>
+{% if request.user.is_authenticated %}
 <nav aria-label="breadcrumb">
     <div class="container px-4 px-lg-5 my-1">
         <div class="row gx-4 gx-lg-5 align-items-center">
@@ -76,9 +77,16 @@
         </div>
     </div>
 </nav>
+{%endif%}
 {% endblock navbar %}
 
-        {% block content %}{% endblock %}
+{% block content %}
+{% if request.user.is_authenticated %}
+    You are logged in
+{% else %}
+    <a>You are not loggin in. Please, <a href="/login/">login</a></p>
+{% endif %}
+{% endblock %}
 
 {% block footer %}
     <hr>
@@ -101,5 +109,7 @@
         {% block extra_js %}
         {# Override this in templates to add extra javascript #}
         {% endblock %}
+
+{% wagtailuserbar %}
     </body>
 </html>

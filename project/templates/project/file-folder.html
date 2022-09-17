@@ -4,6 +4,7 @@
 {% block body_class %}template-homepage{% endblock body_class %}
 {% block extra_css %}{% endblock extra_css %}
 {% block content %}
+{% if request.user.is_authenticated %}
 <!-- Section-PROJECT-PAGE -->
 <section class="py-1">
     <div class="container px-4 px-lg-5 my-1">
@@ -47,5 +48,7 @@
 <!-- files 2 -->
 
 
-
+{% else %}
+    <a>You are not loggin in. Please, <a href="/login/">login</a></p>
+{% endif %}
 {% endblock content %}

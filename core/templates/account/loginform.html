@@ -1,0 +1,28 @@
+ {% load i18n %}
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+
+
+                <h1>{% trans "Sign In" %}</h1>
+
+
+                <p>{% blocktrans %}If you have not created an account yet, then please
+                ask admin first.{% endblocktrans %}</p>
+
+
+                <form class="login" method="POST" action="{% url 'account_login' %}">
+                    {% csrf_token %}
+                    {{ form }}
+                    {% if redirect_field_value %}
+                        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                    {% endif %}
+
+                    <button class="btn btn-primary" type="submit">{% trans "Sign In" %}</button>
+
+                    <a class="btn btn-link" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+
+                </form>
+            </div>
+        </div>
+    </div>

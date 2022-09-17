@@ -195,3 +195,4 @@ ACCOUNT_USERNAME_BLACKLIST = ["admin", "root"]
 ACCOUNT_USERNAME_MIN_LENGTH = 4
 
 WAGTAILIMAGES_MAX_UPLOAD_SIZE = 50 * 1024 * 1024  # first digit size in MB
+WAGTAILDOCS_SERVE_METHOD = 'redirect'  # need security check for pages  is_authentificated

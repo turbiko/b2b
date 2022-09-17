@@ -1,5 +1,5 @@
 {% load wagtailimages_tags %}
-
+{% if request.user.is_authenticated %}
 <!-- =========== -->
     <h2 class="accordion-header" id="flush-heading{{self.block_number}}">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{self.block_number}}" aria-expanded="false" aria-controls="flush-collapse{{self.block_number}}">
@@ -23,3 +23,6 @@
 
 
 <!-- =========== -->
+{% else %}
+    <a>You are not loggin in. Please, <a href="/login/">login</a></p>
+{% endif %}
