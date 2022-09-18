@@ -115,3 +115,29 @@ class FileInFolder(Orderable):  # TODO: create page for file if can_preview like
         FieldPanel('file'),
         FieldPanel('can_preview'),
     ]
+
+    def __str__(self):
+        return self.title
+
+
+class NewsArticle(Page):
+    template = 'project' + os.sep + 'news_article.html'
+    parent_page_types = ['Project']
+    subpage_types = []
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, default=None)
+    news_project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, default=None)
+    article_date = models.DateField(verbose_name=_('Created'), auto_now_add=True,)
+    featured_image = models.FileField(upload_to=tools.file_path, blank=True, null=True)
+    body = RichTextField(blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel('author'),
+        FieldPanel('news_project'),
+        FieldPanel('featured_image'),
+        FieldPanel('body'),
+
+    ]
+
+    def __str__(self):
+        return self.title
+

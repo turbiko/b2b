@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static wagtailimages_tags wagtailcore_tags %}
+
+{% block body_class %}template-homepage{% endblock %}
+
+{% block extra_css %}
+
+{% endblock extra_css %}
+
+{% block content %}
+
+{% if request.user.is_authenticated %}
+<!-- Section news -->
+{{self.title}}<br>
+{%if self.author %}
+{{self.author.username}} -author<br>
+{%else%}
+{{self.owner.username}} - owner<br>
+{%endif%}
+{{self.news_project}}<br>
+{{self.article_date}}<br>
+{{self.featured_image.url}}<br>
+{{self.body|safe}}<br>
+
+{% else %}
+    <p>You are not logged in. Please, <a href="/login/">login</a></p>
+{% endif %}
+
+{% endblock content %}
