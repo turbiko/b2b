@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     # added code
     'menus.apps.MenusConfig',
     'project.apps.ProjectConfig',
-    # 'news.apps.NewsConfig',
 ]
 
 MIDDLEWARE = [
@@ -88,12 +87,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "core.wsgi.application"
-
-
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
-
 
 
 # Password validation
