@@ -105,6 +105,7 @@ class FileFolder(Page):
 
 
 class FileInFolder(Orderable):  # TODO: create page for file if can_preview like /filefolder/file/<pk>
+    # title = models.CharField(max_length=255, blank=True, null=True)
     page = ParentalKey(FileFolder, on_delete=models.CASCADE, related_name='file_in_folder')
     name = models.CharField(max_length=255)
     can_preview = models.BooleanField(default=False)  # TODO: if picture = auto set to True
@@ -117,7 +118,7 @@ class FileInFolder(Orderable):  # TODO: create page for file if can_preview like
     ]
 
     def __str__(self):
-        return self.title
+        return self.name
 
 
 class NewsArticle(Page):
