@@ -7,7 +7,7 @@ def file_path(instance, filename) -> str:   # TODO: upload_to need to know proje
     print('file_path Instance= ', instance)
     _, file_extension= os.path.splitext(filename)
     filename = datetime.now().strftime('%Y/%m/')+'f-'+uuid.uuid4().hex
-    return 'projects/{project_filename}{ext}'.format( project_filename= filename, ext= file_extension)
+    return 'projects/{project_filename}{ext}'.format(project_filename=filename, ext=file_extension)
 
 
 
