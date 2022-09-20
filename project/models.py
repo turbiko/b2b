@@ -121,10 +121,6 @@ class FileInFolder(Orderable):  # TODO: create page for file if can_preview like
     def __str__(self):
         return self.name
 
-    def get_context(self, request):  # https://stackoverflow.com/questions/32626815/wagtail-views-extra-context
-        context = super().get_context(request)
-
-        return context
 
 
 class NewsArticle(Page):
