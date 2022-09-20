@@ -82,7 +82,8 @@ class Projects(Page):
 
 class FileFolder(Page):
     template = 'project' + os.sep + 'file-folder.html'
-    parent_page_types = ['Project']
+    parent_page_types = ['Project', 'FileFolder']
+    subpage_types = ['FileFolder']
 
     folder_date = models.DateField(auto_now_add=True)
     description = RichTextField(blank=True)

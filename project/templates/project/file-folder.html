@@ -51,8 +51,22 @@
         {% if forloop.last %} {% else %}<br> {% endif %}
         {%endfor%}
     </div>
-<!-- files 2 -->
+<!--end files  -->
+<div class="container">
+    {% for folder_item in self.get_children.live %}
 
+        <div class="px-4">
+            {% if forloop.first %}Folders:<br>  {% endif %} {{folder_item}}
+            <div class="">
+
+                <a href="{{folder_item.url}}" download="{{folder_item.name}}">{{folder_item.title}}</a>
+
+            </div>
+        </div>
+        {% if forloop.last %} {% else %}<br> {% endif %}
+        {%endfor%}
+    </div>
+<!--end files folders -->
 
 {% else %}
     <p>You are not logged in. Please, <a href="/login/">login</a></p>
