@@ -33,7 +33,7 @@
         <div class="px-4">
             {% if forloop.first %}Files:<br>  {% endif %}
             <div class="">
-                    <a target="_blank" href="{{file_item.file.url}}">
+                    <a target="_blank" class="link-dark"> href="{{file_item.file.url}}">
                 {%if file_item.can_preview%}
                    {# <img class="mb-5 mb-md-0 col-2" src="{{file_item.file.url}}" alt="{{file_item.id}}" />#}
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-image-fill" viewBox="0 0 16 16">
