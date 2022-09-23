@@ -26,7 +26,7 @@ def addPhoto(request, pk):
 
             photo = FileInFolder.objects.create(
                 page=project_folder,
-                name=project_folder.title+'  '+data['description'] + '  ' + image.name,
+                name=image.name,
                 file=image,
                 can_preview=previev_selector,
             )
