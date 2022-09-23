@@ -55,7 +55,7 @@
     {% for folder_item in self.get_children.live %}
 
         <div class="px-4">
-            {% if forloop.first %}Folders:<br>  {% endif %} {{folder_item}}
+            {% if forloop.first %}Folders:<br>  {% endif %}
             <div class="">
 
                 <a href="{{folder_item.url}}" ">{{folder_item.title}}</a>

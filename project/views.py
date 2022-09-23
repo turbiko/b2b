@@ -1,3 +1,4 @@
+import os
 from django.shortcuts import render, redirect
 # from .models import FilesToFolder, Photo
 from django.contrib.auth import authenticate, login, logout
