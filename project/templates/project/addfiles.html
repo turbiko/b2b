@@ -4,7 +4,7 @@
 {% block body_class %}template-homepage{% endblock body_class %}
 {% block extra_css %}{% endblock extra_css %}
 {% block content %}
-{% if request.user.is_authenticated %}
+{% if request.user.is_superuser %}
     <div class="container">
 
         <div class="row justify-content-center">
@@ -32,6 +32,6 @@
         </div>
     </div>
 {% else %}
-    <p>You are not logged in. Please, <a href="/login/">login</a></p>
+    <p>Restricted area. Please, visit homepage <a href="/">Home</a></p>
 {% endif %}
 {% endblock content %}
