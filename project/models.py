@@ -86,7 +86,7 @@ class FileFolder(Page):
     subpage_types = ['FileFolder']
 
     folder_date = models.DateField(auto_now_add=True)
-    description = RichTextField(blank=True)
+    description = RichTextField(blank=True, null=True)
 
     class Meta:
         verbose_name = "Project folder"
@@ -101,14 +101,14 @@ class FileFolder(Page):
     ]
     def get_context(self, request):  # https://stackoverflow.com/questions/32626815/wagtail-views-extra-context
         context = super().get_context(request)
-
+        context['parent_project'] = self.get_ancestors().type(Project).last()  # get Project for FileFolder because have recursion for FileFolder
         return context
 
 
 class FileInFolder(Orderable):  # TODO: create page for file if can_preview like /filefolder/file/<pk>
     # title = models.CharField(max_length=255, blank=True, null=True)
     page = ParentalKey(FileFolder, on_delete=models.CASCADE, related_name='file_in_folder')
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, blank=True, null=True)
     can_preview = models.BooleanField(default=False)  # TODO: if picture = auto set to True
     file = models.FileField(upload_to=tools.file_path)  # TODO: upload_to method need to know project and folder name for create dirs
 
@@ -149,3 +149,25 @@ class NewsArticle(Page):
 
         return context
 
+
+
+class FilesToFolder(models.Model):
+    user = models.ForeignKey(
+        FileFolder, on_delete=models.SET_NULL, null=True, blank=True)
+    name = models.CharField(max_length=100, null=False, blank=False)
+
+    def __str__(self):
+        return self.name
+
+class Photo(models.Model):
+    class Meta:
+        verbose_name = 'Photo'
+        verbose_name_plural = 'Photos'
+
+    filegroup = models.ForeignKey(
+            FileInFolder, on_delete=models.SET_NULL, null=True, blank=True)
+    image = models.ImageField(null=False, blank=False)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.description

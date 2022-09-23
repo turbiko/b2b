@@ -187,5 +187,5 @@ ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 ACCOUNT_USERNAME_BLACKLIST = ["admin", "root"]
 ACCOUNT_USERNAME_MIN_LENGTH = 4
 
-WAGTAILIMAGES_MAX_UPLOAD_SIZE = 151 * 1024 * 1024  # first digit size in MB
+WAGTAILIMAGES_MAX_UPLOAD_SIZE = 10 * 1024 * 1024 * 1024  # first digit size in GB
 WAGTAILDOCS_SERVE_METHOD = 'redirect'  # need security check for pages  is_authentificated

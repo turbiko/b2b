@@ -14,9 +14,9 @@
                 <img class="card-img-top mb-5 mb-md-0" src="{{ tizer.url }}" alt="{{ project.title }}" /></div>
             <div class="col-md-8">
                 <div class="small mb-1">Created: {{ page.specific.folder_date }}</div>
-                <h1 class="display-5 fw-bolder">{{ page.get_parent.title }} - {{ page.title }}</h1>
+                <h1 class="display-5 fw-bolder"> {{parent_project.title}} - {{ page.title }}</h1>
                 <div class="fs-5 mb-5">
-                    <span>Genres: {% for genre in page.get_parent.specific.project_genres.all %}{{ genre.genre.name }}
+                    <span>Genres: {% for genre in parent_project.specific.project_genres.all %}{{ genre.genre.name }}
                         {% if forloop.last %} {% else %}, {% endif %}
                         {% endfor %}
                     </span>
@@ -32,10 +32,9 @@
          {%for file_item in self.file_in_folder.all%}
         <div class="px-4">
             {% if forloop.first %}Files:<br>  {% endif %}
-            <div class="">
-                    <a target="_blank" class="link-dark"> href="{{file_item.file.url}}">
+            <div class="a1">
+                    <a target="_blank"  href="{{file_item.file.url}}" class="link-dark">
                 {%if file_item.can_preview%}
-                   {# <img class="mb-5 mb-md-0 col-2" src="{{file_item.file.url}}" alt="{{file_item.id}}" />#}
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-image-fill" viewBox="0 0 16 16">
   <path d="M.002 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-12a2 2 0 0 1-2-2V3zm1 9v1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12zm5-6.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0z"/>
 </svg>&nbsp; {{file_item.name}}
@@ -43,7 +42,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud-arrow-down-fill" viewBox="0 0 16 16">
   <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708z"/>
 </svg> &nbsp;
-                    Download <a href="{{file_item.file.url}}" download="{{file_item.name}}">{{file_item.name}}</a>
+                    Download <a href="{{file_item.file.url}}" class="link-dark">{{file_item.name}}</a>
                 {%endif%}
                 </a>
             </div>
@@ -59,7 +58,7 @@
             {% if forloop.first %}Folders:<br>  {% endif %} {{folder_item}}
             <div class="">
 
-                <a href="{{folder_item.url}}" download="{{folder_item.name}}">{{folder_item.title}}</a>
+                <a href="{{folder_item.url}}" ">{{folder_item.title}}</a>
 
             </div>
         </div>
@@ -67,7 +66,10 @@
         {%endfor%}
     </div>
 <!--end files folders -->
-
+{# object name and id#}
+{%if user.is_superuser %}
+<a class="btn btn-primary" href="/editproject/uploadprojectfiles/{{self.pk}}" role="button">Upload</a>
+{%endif%}
 {% else %}
     <p>You are not logged in. Please, <a href="/login/">login</a></p>
 {% endif %}
