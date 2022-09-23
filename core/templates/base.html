@@ -2,7 +2,7 @@
 {% get_menu "top" as navigation %}
 <!DOCTYPE html>
 {% get_current_language as LANGUAGE_CODE %}
-<html lang="{{ LANGUAGE_CODE }}">
+<html lang="{{ LANGUAGE_CODE }}" class="h-100">
     <head>
         <meta charset="utf-8" />
         <title>
@@ -23,14 +23,15 @@
         {% endif %}
 
         {# Global stylesheets #}
-        <link rel="stylesheet" type="text/css" href="{% static 'css/core.css' %}">
+
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/core.css' %}">
         {% block extra_css %}
         {# Override this in templates to add extra stylesheets #}
         {% endblock %}
     </head>
 
-    <body class="{% block body_class %}{% endblock %}">
+    <body class="d-flex flex-column h-100 {% block body_class %}{% endblock %}">
 
 {# wagtailuserbar #}
 {% block navbar %}
@@ -84,7 +85,9 @@
 {% if request.user.is_authenticated %}
     You are logged in
 {% else %}
-    <p>You are not logged in. Please, <a href="/login/">login</a></p>
+<div class="container justify-content-center">
+<p>You are not logged in. Please, <a href="/login/">login</a></p>
+</div>
 {% endif %}
 {% endblock %}
 
