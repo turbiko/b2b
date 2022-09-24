@@ -18,8 +18,8 @@ def addPhoto(request, pk):
         images = request.FILES.getlist('images')
 
         for image in images:
-            _, extension = splitext(image)
-            if extension in PREVIEW_EXT:
+            _, extension = splitext(image.name)
+            if extension.lower() in PREVIEW_EXT:
                 previev_selector = True
             else:
                 previev_selector = False
