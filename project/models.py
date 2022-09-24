@@ -67,6 +67,7 @@ class Project(Page):
     def get_context(self, request):  # https://stackoverflow.com/questions/32626815/wagtail-views-extra-context
         context = super(Project, self).get_context(request)
         context['folders'] = self.get_children().type(FileFolder)
+        context['news'] = self.get_children().type(NewsArticle)
         return context
 
     class Meta:
@@ -102,6 +103,7 @@ class FileFolder(Page):
     def get_context(self, request):  # https://stackoverflow.com/questions/32626815/wagtail-views-extra-context
         context = super().get_context(request)
         context['parent_project'] = self.get_ancestors().type(Project).last()  # get Project for FileFolder because have recursion for FileFolder
+
         return context
 
 
