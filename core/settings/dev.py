@@ -3,7 +3,7 @@ import os
 from .base import *
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 print('DEBUG= ', DEBUG)
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -36,11 +36,13 @@ DATABASES = {
 # SECURITY WARNING: define the correct hosts in production!
 ALLOWED_HOSTS = ["*"]
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 # EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 CSRF_TRUSTED_ORIGINS = ['https://*.argentum.ua','https://127.0.0.1']
+
+DEBUG404 = False
 
 try:
     from .local import *
