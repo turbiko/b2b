@@ -69,10 +69,10 @@
         <ol class="breadcrumb">
             {% for p in self.get_ancestors %}
                 {% if p.is_root == False %}
-                    <li class="breadcrumb-item" ><a href="{{ p.url }}">{{ p.title }}</a></li>
+                    <li class="breadcrumb-item" ><a href="{{ p.url }}">{{ p.title|truncatechars:25 }}</a></li>
                 {% endif %}
             {% endfor %}
-            <li  class="breadcrumb-item active" aria-current="page">{{ self.title }}</li>
+            <li  class="breadcrumb-item active" aria-current="page">{{ self.title|truncatechars:25 }}</li>
         </ol>
     {% endif %}
         </div>
