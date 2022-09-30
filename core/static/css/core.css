@@ -190,3 +190,15 @@ hr {
     border-top: 1px solid;
     opacity: .25;
 }
+
+.panel {
+    color: #333;
+}
+.panel-default {
+    border-color: #878787;
+}
+.folder-panel{
+    margin:10px 0 5px 0;
+}.file-panel{
+    margin:5px 0 5px 0;
+}

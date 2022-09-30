@@ -26,10 +26,10 @@
 
         <div class="px-4">
             {% if forloop.first %}Folders:<br>  {% endif %}
-            <div class="">
-
+            <div class="panel panel-default folder-panel">
+                <div class="panel-body">
                 <a href="{{folder_item.url}}" class="link-dark">{{folder_item.title}}</a>
-
+                </div>
             </div>
         </div>
         {% if forloop.last %} {% else %}<br> {% endif %}
@@ -41,20 +41,20 @@
          {%for file_item in self.file_in_folder.all%}
         <div class="px-4">
             {% if forloop.first %}Files:<br>  {% endif %}
-            <div class="a1">
-                    <a target="_blank"  href="{{file_item.file.url}}" class="link-dark">
+            <div class="file-panel">
+
                 {%if file_item.can_preview%}
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-image-fill" viewBox="0 0 16 16">
-  <path d="M.002 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-12a2 2 0 0 1-2-2V3zm1 9v1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12zm5-6.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0z"/>
-</svg>&nbsp; {{file_item.name}}   ({{file_item.file.size|filesizeformat}})
+                          <path d="M.002 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-12a2 2 0 0 1-2-2V3zm1 9v1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12zm5-6.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0z"/>
+                        </svg>&nbsp;
                 {%else%}
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
-  <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-  <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
-</svg>
-                    Download <a href="{{file_item.file.url}}" class="link-dark" download>{{file_item.name}} ({{file_item.file.size|filesizeformat}})</a>
+                          <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                          <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                        </svg>
                 {%endif%}
-                </a>
+                  {{file_item.name}} <a target="_blank"  href="{{file_item.file.url}}" class="link-dark" download="{{file_item.name}}">Download </a>
+                ({{file_item.file.size|filesizeformat}})
             </div>
         </div>
         {% if forloop.last %} {% else %}<br> {% endif %}
