@@ -6,12 +6,13 @@
 {% block content %}
 {% if request.user.is_authenticated %}
 <!-- Section-PROJECT-PAGE -->
-<section class="py-1">
+<section class="py-2">
     <div class="container px-4 px-lg-5 my-1">
         <div class="row gx-4 gx-lg-5 align-items-center">
-            <div class="col-md-4">
-                {% image page.get_parent.specific.representative_image max-600x700 as tizer %}
-                <img class="card-img-top mb-5 mb-md-0" src="{{ tizer.url }}" alt="{{ project.title }}" /></div>
+           {# <div class="col-md-4">#}
+                {# image page.get_parent.specific.representative_image max-600x700 as tizer#}
+            {#    <img class="card-img-top mb-5 mb-md-0" src="{{ tizer.url }}" alt="{{ project.title }}" />#}
+           {# </div>#}
             <div class="col-md-8">
                 <div class="small mb-1">Created: {{ page.specific.folder_date }}</div>
                 <h1 class="display-5 fw-bolder"> {{ page.title }}</h1><br>
@@ -41,32 +42,32 @@
 {# end files folders #}
 
 {# files list #}
-    <div class="container">
-        {%for file_item in self.file_in_folder.all%}
-        <div class="panel panel-default">
-            <div class="d-flex flex-row panel-body align-items-center">
-                <div>
-                {%if file_item.can_preview%}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" fill="currentColor" class="bi bi-image-fill" viewBox="0 0 16 16">
-                          <path d="M.002 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-12a2 2 0 0 1-2-2V3zm1 9v1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12zm5-6.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0z"/>
-                        </svg>
-                {%else%}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
-                          <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-                          <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
-                        </svg>
-                {%endif%}&nbsp;
-                </div>
-                <div class="b-project-title">
-                    {{file_item.name|truncatechars:55}}
-                    <a target="_blank"  href="{{file_item.file.url}}" class="link-dark" download="{{file_item.name}}">Download</a>
-                    ({{file_item.file.size|filesizeformat}})
-                </div>
 
-            </div>
-        </div>
-        {% endfor %}
+
+<div class="container px-4 px-lg-4">
+{%for file_item in self.file_in_folder.all%}
+<div class="card mb-3" style="max-height: 200px;">
+  <div class="row g-0">
+    <div class="col-md-1"> {# placeholder pic or icon #}
+        {%if file_item.can_preview%}
+            <img src="{{file_item.file.url}}"  width="100%" class="rounded-start p-2" alt="{{file_item.name}}">
+        {%else%}
+                <svg xmlns="http://www.w3.org/2000/svg" width="100%" fill="currentColor" class="bi bi-download p-2" viewBox="0 0 16 16">
+                  <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                  <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                </svg>
+        {%endif%}
     </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">{{file_item.name}} ({{file_item.file.size|filesizeformat}})</h5>
+          <a target="_blank"  href="{{file_item.file.url}}" class="link-dark" download="{{file_item.name}}">Download</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+</div>
 {# end files list #}
 <br>
 {# object name and id #}
