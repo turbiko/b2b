@@ -23,42 +23,49 @@
 {# files folders #}
 <div class="container">
     {% for folder_item in self.get_children.live %}
-
-        <div class="px-4">
-            {% if forloop.first %}Folders:<br>  {% endif %}
-            <div class="panel panel-default folder-panel">
-                <div class="panel-body">
-                <a href="{{folder_item.url}}" class="link-dark">{{folder_item.title}}</a>
+        <div class="panel panel-default">
+            <div class="d-flex flex-row align-bottom panel-body">
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" fill="currentColor" class="bi bi-folder-fill" viewBox="0 0 16 16">
+                      <path d="M9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.825a2 2 0 0 1-1.991-1.819l-.637-7a1.99 1.99 0 0 1 .342-1.31L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3zm-8.322.12C1.72 3.042 1.95 3 2.19 3h5.396l-.707-.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139z"/>
+                    </svg>&nbsp;
                 </div>
+            <div class="b-project-title">
+                    <a href="{{folder_item.url}}" onclick="" class="link-dark"> <h2>
+                       {{folder_item.title|truncatechars:55}}</h2></a></div>
             </div>
         </div>
-        {% if forloop.last %} {% else %}<br> {% endif %}
-        {%endfor%}
+    {% endfor %}
+
     </div>
 {# end files folders #}
+
 {# files list #}
     <div class="container">
-         {%for file_item in self.file_in_folder.all%}
-        <div class="px-4">
-            {% if forloop.first %}Files:<br>  {% endif %}
-            <div class="file-panel">
-
+        {%for file_item in self.file_in_folder.all%}
+        <div class="panel panel-default">
+            <div class="d-flex flex-row panel-body align-items-center">
+                <div>
                 {%if file_item.can_preview%}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-image-fill" viewBox="0 0 16 16">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" fill="currentColor" class="bi bi-image-fill" viewBox="0 0 16 16">
                           <path d="M.002 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-12a2 2 0 0 1-2-2V3zm1 9v1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12zm5-6.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0z"/>
-                        </svg>&nbsp;
+                        </svg>
                 {%else%}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
                           <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
                           <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
                         </svg>
-                {%endif%}
-                  {{file_item.name}} <a target="_blank"  href="{{file_item.file.url}}" class="link-dark" download="{{file_item.name}}">Download </a>
-                ({{file_item.file.size|filesizeformat}})
+                {%endif%}&nbsp;
+                </div>
+                <div class="b-project-title">
+                    {{file_item.name|truncatechars:55}}
+                    <a target="_blank"  href="{{file_item.file.url}}" class="link-dark" download="{{file_item.name}}">Download</a>
+                    ({{file_item.file.size|filesizeformat}})
+                </div>
+
             </div>
         </div>
-        {% if forloop.last %} {% else %}<br> {% endif %}
-        {%endfor%}
+        {% endfor %}
     </div>
 {# end files list #}
 <br>
