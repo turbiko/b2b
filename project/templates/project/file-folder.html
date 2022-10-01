@@ -20,7 +20,7 @@
             </div>
         </div>
     </div>
-    </section>
+</section>
 {# files folders #}
 <div class="container">
     {% for folder_item in self.get_children.live %}
@@ -46,7 +46,7 @@
 
 <div class="container px-4 px-lg-4">
 {%for file_item in self.file_in_folder.all%}
-<div class="card mb-3" style="max-height: 200px;">
+<div class="card mb-3 h-auto" >
   <div class="row g-0">
     <div class="col-md-1"> {# placeholder pic or icon #}
         {%if file_item.can_preview%}
