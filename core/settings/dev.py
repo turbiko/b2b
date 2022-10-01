@@ -4,7 +4,7 @@ from .base import *
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-print('DEBUG= ', DEBUG)
+print('DEBUG.dev= ', DEBUG)
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = "/static/"
