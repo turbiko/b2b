@@ -71,7 +71,9 @@ class Project(Page):
         return context
 
     class Meta:
-        ordering = ['-date']
+        verbose_name = "Project"
+        verbose_name_plural = "Projects"
+        # ordering = ['-date']
 
 class Projects(Page):
     template = 'project'+os.sep+'projects.html'
