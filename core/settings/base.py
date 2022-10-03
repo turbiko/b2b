@@ -216,6 +216,13 @@ LOGGING = {
     'disable_existing_loggers': False,
     # django uses some of its own loggers for internal operations. In case you want to disable them just replace the False above with true.
     # A handler for WARNING. It is basically writing the WARNING messages into a file called WARNING.log
+    'formatters': {
+        'django.server': {
+            '()': 'django.utils.log.ServerFormatter',
+            'format': '[{server_time}] {message}',
+            'datefmt' : '%Y-%m-%d %H:%M:%S',
+            'style': '{',
+        },
     'handlers': {
         'file': {
             'level': 'WARNING',
