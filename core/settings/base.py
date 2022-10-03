@@ -115,7 +115,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en"
 
-LANGUAGES = [
+LANGUAGES  = WAGTAILADMIN_PERMITTED_LANGUAGES = [
     ('uk', _('Ukrainian')),
     ('en', _('English')),
 ]
@@ -170,6 +170,14 @@ WAGTAILSEARCH_BACKENDS = {
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 WAGTAILADMIN_BASE_URL = "http://b2b.argentum.ua"
 
+# Wagtail settings options
+# https://docs.wagtail.org/en/stable/reference/settings.html
+DEFAULT_FROM_EMAIL = 'noreply@argentum.ua'
+WAGTAILADMIN_NOTIFICATION_FROM_EMAIL = 'noreply@argentum.ua'
+WAGTAILUSERS_PASSWORD_REQUIRED = True
+WAGTAILADMIN_NOTIFICATION_USE_HTML = True
+WAGTAILADMIN_NOTIFICATION_INCLUDE_SUPERUSERS = False
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'mail.argentum.ua'
 EMAIL_PORT = 587
@@ -194,7 +202,7 @@ ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 ACCOUNT_USERNAME_BLACKLIST = ["admin", "root"]
 ACCOUNT_USERNAME_MIN_LENGTH = 4
 
-WAGTAILIMAGES_MAX_UPLOAD_SIZE = 10 * 1024 * 1024 * 1024  # first digit size in GB
+WAGTAILIMAGES_MAX_UPLOAD_SIZE = 15 * 1024 * 1024 * 1024  # first digit size in GB
 WAGTAILDOCS_SERVE_METHOD = 'redirect'  # need security check for pages  is_authentificated
 
 # https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types
