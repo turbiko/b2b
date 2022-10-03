@@ -222,7 +222,8 @@ LOGGING = {
             'format': '[{server_time}] {message}',
             'datefmt' : '%Y-%m-%d %H:%M:%S',
             'style': '{',
-        },
+        }
+    },
     'handlers': {
         'file': {
             'level': 'WARNING',
