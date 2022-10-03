@@ -32,6 +32,7 @@ ALLOWED_HOSTS = [
     "b2b.argentum.ua",
     "b2b.film.ua",
     "127.0.0.1",
+    "10.1.100.222",
 ]
 
 try:
