@@ -25,7 +25,7 @@
 {{self.author.first_name}}&nbsp;{{self.author.last_name}}
 {%else%}
 {{self.owner.first_name}}&nbsp;{{self.owner.last_name}}
-{%endif%} <br>{{self.article_date}}</small>
+{%endif%} <br>{{self.article_date|timesince}}</small>
                 </div>
             </div>
         </div>

@@ -1,4 +1,6 @@
 from os.path import splitext
+import logging
+
 from django.shortcuts import render, redirect
 # from .models import FilesToFolder, Photo
 from django.contrib.auth import authenticate, login, logout
@@ -7,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from core.settings.base import PREVIEW_EXT
 from .models import FileFolder, FileInFolder
 
+logger = logging.getLogger(__name__)
 
 def addPhoto(request, pk):
 
@@ -32,6 +35,6 @@ def addPhoto(request, pk):
             )
 
         return redirect(project_folder.url)
-
+    logger.info(project_folder.url + " | " + request.user.username)
     context = {'filefolder': project_folder, 'project_folder':project_folder.url}
     return render(request, 'project/addfiles.html', context)

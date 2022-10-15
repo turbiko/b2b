@@ -4,6 +4,7 @@ import uuid
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.timesince import timesince
 from django.utils.translation import activate, gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
@@ -126,7 +127,6 @@ class FileInFolder(Orderable):  # TODO: create page for file if can_preview like
         return self.name
 
 
-
 class NewsArticle(Page):
     template = 'project' + os.sep + 'news_article.html'
     parent_page_types = ['Project']
@@ -175,3 +175,15 @@ class Photo(models.Model):
 
     def __str__(self):
         return self.description
+
+
+def select_last_topics(project_page, days=7) -> str:
+    pages = project_page.get_descendants()
+    content = ''
+    for p in pages:
+        print(timesince(p.last_published_at))
+        content += str(timesince(p.last_published_at))
+        print(p.title, '  ', p.url)
+        content += ' ' + p.title + ' ' + p.url + ' \n '
+
+    return content
