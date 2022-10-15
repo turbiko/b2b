@@ -105,3 +105,6 @@ or
 
 docker-compose exec web python manage.py createsuperuser --settings=core.settings.production
 
+
+docker-compose exec web python manage.py sendchanges
+
