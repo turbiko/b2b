@@ -23,7 +23,8 @@ DATABASES = {
 # SECURITY WARNING: define the correct hosts in production!
 ALLOWED_HOSTS = ["b2b.argentum.ua", "b2b.film.ua", "10.1.100.222", '127.0.0.1']
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+ADMINS = [('test admin1', 'a.voznyuk@film.ua'), ('test admin2', 'avoznyuk@film.ua')]
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 # EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"

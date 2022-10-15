@@ -19,14 +19,14 @@ DATABASES = {
     }
 }
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 CSRF_TRUSTED_ORIGINS = [
     'https://b2b.argentum.ua',
     'https://b2b.film.ua',
 ]
-
+ADMINS = [('test admin1', 'andreyv@ukr.net'), ('test admin2', 'avoznyuk@film.ua')]
 # SECURITY WARNING: define the correct hosts in production!
 ALLOWED_HOSTS = [
     "b2b.argentum.ua",

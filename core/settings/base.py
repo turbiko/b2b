@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 from django.utils.translation import activate, gettext_lazy as _
+import logging
 
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -153,10 +154,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 
 
-# Wagtail settings
+# Wagtail
 
-WAGTAIL_SITE_NAME = "b2b"
-WAGTAILADMIN_BASE_URL = "http://b2b.argentum.ua"
+WAGTAIL_SITE_NAME = "b2b.film.ua"
+WAGTAILADMIN_BASE_URL = "http://b2b.film.ua"
 
 # Search
 # https://docs.wagtail.org/en/stable/topics/search/backends.html
@@ -184,6 +185,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'noreply@argentum.ua'
 EMAIL_HOST_PASSWORD = '8gZ3yN8uYrvXXhL'
+EMAIL_SUBJECT_PREFIX = 'b2b |'
 
 # https://learnwagtail.com/tutorials/adding-user-authentication-registration-and-login-your-wagtail-website/
 LOGIN_URL = '/login/'
@@ -214,33 +216,43 @@ LOGGING = {
     'version': 1,
     # The version number of our log
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{name} {levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style':  '{',
+        },
+        'simple':  {
+            'format': '{levelname} {message}',
+            'style':  '{',
+        },
+    },
     # django uses some of its own loggers for internal operations. In case you want to disable them just replace the False above with true.
     # A handler for WARNING. It is basically writing the WARNING messages into a file called WARNING.log
-    'formatters': {
-        'django.server': {
-            '()': 'django.utils.log.ServerFormatter',
-            'format': '[{server_time}] {message}',
-            'datefmt' : '%Y-%m-%d %H:%M:%S',
-            'style': '{',
-        }
-    },
     'handlers': {
         'file': {
-            'level': 'WARNING',
+            'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': BASE_DIR +'/'+ 'warning.log',
+            'filename': BASE_DIR + '/' + 'warning.log',
+            'formatter': 'verbose'
         },
     },
     # A logger for WARNING which has a handler called 'file'. A logger can have multiple handler
     'loggers': {
+        'project': {
+            'handlers':  ['file'],  # notice how file variable is called in handler which has been defined above
+            'level':     'INFO',
+            'propagate': True,
+            'formatter': 'verbose'
+        },
        # notice the blank '', Usually you would put built in loggers like django or root here based on your needs
         '': {
             'handlers': ['file'], #notice how file variable is called in handler which has been defined above
-            'level': 'WARNING',
+            'level': 'INFO',
             'propagate': True,
+            'formatter': 'verbose'
         },
     },
 }
 
 FILE_UPLOAD_HANDLERS = ["django.core.files.uploadhandler.MemoryFileUploadHandler",
- "django.core.files.uploadhandler.TemporaryFileUploadHandler"]
+                        "django.core.files.uploadhandler.TemporaryFileUploadHandler"]
