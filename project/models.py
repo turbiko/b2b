@@ -177,13 +177,3 @@ class Photo(models.Model):
         return self.description
 
 
-def select_last_topics(project_page, days=7) -> str:
-    pages = project_page.get_descendants()
-    content = ''
-    for p in pages:
-        print(timesince(p.last_published_at))
-        content += str(timesince(p.last_published_at))
-        print(p.title, '  ', p.url)
-        content += ' ' + p.title + ' ' + p.url + ' \n '
-
-    return content

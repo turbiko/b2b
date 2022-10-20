@@ -12,6 +12,11 @@ details:
 	DB: SQLite
 	Other: Docker, NGINX(on server not in docker), Ubuntu
 -----------------
+Details:
+
+- Project have slug parameter - this slug is Group name for users, who have access to project
+- Enumerate users for project
+
 Server config (my deployment reccomendation):
 
  Linux server (Ubuntu)
