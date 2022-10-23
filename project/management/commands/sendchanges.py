@@ -5,6 +5,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.contrib.auth.models import User, Group
 from django.core.mail import send_mail, send_mass_mail
 from django.utils.timesince import timesince
+from django.core.mail import EmailMessage
 
 from wagtail.models import Page, Orderable
 
@@ -36,20 +37,25 @@ class Command(BaseCommand):
 			mail_content[project.slug] = self.select_last_topics(project)
 			print(f'mail_content:{project.slug=} \n', mail_content)
 			emails = self.get_subscriber_emails(project)
-			print(mail_content[project.slug])
-			print(settings.EMAIL_HOST_USER)
-			print(emails)
-			message_tmp = (
-				f'B2B [{project.title}] updates digest {datetime.now().date().strftime("%d %B, %Y")}',
-				mail_content[project.slug].replace(u'\xa0', u' '),
-				settings.EMAIL_HOST_USER,
-				emails
-			)
+
+
+			# send_mail(
+			# subject,
+			# message,
+			# from_email,
+			# recipient_list,
+			# fail_silently=False, auth_user=None, auth_password=None, connection=None, html_message=None)
 			try:
 				self.stdout.write(self.style.WARNING(f"About to send email to {emails}"))
 				# Logic to send email here
-				print(message_tmp)
-				send_mass_mail((message_tmp,))
+				for email_to_send in emails:
+					send_mail(
+							f'B2B [{project.title}] updates digest {datetime.now().date().strftime("%d %B, %Y")}',
+							mail_content[project.slug].replace(u'\xa0', u' '),
+							settings.EMAIL_HOST_USER,
+							[email_to_send],
+							fail_silently=False,
+					)
 				self.stdout.write(self.style.WARNING("After successful sent email "))
 			except Exception as ex:
 				raise CommandError(f'Failed to send test email to {emails=}  {ex}')
@@ -81,8 +87,8 @@ class Command(BaseCommand):
 		self.stdout.write(self.style.WARNING(f'Create emails list for {project_page.title=}'))
 		selected_group = Group.objects.get(name=project_page.slug)
 		project_users = selected_group.user_set.all()  # users in group
-		need_to_send = []
+		emails_to_send = []
 		for u in project_users:
-			need_to_send.append(u.email)
-		self.stdout.write(self.style.WARNING(f'Created emails list for {need_to_send=}'))
-		return need_to_send
+			emails_to_send.append(u.email)
+		self.stdout.write(self.style.WARNING(f'Created emails list for {emails_to_send=}'))
+		return emails_to_send
