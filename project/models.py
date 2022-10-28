@@ -78,7 +78,7 @@ class Project(Page):
 
 class Projects(Page):
     template = 'project'+os.sep+'projects.html'
-    max_count = 1
+    max_count_per_parent = 1
     subpage_types = ['Project']
     parent_page_types = ['home.HomePage']
     page_description = _("Projects index page")

@@ -33,7 +33,7 @@ def addPhoto(request, pk):
                 file=image,
                 can_preview=previev_selector,
             )
-
+        project_folder.save()  # TODO change time in  last_published_at
         return redirect(project_folder.url)
     logger.info(project_folder.url + " | " + request.user.username)
     context = {'filefolder': project_folder, 'project_folder':project_folder.url}

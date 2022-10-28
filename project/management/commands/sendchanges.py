@@ -61,7 +61,7 @@ class Command(BaseCommand):
 				raise CommandError(f'Failed to send test email to {emails=}  {ex}')
 
 
-	def select_last_topics(self, project_page, days=97) -> str:
+	def select_last_topics(self, project_page, days=7) -> str:
 		"""
 		:param project_page: root page of project
 		:param days: diapason for select pages

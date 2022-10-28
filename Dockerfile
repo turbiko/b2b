@@ -1,6 +1,9 @@
 FROM python:3.10.4-alpine3.14
 
-WORKDIR /usr/src/app
+
+ENV DockerHOME=/usr/src/app
+RUN mkdir -p $DockerHOME
+WORKDIR $DockerHOME  
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
