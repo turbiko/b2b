@@ -61,6 +61,9 @@
     <div class="col-md-8">
       <div class="card-body">
         <h5 class="card-title">{{file_item.name}} ({{file_item.file.size|filesizeformat}})</h5>
+          {%if file_item.can_preview%}
+          <a target="_blank"  href="{{file_item.file.url}}" class="link-dark" target="_blank">View</a>
+          {%endif%}
           <a target="_blank"  href="{{file_item.file.url}}" class="link-dark" download="{{file_item.name}}">Download</a>
       </div>
     </div>
