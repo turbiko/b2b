@@ -25,9 +25,11 @@ class Command(BaseCommand):
 		self.stdout.write(self.style.WARNING("email will be send"))
 		# get groups, that not default and create list
 		prj_groups = []
-		for group1 in Group.objects.all():
+		for group1 in Group.objects.all():  # getting all projects groups to list
 			if group1.name not in ('Moderators', 'Editors'):
 				prj_groups.append(group1.name)
+
+		self.stdout.write(self.style.WARNING(prj_groups))
 
 		## get projects for mailing
 		active_projects = Page.objects.exact_type(Project).live()
@@ -37,7 +39,6 @@ class Command(BaseCommand):
 			mail_content[project.slug] = self.select_last_topics(project)
 			print(f'mail_content:{project.slug=} \n', mail_content)
 			emails = self.get_subscriber_emails(project)
-
 
 			# send_mail(
 			# subject,
