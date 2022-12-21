@@ -50,10 +50,12 @@ class Project(Page):
             related_name='+'
     )
     body = RichTextField(blank=True)
+    is_public = models.BooleanField(default=False)
 
     content_panels = Page.content_panels + [
         MultiFieldPanel([
             FieldPanel('date'),
+            FieldPanel('is_public'),
             FieldPanel('body'),
             FieldPanel('representative_image'),
         ],
