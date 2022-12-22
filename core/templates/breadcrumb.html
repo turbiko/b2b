@@ -1,0 +1,19 @@
+{% load static i18n wagtailcore_tags %}
+
+<div aria-label="breadcrumb">
+    <div class="container px-4 px-lg-5 my-1">
+        <div class="row gx-4 gx-lg-5 align-items-center">
+    {% if self.get_ancestors|length > 1 %}
+        <ol class="breadcrumb">
+            {% for p in self.get_ancestors %}
+                {% if p.is_root == False %}
+                    <li class="breadcrumb-item" ><a href="{{ p.url }}">{{ p.title|truncatechars:25 }}</a></li>
+                {% endif %}
+            {% endfor %}
+            <li  class="breadcrumb-item active" aria-current="page">{{ self.title|truncatechars:25 }}</li>
+        </ol>
+    {% endif %}
+        </div>
+    </div>
+
+</div> <!-- breadcrumb -->
