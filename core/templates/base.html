@@ -43,12 +43,12 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav">
-            {% if request.user.is_authenticated %}
+            {# if request.user.is_authenticated #}
             {% for item in navigation.menu_items.all %}
-                <a href="{{ item.link }}" class="nav-item nav-link {% if item.link == request.path %} active{% endif %}">
+                <a href="{{ item.link }}" class="nav-item nav-link {% if item.link == request.path %}active{% endif %}">
                     {{ item.title }}</a>
             {% endfor %}
-            {% endif %}
+            {# endif #}
             </div>
             <div class="navbar-nav ms-auto">
                 {% if request.user.is_authenticated %}

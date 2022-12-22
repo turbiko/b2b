@@ -99,7 +99,11 @@ class FileFolder(Page):
         verbose_name_plural = "Project folders"
 
     def get_project(self):
-        return self
+        """
+        get first parent type: Project
+        :return: top parent project
+        """
+        return self.get_ancestors().type(Project).last()
 
     content_panels = Page.content_panels + [
         FieldPanel('description'),
@@ -128,6 +132,13 @@ class FileInFolder(Orderable):  # TODO: create page for file if can_preview like
     def __str__(self):
         return self.name
 
+    def get_project(self):
+        """
+        get first parent type: Project
+        :return: top parent project
+        """
+        return self.get_ancestors().type(Project).last()
+
 
 class NewsArticle(Page):
     template = 'project' + os.sep + 'news_article.html'
@@ -155,6 +166,13 @@ class NewsArticle(Page):
 
         return context
 
+    def get_project(self):
+        """
+        get first parent type: Project
+        :return: top parent project
+        """
+        return self.get_ancestors().type(Project).last()
+
 
 
 class FilesToFolder(models.Model):
@@ -164,6 +182,13 @@ class FilesToFolder(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_project(self):
+        """
+        get first parent type: Project
+        :return: top parent project
+        """
+        return self.get_ancestors().type(Project).last()
 
 class Photo(models.Model):
     class Meta:
