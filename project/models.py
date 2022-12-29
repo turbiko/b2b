@@ -51,11 +51,13 @@ class Project(Page):
     )
     body = RichTextField(blank=True)
     is_public = models.BooleanField(default=False)
+    # order_number = models.IntegerField(default=100)
 
     content_panels = Page.content_panels + [
         MultiFieldPanel([
             FieldPanel('date'),
             FieldPanel('is_public'),
+            # FieldPanel('order_number'),
             FieldPanel('body'),
             FieldPanel('representative_image'),
         ],
@@ -105,6 +107,10 @@ class FileFolder(Page):
         """
         return self.get_ancestors().type(Project).last()
 
+    def is_open(selfself):
+        parent_project = self.get_ancestors().type(Project).last()
+        return parent_project.is_public
+
     content_panels = Page.content_panels + [
         FieldPanel('description'),
         InlinePanel('file_in_folder', heading=_("File header"), label=_("File label")),
@@ -139,6 +145,10 @@ class FileInFolder(Orderable):  # TODO: create page for file if can_preview like
         """
         return self.get_ancestors().type(Project).last()
 
+    def is_open(selfself):
+        parent_project = self.get_ancestors().type(Project).last()
+        return parent_project.is_public
+
 
 class NewsArticle(Page):
     template = 'project' + os.sep + 'news_article.html'
@@ -158,6 +168,10 @@ class NewsArticle(Page):
 
     ]
 
+    def is_open(selfself):
+        parent_project = self.get_ancestors().type(Project).last()
+        return parent_project.is_public
+
     def __str__(self):
         return self.title
 
@@ -172,6 +186,10 @@ class NewsArticle(Page):
         :return: top parent project
         """
         return self.get_ancestors().type(Project).last()
+
+    def is_open(selfself):
+        parent_project = self.get_ancestors().type(Project).last()
+        return parent_project.is_public
 
 
 
@@ -189,6 +207,10 @@ class FilesToFolder(models.Model):
         :return: top parent project
         """
         return self.get_ancestors().type(Project).last()
+
+    def is_open(selfself):
+        parent_project = self.get_ancestors().type(Project).last()
+        return parent_project.is_public
 
 class Photo(models.Model):
     class Meta:

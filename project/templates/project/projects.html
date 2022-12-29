@@ -55,10 +55,20 @@
                     </div>
                 </div>
             </div>
+            {% for text11 in request.user.groups.all %}
+            {% if project.slug in text11.name %}
+                    {{text11.name}} <br>
+            {% endif %}
+
+            {% endfor %}
+
             {% endif %}
             {% endif %}
 
             {% endfor %}
+
+
+
 
 
         </div>

@@ -14,10 +14,11 @@
         <section class="py-5"> <!-- Projects -->
             <div class="container px-4 px-lg-5 mt-5">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                    {% for p in self.get_children %} {# project under projects #}
-                    {% for project in p.get_children.live %} {# news under project #}
+                    {% for p in self.get_children %} {# projects under home #}
+                    {% for project in p.get_children.live %} {# project under projects #}
                     {% if request.user.is_authenticated %}
                     {% if not project.specific.is_public %}
+
                     <div class="col mb-5">
                         <div class="card h-100">
                             <!-- Project image-->
