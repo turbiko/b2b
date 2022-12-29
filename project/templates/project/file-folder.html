@@ -42,7 +42,6 @@
 {# end files folders #}
 
 {# files list #}
-
 <div class="container px-4 px-lg-4">
 {%for file_item in self.file_in_folder.all%}
 <div class="card mb-3 h-auto" >
@@ -140,6 +139,9 @@
 {% endfor %}
 </div>
 {# end files list #}
+{%if user.is_superuser %}
+<a class="btn btn-primary" href="/editproject/uploadprojectfiles/{{self.pk}}" role="button">Upload</a>
+{%endif%}
 <br>
 {% endif %}
 {% endif %}
