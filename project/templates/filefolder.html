@@ -41,8 +41,8 @@
 {%for file_item in self.file_in_folder.all%}
 <div class="card mb-3 h-auto" >
   <div class="row g-0">
-    <div class="col-md-1"> {# placeholder pic or icon #}
-        {%if file_item.can_preview%}
+    <div class="col-md-1">
+        {%if file_item.have_preview %} {# placeholder pic or icon #}
             <img src="{{file_item.file.url}}"  width="100%" class="rounded-start p-2" alt="{{file_item.name}}">
         {%else%}
                 <img src="/media/images/download.svg"  width="100%" class="rounded-start p-2" alt="{{file_item.name}}">
@@ -52,7 +52,7 @@
     <div class="col-md-8">
       <div class="card-body">
         <h5 class="card-title">{{file_item.name}} ({{file_item.file.size|filesizeformat}})</h5>
-          {%if file_item.can_preview%}
+          {%if file_item.have_preview%} {# can_preview not automatic #}
           <a target="_blank"  href="{{file_item.file.url}}" class="link-dark" target="_blank">View</a>
           {%endif%}
           <a target="_blank"  href="{{file_item.file.url}}" class="link-dark" download="{{file_item.name}}">Download</a>

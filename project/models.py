@@ -1,9 +1,11 @@
 import os
+import pathlib
 from datetime import datetime
 import uuid
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
 from django.utils.timesince import timesince
 from django.utils.translation import activate, gettext_lazy as _
 
@@ -148,6 +150,15 @@ class FileInFolder(Orderable):  # TODO: create page for file if can_preview like
     def is_open(selfself):
         parent_project = self.get_ancestors().type(Project).last()
         return parent_project.is_public
+
+    def have_preview(self):
+        file_extension = pathlib.Path(self.file.name).suffix
+        print(file_extension)
+        print(settings.PREVIEW_EXT)  # TODO: delete prints
+        if file_extension in settings.PREVIEW_EXT:
+            return True
+        else:
+            return False
 
 
 class NewsArticle(Page):
