@@ -10,29 +10,7 @@
 {% block content %}
 
 {% if request.user.is_authenticated %}
-<!-- Section news -->
-<div class="m-4">
-    <div class="row row-cols-1 row-cols-md-1 g-4">
-        <div class="col">
-            <div class="card">
-                <img src="{{self.featured_image.url}}" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">{{self.news_project}} - {{self.title}} </h5>
-                    <p class="card-text">{{self.body|richtext}}</p>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">author - {%if self.author %}
-{{self.author.first_name}}&nbsp;{{self.author.last_name}}
-{%else%}
-{{self.owner.first_name}}&nbsp;{{self.owner.last_name}}
-{%endif%} <br>{{self.article_date|timesince}}</small>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</div>
-<!-- Section news -->
+{% include "newsarticle.html" %}
 
 {% else %}
 <div class="container justify-content-center">
