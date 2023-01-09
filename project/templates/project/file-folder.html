@@ -5,25 +5,144 @@
 {% block extra_css %}{% endblock extra_css %}
 {% block content %}
 {% if page.get_project.specific.is_public %}
+<!-- Section-PROJECT-PAGE -->
+<section class="py-2">
+    <div class="container px-4 px-lg-5 my-1">
+        <div class="row gx-4 gx-lg-5 align-items-center">
+            <div class="col-md-4">
+                {# image page.get_parent.specific.representative_image max-600x700 as tizer#}
+            {#    <img class="card-img-top mb-5 mb-md-0" src="{{ tizer.url }}" alt="{{ project.title }}" />#}
+           </div>
+            <div class="col-md-8">
+                <div class="small mb-1">Created: {{ page.specific.folder_date }}</div>
+                <h1 class="display-5 fw-bolder"> {{ page.title }}</h1><br>
+                <p class="lead">{{ page.specific.description | safe }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+{# files folders #}
+<div class="container">
+    {% for folder_item in self.get_children.live %}
+        <div class="panel panel-default">
+            <div class="d-flex flex-row align-bottom panel-body">
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" fill="currentColor" class="bi bi-folder-fill" viewBox="0 0 16 16">
+                      <path d="M9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.825a2 2 0 0 1-1.991-1.819l-.637-7a1.99 1.99 0 0 1 .342-1.31L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3zm-8.322.12C1.72 3.042 1.95 3 2.19 3h5.396l-.707-.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139z"/>
+                    </svg>&nbsp;
+                </div>
+            <div class="b-project-title">
+                    <a href="{{folder_item.url}}" onclick="" class="link-dark"> <h2>
+                       {{folder_item.title|truncatechars:55}}</h2></a></div>
+            </div>
+        </div>
+    {% endfor %}
 
-{% include "./project/projectblock.html"%}
+    </div>
+{# end files folders #}
 
+{# files list #}
+<div class="container px-4 px-lg-4">
+{%for file_item in self.file_in_folder.all%}
+<div class="card mb-3 h-auto" >
+  <div class="row g-0">
+    <div class="col-md-1"> {# placeholder pic or icon #}
+        {%if file_item.can_preview%}
+            <img src="{{file_item.file.url}}"  width="100%" class="rounded-start p-2" alt="{{file_item.name}}">
+        {%else%}
+                <img src="/media/images/download.svg"  width="100%" class="rounded-start p-2" alt="{{file_item.name}}">
+
+        {%endif%}
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">{{file_item.name}} ({{file_item.file.size|filesizeformat}})</h5>
+          {%if file_item.can_preview%}
+          <a target="_blank"  href="{{file_item.file.url}}" class="link-dark" target="_blank">View</a>
+          {%endif%}
+          <a target="_blank"  href="{{file_item.file.url}}" class="link-dark" download="{{file_item.name}}">Download</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+</div>
+{# end files list #}
+<br>
+{# object name and id #}
 {%if user.is_superuser %}
 <a class="btn btn-primary" href="/editproject/uploadprojectfiles/{{self.pk}}" role="button">Upload</a>
 {%endif%}
-<br>
 {% else %}
-
 {% if request.user.is_authenticated %}
+<!-- Section-PROJECT-PAGE -->
+<section class="py-2">
+    <div class="container px-4 px-lg-5 my-1">
+        <div class="row gx-4 gx-lg-5 align-items-center">
+            <div class="col-md-4">
+                {# image page.get_parent.specific.representative_image max-600x700 as tizer#}
+            {#    <img class="card-img-top mb-5 mb-md-0" src="{{ tizer.url }}" alt="{{ project.title }}" />#}
+           </div>
+            <div class="col-md-8">
+                <div class="small mb-1">Created: {{ page.specific.folder_date }}</div>
+                <h1 class="display-5 fw-bolder"> {{ page.title }}</h1><br>
+                <p class="lead">{{ page.specific.description | safe }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+{# files folders #}
+<div class="container">
+    {% for folder_item in self.get_children.live %}
+        <div class="panel panel-default">
+            <div class="d-flex flex-row align-bottom panel-body">
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" fill="currentColor" class="bi bi-folder-fill" viewBox="0 0 16 16">
+                      <path d="M9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.825a2 2 0 0 1-1.991-1.819l-.637-7a1.99 1.99 0 0 1 .342-1.31L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3zm-8.322.12C1.72 3.042 1.95 3 2.19 3h5.396l-.707-.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139z"/>
+                    </svg>&nbsp;
+                </div>
+            <div class="b-project-title">
+                    <a href="{{folder_item.url}}" onclick="" class="link-dark"> <h2>
+                       {{folder_item.title|truncatechars:55}}</h2></a></div>
+            </div>
+        </div>
+    {% endfor %}
 
-{% include "./project/projectblock.html"%}
+    </div>
+{# end files folders #}
 
+{# files list #}
+
+<div class="container px-4 px-lg-4">
+{%for file_item in self.file_in_folder.all%}
+<div class="card mb-3 h-auto" >
+  <div class="row g-0">
+    <div class="col-md-1"> {# placeholder pic or icon #}
+        {%if file_item.can_preview%}
+            <img src="{{file_item.file.url}}"  width="100%" class="rounded-start p-2" alt="{{file_item.name}}">
+        {%else%}
+                <img src="/media/images/download.svg"  width="100%" class="rounded-start p-2" alt="{{file_item.name}}">
+
+        {%endif%}
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">{{file_item.name}} ({{file_item.file.size|filesizeformat}})</h5>
+          {%if file_item.can_preview%}
+          <a target="_blank"  href="{{file_item.file.url}}" class="link-dark" target="_blank">View</a>
+          {%endif%}
+          <a target="_blank"  href="{{file_item.file.url}}" class="link-dark" download="{{file_item.name}}">Download</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+</div>
+{# end files list #}
 {%if user.is_superuser %}
 <a class="btn btn-primary" href="/editproject/uploadprojectfiles/{{self.pk}}" role="button">Upload</a>
 {%endif%}
 <br>
 {% endif %}
-
 {% endif %}
-
 {% endblock content %}

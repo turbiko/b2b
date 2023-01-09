@@ -7,12 +7,109 @@
 {% endblock extra_css %} {% block content %}
 {# public pages & user auth #}
 {% if page.specific.is_public %}
-{% include "./project/singleprojectblock.html"%}
+<!-- Section-PROJECT-PAGE -->
+<section class="py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="row gx-4 gx-lg-5 align-items-center">
 
+            <div class="col-md-6">
+                {% image page.specific.representative_image max-600x700 as tizer %}
+                <img class="card-img-top mb-5 mb-md-0" src="{{ tizer.url }}" alt="{{ page.title }}" /></div>
+            <div class="col-md-6">
+                <div class="small mb-1">Started: {{ page.date }}</div>
+                <h1 class="display-5 fw-bolder">{{ page.title }}</h1>
+                <div class="fs-5 mb-5">
+                    <span>Genres: {% for genre in page.project_genres.all %}{{ genre.genre.name }}
+                        {% if forloop.last %} <br> {% else %}, {% endif %}
+                        {% endfor %}
+                    </span>
+                </div>
+                <p class="lead">{{ page.specific.body | safe }}</p>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+<!-- END Project description section-->
 {% else %}
-{% include "./project/singleprojectblock.html"%}
+<!-- Section-PROJECT-PAGE -->
+<section class="py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="row gx-4 gx-lg-5 align-items-center">
 
+            <div class="col-md-6">
+                {% image page.specific.representative_image max-600x700 as tizer %}
+                <img class="card-img-top mb-5 mb-md-0" src="{{ tizer.url }}" alt="{{ page.title }}" /></div>
+            <div class="col-md-6">
+                <div class="small mb-1">Started: {{ page.date }}</div>
+                <h1 class="display-5 fw-bolder">{{ page.title }}</h1>
+                <div class="fs-5 mb-5">
+                    <span>Genres: {% for genre in page.project_genres.all %}{{ genre.genre.name }}
+                        {% if forloop.last %} <br> {% else %}, {% endif %}
+                        {% endfor %}
+                    </span>
+                </div>
+                <p class="lead">{{ page.specific.body | safe }}</p>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+<!-- END Project description section-->
 {% endif %}
+{#if request.user.is_authenticated #}
+<div class="container px-4 px-lg-5 my-5">
 
+{% for folder in folders.live %}
+    <div class="panel panel-default">
+        <div class="d-flex flex-row align-bottom panel-body">
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" fill="currentColor" class="bi bi-folder-fill" viewBox="0 0 16 16">
+                  <path d="M9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.825a2 2 0 0 1-1.991-1.819l-.637-7a1.99 1.99 0 0 1 .342-1.31L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3zm-8.322.12C1.72 3.042 1.95 3 2.19 3h5.396l-.707-.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139z"/>
+                </svg>&nbsp;
+            </div>
+        <div class="b-project-title">
+                <a href="{{folder.url}}" onclick="" class="link-dark"> <h1>
+                   {{folder.title|truncatechars:55}}</h1></a></div>
+        </div>
+    </div>
+{% endfor %}
+
+</div>
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+
+            {% for news in news.live %}
+            <div class="col mb-5">
+                <div class="card h-100">
+                    <!-- Project image-->
+                    <img class="card-img-top" src="{{ news.specific.featured_image.url }}" alt="{{ news.title}}" />
+                    <!-- Project details-->
+                    <div class="card-body p-4">
+                        <div class="text-center">
+                            <!-- Project name-->
+                            <h5 class="fw-bolder">{{ news.title|striptags|truncatechars:35 }}</h5>
+                            {{ news.specific.body|striptags|truncatechars:55 }}
+                        </div>
+                    </div>
+                    <!-- Product actions-->
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ news.url }}">View details</a></div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</section>
+{# else #}
+<!--<div class="container justify-content-center">
+    <p>You are not logged in. Please, <a href="/login/">login</a></p>
+</div> -->
+{# endif #}
 
 {% endblock content %}
