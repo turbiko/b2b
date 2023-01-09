@@ -43,10 +43,9 @@
   <div class="row g-0">
     <div class="col-md-1">
         {%if file_item.have_preview %} {# placeholder pic or icon #}
-            <img src="{{file_item.file.url}}"  width="100%" class="rounded-start p-2" alt="{{file_item.name}}">
+            <img src="{{file_item.previev_ico}}"  width="100%" class="rounded-start p-2" alt="{{file_item.name}}">
         {%else%}
-                <img src="/media/images/download.svg"  width="100%" class="rounded-start p-2" alt="{{file_item.name}}">
-
+                <img src="{{file_item.previev_ico}}"  width="100%" class="rounded-start p-2" alt="{{file_item.name}}">
         {%endif%}
     </div>
     <div class="col-md-8">

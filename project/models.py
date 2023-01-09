@@ -153,12 +153,19 @@ class FileInFolder(Orderable):  # TODO: create page for file if can_preview like
 
     def have_preview(self):
         file_extension = pathlib.Path(self.file.name).suffix
-        print(file_extension)
-        print(settings.PREVIEW_EXT)  # TODO: delete prints
         if file_extension in settings.PREVIEW_EXT:
             return True
         else:
             return False
+
+    def previev_ico(self):
+        file_extension = pathlib.Path(self.file.name).suffix
+
+        if file_extension in settings.PICTURE_EXT:
+            return self.file.url  # settings.PICTURE_ICON
+        if file_extension in settings.VIDEO_EXT:
+            return settings.VIDEO_ICON
+        return settings.DEFAULT_DOWNLOAD_ICON
 
 
 class NewsArticle(Page):

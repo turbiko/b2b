@@ -211,6 +211,15 @@ WAGTAILDOCS_SERVE_METHOD = 'redirect'  # need security check for pages  is_authe
 PREVIEW_EXT = ['.jpg', '.jpeg', '.pjpeg', '.pjp', '.png', '.ico', '.cur', '.tif', '.tiff', '.bmp', '.gif', '.eps',
                '.svg', '.webp', '.apng', '.avif', '.jfif', '.mp4']
 
+PICTURE_EXT = ['.jpg', '.jpeg', '.pjpeg', '.pjp', '.png', '.ico', '.cur', '.tif', '.tiff', '.bmp', '.gif', '.eps',
+               '.svg', '.webp', '.apng', '.avif', '.jfif']
+PICTURE_ICON = ""
+
+VIDEO_EXT = [ '.mp4' ]
+VIDEO_ICON = "/media/images/file-play.svg"
+DEFAULT_DOWNLOAD_ICON = "/media/images/download.svg"
+
+DOCUMENT_EXT = [ '']
 
 LOGGING = {
     'version': 1,
