@@ -209,7 +209,7 @@ WAGTAILDOCS_SERVE_METHOD = 'redirect'  # need security check for pages  is_authe
 
 # https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types
 PREVIEW_EXT = ['.jpg', '.jpeg', '.pjpeg', '.pjp', '.png', '.ico', '.cur', '.tif', '.tiff', '.bmp', '.gif', '.eps',
-                '.svg', '.webp', '.apng', '.avif', '.jfif', ]
+               '.svg', '.webp', '.apng', '.avif', '.jfif', '.mp4']
 
 
 LOGGING = {
