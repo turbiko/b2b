@@ -157,3 +157,4 @@ media/images
 media/projects
 media/news
 static/
+static/staticfiles.json
