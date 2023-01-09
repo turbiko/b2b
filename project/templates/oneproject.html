@@ -1,0 +1,27 @@
+{% load static wagtailimages_tags wagtailcore_tags %}
+
+<!-- Section-PROJECT-PAGE -->
+<section class="py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="row gx-4 gx-lg-5 align-items-center">
+
+            <div class="col-md-6">
+                {% image page.specific.representative_image max-600x700 as tizer %}
+                <img class="card-img-top mb-5 mb-md-0" src="{{ tizer.url }}" alt="{{ page.title }}" /></div>
+            <div class="col-md-6">
+                <div class="small mb-1">Started: {{ page.date }}</div>
+                <h1 class="display-5 fw-bolder">{{ page.title }}</h1>
+                <div class="fs-5 mb-5">
+                    <span>Genres: {% for genre in page.project_genres.all %}{{ genre.genre.name }}
+                        {% if forloop.last %} <br> {% else %}, {% endif %}
+                        {% endfor %}
+                    </span>
+                </div>
+                <p class="lead">{{ page.specific.body | safe }}</p>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+<!-- END Project description section-->
