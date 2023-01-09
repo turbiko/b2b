@@ -19,48 +19,13 @@
                     {% if request.user.is_authenticated %}
                     {% if not project.specific.is_public %}
 
-                    <div class="col mb-5">
-                        <div class="card h-100">
-                            <!-- Project image-->
-                            {% image  project.specific.representative_image max-320x200 as tizer %}
-                            <img class="card-img-top" src="{{ tizer.url }}" alt="{{ project.title}}" />
-                            <!-- Project details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Project name-->
-                                    <h5 class="fw-bolder">{{ project.title|striptags|truncatechars:30 }}</h5>
-                                    {{ project.specific.body|striptags|truncatechars:55 }}
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ project.full_url }}">View details</a></div>
-                            </div>
-                        </div>
-                    </div>
+{% include "projectslist.html" %}
                     {% endif %}
                     {% endif %}
 
                     {% if project.specific.is_public %}
-                    <div class="col mb-5">
-                        <div class="card h-100">
-                            <!-- Project image-->
-                            {% image  project.specific.representative_image max-320x200 as tizer %}
-                            <img class="card-img-top" src="{{ tizer.url }}" alt="{{ project.title}}" />
-                            <!-- Project details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Project name-->
-                                    <h5 class="fw-bolder">{{ project.title|striptags|truncatechars:30 }}</h5>
-                                    {{ project.specific.body|striptags|truncatechars:55 }}
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ project.full_url }}">View details</a></div>
-                            </div>
-                        </div>
-                    </div>
+{% include "projectslist.html" %}
+
                     {% endif %}
 
                     {% endfor %}
@@ -69,10 +34,6 @@
                 </div>
             </div>
         </section>
-{# else #}
-<!-- <div class="container justify-content-center">
-    <p>You are not logged in. Please, <a href="/login/">login</a></p>
-</div> -->
-{#endif #}
+
 
 {% endblock content %}
