@@ -1,0 +1,27 @@
+{% load static i18n wagtailcore_tags %}
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a href="/" class="navbar-brand"><img src="/media/images/fuag-logo.original.png" height="50px"></a>
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav">
+            {# if request.user.is_authenticated #}
+            {% for item in navigation.menu_items.all %}
+                <a href="{{ item.link }}" class="nav-item nav-link {% if item.link == request.path %}active{% endif %}">
+                    {{ item.title }}</a>
+            {% endfor %}
+            {# endif #}
+            </div>
+            <div class="navbar-nav ms-auto">
+                {% if request.user.is_authenticated %}
+                <a href="/logout/" class="nav-item nav-link">Logout</a>
+                    {% else %}
+                <a href="/login/" class="nav-item nav-link">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>
