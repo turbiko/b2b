@@ -15,52 +15,13 @@
 
             {% for project in self.get_children.live %}
             {% if project.specific.is_public%}
-                          <div class="col mb-5">
-                <div class="card h-100">
-                    <!-- Project image-->
-                    {% image project.specific.representative_image original as tizer %}
-                    <img class="card-img-top" src="{{ tizer.url }}" alt="{{ project.title}}" />
-                    <!-- Project details-->
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <!-- Project name-->
-                            <h5 class="fw-bolder">{{ project.title}}</h5>
-                            {{ project.specific.body|striptags|truncatechars:55 }}
-                        </div>
-                    </div>
-                    <!-- Product actions-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ project.url }}">View details</a></div>
-                    </div>
-                </div>
-            </div>
-            {% elif not project.specific.is_public %}
-            {% if request.user.is_authenticated %}
-            <div class="col mb-5">
-                <div class="card h-100">
-                    <!-- Project image-->
-                    {% image project.specific.representative_image original as tizer %}
-                    <img class="card-img-top" src="{{ tizer.url }}" alt="{{ project.title}}" />
-                    <!-- Project details-->
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <!-- Project name-->
-                            <h5 class="fw-bolder">{{ project.title}}</h5>
-                            {{ project.specific.body|striptags|truncatechars:55 }}
-                        </div>
-                    </div>
-                    <!-- Product actions-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ project.url }}">View details</a></div>
-                    </div>
-                </div>
-            </div>
-            {% for text11 in request.user.groups.all %}
-            {% if project.slug in text11.name %}
-                    {{text11.name}} <br>
-            {% endif %}
+            {% include "projectslist.html" %}
 
-            {% endfor %}
+            {% elif not project.specific.is_public %}
+
+            {% if request.user.is_authenticated %}
+            {% include "projectslist.html" %}
+            
 
             {% endif %}
             {% endif %}
@@ -74,10 +35,5 @@
         </div>
     </div>
 </section>
-{# else #}
-<!--<div class="container justify-content-center">
-    <p>You are not logged in. Please, <a href="/login/">login</a></p>
-</div> -->
-{# endif #}
 
 {% endblock content %}
