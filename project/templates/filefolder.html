@@ -41,24 +41,44 @@
 {%for file_item in self.file_in_folder.all%}
 <div class="card mb-3 h-auto" >
   <div class="row g-0">
-    <div class="col-md-1">
-        {%if file_item.have_preview %} {# placeholder pic or icon #}
-            <img src="{{file_item.previev_ico}}"  width="100%" class="rounded-start p-2" alt="{{file_item.name}}">
+    <div class="col-md-1"> {# placeholder pic or icon is automatic in model method #}
+        {%if file_item.have_preview%} {# can_preview was not automatic #}
+            <img src="{{file_item.previev_ico}}"   width="100%" class="rounded-start p-2" alt="{{file_item.name}}">
         {%else%}
-                <img src="{{file_item.previev_ico}}"  width="100%" class="rounded-start p-2" alt="{{file_item.name}}">
+            <img src="{{file_item.previev_ico}}"  width="100%" class="rounded-start p-2" alt="{{file_item.name}}">
         {%endif%}
     </div>
     <div class="col-md-8">
       <div class="card-body">
         <h5 class="card-title">{{file_item.name}} ({{file_item.file.size|filesizeformat}})</h5>
-          {%if file_item.have_preview%} {# can_preview not automatic #}
-          <a target="_blank"  href="{{file_item.file.url}}" class="link-dark" target="_blank">View</a>
+          {%if file_item.have_preview%} {# can_preview was not automatic #}
+          <button type="button" class="btn btn-primary " href="{{file_item.file.url}}" itemtitle="{{file_item.name}}"
+          data-bs-toggle="modal" data-bs-target="#modal{{file_item.id}}" >View</button>
+<!-- Modal -->
+<div class="modal fade" id="modal{{file_item.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{file_item.name}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img src="{{file_item.file.url}}"  width="100%" class="rounded-start p-2" alt="{{file_item.name}}">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <a href="{{file_item.file.url}}" class="btn btn-primary" download="{{file_item.name}}">Download</a>
+      </div>
+    </div>
+  </div>
+</div>
           {%endif%}
-          <a target="_blank"  href="{{file_item.file.url}}" class="link-dark" download="{{file_item.name}}">Download</a>
+          <a href="{{file_item.file.url}}" class="btn btn-primary" download="{{file_item.name}}">Download</a>
       </div>
     </div>
   </div>
 </div>
 {% endfor %}
 </div>
+
 {# end files list #}

@@ -2,7 +2,10 @@
 {% load static wagtailimages_tags wagtailcore_tags %}
 
 {% block body_class %}template-homepage{% endblock body_class %}
-{% block extra_css %}{% endblock extra_css %}
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/filefolder.css' %}">
+
+{% endblock extra_css %}
 {% block content %}
 {% if page.get_project.specific.is_public %}
 {% include "filefolder.html" %}
@@ -17,4 +20,12 @@
 <a class="btn btn-primary" href="/editproject/uploadprojectfiles/{{self.pk}}" role="button">Upload</a>
 {%endif%}
 <br>
+{#deleted: 2 https://forum.djangoproject.com/t/how-to-create-dynamic-modals-popups-in-template/8338/6 #}
+
+
 {% endblock content %}
+
+{% block extra_js %}
+
+
+{% endblock extra_js %}

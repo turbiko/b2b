@@ -134,7 +134,7 @@ class FileInFolder(Orderable):  # TODO: create page for file if can_preview like
     panels = [
         FieldPanel('name'),
         FieldPanel('file'),
-        FieldPanel('can_preview'),
+        # FieldPanel('can_preview'),
     ]
 
     def __str__(self):
@@ -162,7 +162,7 @@ class FileInFolder(Orderable):  # TODO: create page for file if can_preview like
         file_extension = pathlib.Path(self.file.name).suffix
 
         if file_extension in settings.PICTURE_EXT:
-            return self.file.url  # settings.PICTURE_ICON
+            return  settings.PICTURE_ICON  #  self.file.url
         if file_extension in settings.VIDEO_EXT:
             return settings.VIDEO_ICON
         return settings.DEFAULT_DOWNLOAD_ICON

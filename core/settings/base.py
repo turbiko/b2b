@@ -213,13 +213,13 @@ PREVIEW_EXT = ['.jpg', '.jpeg', '.pjpeg', '.pjp', '.png', '.ico', '.cur', '.tif'
 
 PICTURE_EXT = ['.jpg', '.jpeg', '.pjpeg', '.pjp', '.png', '.ico', '.cur', '.tif', '.tiff', '.bmp', '.gif', '.eps',
                '.svg', '.webp', '.apng', '.avif', '.jfif']
-PICTURE_ICON = ""
+PICTURE_ICON = "/media/images/image.svg"
 
 VIDEO_EXT = [ '.mp4' ]
 VIDEO_ICON = "/media/images/file-play.svg"
 DEFAULT_DOWNLOAD_ICON = "/media/images/download.svg"
 
-DOCUMENT_EXT = [ '']
+DOCUMENT_EXT = ['']
 
 LOGGING = {
     'version': 1,
