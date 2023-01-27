@@ -158,7 +158,7 @@ class FileInFolder(Orderable):  # TODO: create page for file if can_preview like
         else:
             return False
 
-    def previev_ico(self):
+    def preview_ico(self):
         file_extension = pathlib.Path(self.file.name).suffix
 
         if file_extension in settings.PICTURE_EXT:
@@ -166,6 +166,20 @@ class FileInFolder(Orderable):  # TODO: create page for file if can_preview like
         if file_extension in settings.VIDEO_EXT:
             return settings.VIDEO_ICON
         return settings.DEFAULT_DOWNLOAD_ICON
+
+    def preview_link_pic(self):
+        file_extension = pathlib.Path(self.file.name).suffix
+
+        if file_extension in settings.PICTURE_EXT:
+            return True
+        return False
+
+    def preview_link_video(self):
+        file_extension = pathlib.Path(self.file.name).suffix
+
+        if file_extension in settings.VIDEO_EXT:
+            return True
+        return False
 
 
 class NewsArticle(Page):

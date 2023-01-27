@@ -43,9 +43,9 @@
   <div class="row g-0">
     <div class="col-md-1"> {# placeholder pic or icon is automatic in model method #}
         {%if file_item.have_preview%} {# can_preview was not automatic #}
-            <img src="{{file_item.previev_ico}}"   width="100%" class="rounded-start p-2" alt="{{file_item.name}}">
+            <img src="{{file_item.preview_ico}}"   width="100%" class="rounded-start p-2" alt="{{file_item.name}}">
         {%else%}
-            <img src="{{file_item.previev_ico}}"  width="100%" class="rounded-start p-2" alt="{{file_item.name}}">
+            <img src="{{file_item.preview_ico}}"  width="100%" class="rounded-start p-2" alt="{{file_item.name}}">
         {%endif%}
     </div>
     <div class="col-md-8">
@@ -63,7 +63,12 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+          {%if file_item.preview_link_pic%}
         <img src="{{file_item.file.url}}"  width="100%" class="rounded-start p-2" alt="{{file_item.name}}">
+
+          {%elif file_item.preview_link_video%}
+          <video controls="" autoplay="" name="media"><source src={{file_item.file.url}} type="video/mp4"></video>
+          {%endif%}
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
