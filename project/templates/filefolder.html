@@ -67,7 +67,7 @@
         <img src="{{file_item.file.url}}"  width="100%" class="rounded-start p-2" alt="{{file_item.name}}">
 
           {%elif file_item.preview_link_video%}
-          <video controls=""  name="media"><source src={{file_item.file.url}} type="video/mp4"></video>
+          <video controls=""  name="media" style="width: 90%;"><source src={{file_item.file.url}} type="video/mp4"></video>
           {%endif%}
       </div>
       <div class="modal-footer">
