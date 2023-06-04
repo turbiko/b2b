@@ -181,7 +181,7 @@ WAGTAILADMIN_NOTIFICATION_INCLUDE_SUPERUSERS = False
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'mail.argentum.ua'
-EMAIL_PORT = 587
+EMAIL_PORT = 465
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'noreply@argentum.ua'
 EMAIL_HOST_PASSWORD = '8gZ3yN8uYrvXXhL'
