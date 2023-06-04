@@ -51,7 +51,7 @@ class Command(BaseCommand):
 								[email_to_send],
 								fail_silently=False,
 						)
-					self.stdout.write(self.style.INFO("After successful sent email "))
+					self.stdout.write(self.style.WARNING("After successful sent email "))
 				except Exception as ex:
 					raise CommandError(f'Failed to send email to {emails=} \n {ex}')
 
@@ -79,7 +79,7 @@ class Command(BaseCommand):
 
 
 	def get_subscriber_emails(self, project_page:Project) -> list:
-		self.stdout.write(self.style.INFO(f'Create emails list for {project_page.title=}'))
+		self.stdout.write(self.style.WARNING(f'Create emails list for {project_page.title=}'))
 		try:
 			selected_group = Group.objects.get(name=project_page.slug)
 		except Group.DoesNotExist:
@@ -90,7 +90,7 @@ class Command(BaseCommand):
 		if project_users:
 			for u in project_users:
 				emails_to_send.append(u.email)
-			self.stdout.write(self.style.INFO(f'Created emails list for {project_page.title=}'))
+			self.stdout.write(self.style.WARNING(f'Created emails list for {project_page.title=}'))
 		else:
 			self.stdout.write(self.style.WARNING(f'No users in the group {project_page.slug}. Skip creating users list.'))
 		return emails_to_send
