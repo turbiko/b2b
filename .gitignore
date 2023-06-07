@@ -154,5 +154,8 @@ cython_debug/
 # directories in b2b application
 media/original_images
 media/images
-media/projects
+media/projects/
 media/news
+/static/
+static/staticfiles.json
+/postgres_data/*
