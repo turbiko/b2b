@@ -50,14 +50,12 @@ def get_projects_for_user(request):
     is_admin = user.is_superuser
     is_authenticated = user.is_authenticated
     projects = Projects.objects.live().filter(date__year=current_year).order_by('date')
+    projects_dict = projects
     if not user.is_authenticated:
         projects_dict = projects.filter(is_public=True)
-    elif is_admin:
-        projects_dict = projects
     elif is_authenticated:
         projects_dict = projects.filter(slug__in=user_groups)
     return projects_dict
-
 
 
 def projects_planned(request):
@@ -69,6 +67,7 @@ def projects_planned(request):
     context['language'] = language
 
     for project in projects:
+        #TODO context for every months
         context['project'] = project
 
 
