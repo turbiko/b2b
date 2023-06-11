@@ -44,6 +44,7 @@ def addPhoto(request, pk):
 
 
 def get_projects_for_user(request):
+    current_year = datetime.now().year
     user = request.user
     user_groups = user.groups.all()
     is_admin = user.is_superuser
@@ -60,9 +61,10 @@ def get_projects_for_user(request):
 
 
 def projects_planned(request):
-    current_year = datetime.now().year
+
     context = {}
     language = get_language()
+    projects = get_projects_for_user(request)
     context['projects'] = projects
     context['language'] = language
 
