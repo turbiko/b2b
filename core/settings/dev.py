@@ -1,5 +1,3 @@
-import os
-
 from .base import *
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -12,13 +10,22 @@ STATIC_URL = "/static/"
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "dm*#_9rs0r0z$g)65#m12y6wxl@rpw$%1dxu@+(x^dm*#_9rs0r0z$g)65#m12y6wv!=2b%"
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME":   os.path.join(BASE_DIR, "db.sqlite3"),
+#     }
+# }
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME":   os.path.join(BASE_DIR, "db.sqlite3"),
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ["SQL_DATABASE"],
+        "USER": os.environ["SQL_USER"],
+        "PASSWORD": os.environ["SQL_PASSWORD"],
+        "HOST": os.environ["SQL_HOST"],  # set in docker-compose.yml
+        "PORT": os.environ["SQL_PORT"],  # default postgres port
     }
 }
-
 
 # SECURITY WARNING: define the correct hosts in production!
 ALLOWED_HOSTS = ["b2b.argentum.ua", "b2b.film.ua", "10.1.100.222", '127.0.0.1']
@@ -28,7 +35,12 @@ ADMINS = [('test admin1', 'a.voznyuk@film.ua'), ('test admin2', 'avoznyuk@film.u
 # EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-CSRF_TRUSTED_ORIGINS = ['https://*.argentum.ua','https://*.film.ua','https://127.0.0.1','https://10.1.100.222']
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.argentum.ua',
+    'https://*.film.ua',
+    'https://127.0.0.1',
+    'https://10.1.100.222'
+]
 
 DEBUG404 = False
 

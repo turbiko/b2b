@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static wagtailimages_tags wagtailcore_tags %}
+
+{% block body_class %}template-homepage{% endblock %}
+{% block extra_css %}
+{#<link rel="stylesheet" href="{% static 'css/project.css' %}" />#}
+{% endblock extra_css %} {% block content %}
+
+
+{# if request.user.is_authenticated #}
+<!-- Section-PROJECTS-PAGE -->
+planned<br>
+planned<br>
+planned<br>
+planned<br>
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+
+            {% for project in self.get_children.live %}
+            {% if project.specific.is_public%}
+            {% include "projectslist.html" %}
+
+            {% elif not project.specific.is_public %}
+
+            {% if request.user.is_authenticated %}
+            {% include "projectslist.html" %}
+
+
+            {% endif %}
+            {% endif %}
+
+            {% endfor %}
+
+
+
+
+
+        </div>
+    </div>
+</section>
+
+{% endblock content %}
