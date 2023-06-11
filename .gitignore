@@ -158,4 +158,4 @@ media/projects/
 media/news
 /static/
 static/staticfiles.json
-/postgres_data/*
+.postgres_data/

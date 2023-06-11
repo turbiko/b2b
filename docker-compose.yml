@@ -16,7 +16,7 @@ services:
   dbd:
     image: postgres
     volumes:
-      - ./postgres_data:/var/lib/postgresql/data/
+      - ./.postgres_data:/var/lib/postgresql/data/
     environment:
       - "POSTGRES_HOST_AUTH_METHOD=trust"
     env_file:

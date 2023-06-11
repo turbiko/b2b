@@ -13,7 +13,7 @@ from .models import FileFolder, FileInFolder, Projects
 
 logger = logging.getLogger(__name__)
 
-def addPhoto(request, pk):
+def add_photo(request, pk):
 
     project_folder = FileFolder.objects.get(pk=pk)
     previev_selector = True

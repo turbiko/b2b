@@ -10,22 +10,22 @@ STATIC_URL = "/static/"
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "dm*#_9rs0r0z$g)65#m12y6wxl@rpw$%1dxu@+(x^dm*#_9rs0r0z$g)65#m12y6wv!=2b%"
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME":   os.path.join(BASE_DIR, "db.sqlite3"),
-#     }
-# }
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ["SQL_DATABASE"],
-        "USER": os.environ["SQL_USER"],
-        "PASSWORD": os.environ["SQL_PASSWORD"],
-        "HOST": os.environ["SQL_HOST"],  # set in docker-compose.yml
-        "PORT": os.environ["SQL_PORT"],  # default postgres port
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME":   os.path.join(BASE_DIR, "db.sqlite3"),
     }
 }
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": os.environ["SQL_DATABASE"],
+#         "USER": os.environ["SQL_USER"],
+#         "PASSWORD": os.environ["SQL_PASSWORD"],
+#         "HOST": os.environ["SQL_HOST"],  # set in docker-compose.yml
+#         "PORT": os.environ["SQL_PORT"],  # default postgres port
+#     }
+# }
 
 # SECURITY WARNING: define the correct hosts in production!
 ALLOWED_HOSTS = ["b2b.argentum.ua", "b2b.film.ua", "10.1.100.222", '127.0.0.1']
