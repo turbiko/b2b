@@ -1,15 +1,36 @@
+{% extends "base.html" %}
 {% load static wagtailimages_tags wagtailcore_tags %}
+{% load l10n %}
+{% load get_months %}
 
-  <div class="col mb-5">
+{% block body_class %}template-homepage{% endblock %}
+{% block extra_css %}
+{#<link rel="stylesheet" href="{% static 'css/project.css' %}" />#}
+{% endblock extra_css %} {% block content %}
+
+
+{# if request.user.is_authenticated #}
+<!-- Section-PROJECTS-PAGE -->
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+    {% for month, projects in grouped_projects.items %}
+
+        <h2>{{ month_name|months_by_num:month }}</h2>
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+
+            {% for project in projects %}
+            <div class="col mb-5">
                 <div class="card h-100">
                     <!-- Project image-->
                     {% image project.specific.representative_image original as tizer %}
                     <img class="card-img-top" src="{{ tizer.url }}" alt="{{ project.title}}" />
                     <!-- Project details-->
                     <div class="card-body p-4">
+
                         <div class="text-center">
                             <!-- Project name-->
                             <h5 class="fw-bolder">{{ project.title}}</h5>
+                            {{ project.date }}<br>
                             {{ project.specific.body|striptags|truncatechars:55 }}
                         </div>
                     </div>
@@ -19,3 +40,11 @@
                     </div>
                 </div>
             </div>
+            {% endfor %}
+
+        </div>
+    {% endfor %}
+    </div>
+</section>
+
+{% endblock content %}

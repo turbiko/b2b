@@ -10,17 +10,14 @@ from django.utils.timesince import timesince
 from django.utils.translation import activate, gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
-from wagtail.admin.panels import FieldPanel, MultiFieldPanel, InlinePanel, StreamFieldPanel, TabbedInterface, ObjectList
-from wagtail.documents.blocks import DocumentChooserBlock
-from wagtail.fields import RichTextField, StreamField
-from wagtail.images.blocks import ImageChooserBlock
-from wagtail.images.edit_handlers import ImageChooserPanel
-from wagtail.documents.edit_handlers import DocumentChooserPanel
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel, InlinePanel, TabbedInterface, ObjectList
+from wagtail.fields import RichTextField
 from wagtail.documents.models import Document, AbstractDocument
 
 from wagtail.models import Page, Orderable
 from . import blocks
 from core import tools
+
 
 # Genres functionality
 class Genre(models.Model):
@@ -37,6 +34,8 @@ class ProjectGenres(Orderable):
     panels = [
         FieldPanel('genre'),
     ]
+
+
 # Genres functionality end
 
 class Project(Page):
@@ -82,8 +81,9 @@ class Project(Page):
         verbose_name_plural = "Projects"
         # ordering = ['-date']
 
+
 class Projects(Page):
-    template = 'project'+os.sep+'projects.html'
+    template = 'project' + os.sep + 'projects.html'
     max_count_per_parent = 1
     subpage_types = ['Project']
     parent_page_types = ['home.HomePage']
@@ -117,9 +117,11 @@ class FileFolder(Page):
         FieldPanel('description'),
         InlinePanel('file_in_folder', heading=_("File header"), label=_("File label")),
     ]
+
     def get_context(self, request):  # https://stackoverflow.com/questions/32626815/wagtail-views-extra-context
         context = super().get_context(request)
-        context['parent_project'] = self.get_ancestors().type(Project).last()  # get Project for FileFolder because have recursion for FileFolder
+        context['parent_project'] = self.get_ancestors().type(
+            Project).last()  # get Project for FileFolder because have recursion for FileFolder
 
         return context
 
@@ -129,7 +131,8 @@ class FileInFolder(Orderable):  # TODO: create page for file if can_preview like
     page = ParentalKey(FileFolder, on_delete=models.CASCADE, related_name='file_in_folder')
     name = models.CharField(max_length=255, blank=True, null=True)
     can_preview = models.BooleanField(default=False)  # TODO: if picture = auto set to True
-    file = models.FileField(upload_to=tools.file_path)  # TODO: upload_to method need to know project and folder name for create dirs
+    file = models.FileField(
+        upload_to=tools.file_path)  # TODO: upload_to method need to know project and folder name for create dirs
 
     panels = [
         FieldPanel('name'),
@@ -162,7 +165,7 @@ class FileInFolder(Orderable):  # TODO: create page for file if can_preview like
         file_extension = pathlib.Path(self.file.name).suffix
 
         if file_extension in settings.PICTURE_EXT:
-            return  settings.PICTURE_ICON  #  self.file.url
+            return settings.PICTURE_ICON  # self.file.url
         if file_extension in settings.VIDEO_EXT:
             return settings.VIDEO_ICON
         return settings.DEFAULT_DOWNLOAD_ICON
@@ -172,6 +175,7 @@ class FileInFolder(Orderable):  # TODO: create page for file if can_preview like
 
         if file_extension in settings.PICTURE_EXT:
             return True
+
         return False
 
     def preview_link_video(self):
@@ -179,6 +183,7 @@ class FileInFolder(Orderable):  # TODO: create page for file if can_preview like
 
         if file_extension in settings.VIDEO_EXT:
             return True
+
         return False
 
 
@@ -188,7 +193,7 @@ class NewsArticle(Page):
     subpage_types = []
     author = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, default=None)
     news_project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, default=None)
-    article_date = models.DateField(verbose_name=_('Created'), auto_now_add=True,)
+    article_date = models.DateField(verbose_name=_('Created'), auto_now_add=True, )
     featured_image = models.FileField(upload_to=tools.file_path, blank=True, null=True)
     body = RichTextField(blank=True)
 
@@ -224,10 +229,9 @@ class NewsArticle(Page):
         return parent_project.is_public
 
 
-
 class FilesToFolder(models.Model):
     user = models.ForeignKey(
-        FileFolder, on_delete=models.SET_NULL, null=True, blank=True)
+            FileFolder, on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=100, null=False, blank=False)
 
     def __str__(self):
@@ -244,6 +248,7 @@ class FilesToFolder(models.Model):
         parent_project = self.get_ancestors().type(Project).last()
         return parent_project.is_public
 
+
 class Photo(models.Model):
     class Meta:
         verbose_name = 'Photo'
@@ -256,5 +261,3 @@ class Photo(models.Model):
 
     def __str__(self):
         return self.description
-
-

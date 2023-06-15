@@ -3,13 +3,13 @@ from django.db import models
 from django_extensions.db.fields import AutoSlugField
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
-from wagtail.admin.edit_handlers import (
+from wagtail.admin.panels import (
     MultiFieldPanel,
     InlinePanel,
     FieldPanel,
     PageChooserPanel,
 )
-from wagtail.core.models import Orderable
+from wagtail.models import Orderable
 from wagtail.snippets.models import register_snippet
 
 class MenuItem(Orderable):

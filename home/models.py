@@ -6,11 +6,11 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from wagtail.models import Page, Orderable
 from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.search import index
-from wagtail.admin.edit_handlers import (
+from wagtail.admin.panels import (
     ObjectList,
     TabbedInterface,
 )
-
+from project.models import Project
 
 class HomePage(Page):
     template = 'home/home_page.html'
@@ -20,6 +20,21 @@ class HomePage(Page):
         # https://learnwagtail.com/tutorials/how-to-paginate-your-wagtail-pages/
         # https://stackoverflow.com/questions/32626815/wagtail-views-extra-context
         context = super().get_context(request)
+        user = request.user
+        user_groups = user.groups.all()
+        projects = Project.objects.live()
+        projects_dict = projects
+        if user.is_superuser:
+            context['projects'] = projects_dict
+            return context
+
+        if not user.is_authenticated:
+            projects_dict = projects.filter(is_public=True)
+        else:
+            projects_dict = projects.filter(is_public=True) | projects.filter(slug__in=user_groups)
+
+        context['projects'] = projects_dict
+
         return context
 
     class Meta:

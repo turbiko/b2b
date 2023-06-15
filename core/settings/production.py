@@ -3,7 +3,7 @@ import os
 from .base import *
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 print('DEBUG.prod= ', DEBUG)
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
@@ -32,6 +32,7 @@ ALLOWED_HOSTS = [
     "b2b.argentum.ua",
     "b2b.film.ua",
     "127.0.0.1",
+    "localhost",
     "10.1.100.222",
 ]
 
