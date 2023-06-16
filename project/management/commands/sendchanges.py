@@ -18,6 +18,8 @@ from project.models import Projects, \
 	FilesToFolder, \
 	Photo
 
+DAYS_FOR_SENDCHANGES = 7
+
 class Command(BaseCommand):
 	help = 'Send email changes for few days in project'
 
@@ -37,7 +39,7 @@ class Command(BaseCommand):
 		# mail_to = {}
 		for project in active_projects:
 			mail_content[project.slug] = self.select_last_topics(project)
-			print(f'mail_content:{project.slug=} \n', mail_content)
+			self.stdout.write(self.style.WARNING(f'mail_content:{project.slug=} _ {mail_content[project.slug]}'))
 			emails = self.get_subscriber_emails(project)
 			if emails and mail_content[project.slug]:
 				try:
@@ -56,7 +58,7 @@ class Command(BaseCommand):
 					raise CommandError(f'Failed to send email to {emails=} \n {ex}')
 
 
-	def select_last_topics(self, project_page, days=7) -> str:
+	def select_last_topics(self, project_page, days=DAYS_FOR_SENDCHANGES) -> str:
 		"""
 		:param project_page: root page of project
 		:param days: diapason for select pages
@@ -66,7 +68,8 @@ class Command(BaseCommand):
 		content = ''
 		d0 = date.today()
 		d1 = d0 - timedelta(days=days)
-		print(f'today: {d1}  time-delta: {d0} \n days: {days}')
+		self.stdout.write(self.style.WARNING(f'today: {d1}  time-delta: {d0} _ days: {days}'))
+
 		pages_for_report = pages.filter(last_published_at__gte=d1)
 		for p in pages_for_report:
 			# print(p.last_published_at.date(), d0, d1)
@@ -74,7 +77,8 @@ class Command(BaseCommand):
 			content += f' {p.title}  {p.url}  \n '
 		if content == '':
 			self.stdout.write(self.style.WARNING(f'no changes since {str(d1)}'))
-		print(f'content ({project_page.title}): \n', content)
+
+		self.stdout.write(self.style.WARNING(f'content({project_page.title}): {content}'))
 		return content
 
 
