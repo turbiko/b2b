@@ -158,7 +158,6 @@ media/projects
 media/news
 <<<<<<< Updated upstream
 =======
-/static/*
-static/staticfiles.json
+/static/
 .postgres_data/
 >>>>>>> Stashed changes

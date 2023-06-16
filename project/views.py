@@ -1,37 +1,29 @@
-<<<<<<< Updated upstream
-=======
+
 import datetime
 import locale
 import calendar
->>>>>>> Stashed changes
+
 from os.path import splitext
 import logging
 from itertools import groupby
 from operator import attrgetter
 
-<<<<<<< Updated upstream
-=======
 from django.utils.translation import get_language
 from django.utils.translation import gettext as _
->>>>>>> Stashed changes
 from django.shortcuts import render, redirect
 # from .models import FilesToFolder, Photo
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
 from core.settings.base import PREVIEW_EXT
-<<<<<<< Updated upstream
-from .models import FileFolder, FileInFolder
 
-logger = logging.getLogger(__name__)
-
-def addPhoto(request, pk):
-=======
 from .models import FileFolder, FileInFolder, Project
 
 logger = logging.getLogger(__name__)
 
->>>>>>> Stashed changes
+
+logger = logging.getLogger(__name__)
+
 
 def add_photo(request, pk):
     project_folder = FileFolder.objects.get(pk=pk)
@@ -56,14 +48,13 @@ def add_photo(request, pk):
             )
         project_folder.save()  # TODO change time in  last_published_at
         return redirect(project_folder.url)
-<<<<<<< Updated upstream
+
     logger.info(project_folder.url + " | " + request.user.username)
     context = {'filefolder': project_folder, 'project_folder':project_folder.url}
     return render(request, 'project/addfiles.html', context)
-=======
 
-    logger.info(
-        f'{datetime.datetime.now()} | add file(s) to {project_folder.name} | {project_folder.url} | {request.user.username}')
+
+    logger.info(f'{datetime.datetime.now()} | add file(s) to {project_folder.name} | {project_folder.url} | {request.user.username}')
     context = {'filefolder': project_folder, 'project_folder': project_folder.url}
     return render(request, 'project/addfiles.html', context)
 
@@ -119,4 +110,5 @@ def projects_planned(request):
     context['grouped_projects'] = grouped_projects
     context['language'] = language
     return render(request, 'project/planned.html', context)
->>>>>>> Stashed changes
+
+
