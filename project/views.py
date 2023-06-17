@@ -81,7 +81,9 @@ def get_projects_for_user(request):
 
 
 def projects_planned(request):
-    current_year = datetime.datetime.now().year
+    current_date = datetime.datetime.now()
+    current_year = current_date.year
+    current_month = current_date.month
     context = {}
     language = get_language()
 
@@ -94,10 +96,10 @@ def projects_planned(request):
     grouped_projects = {}
     for project in projects_current_year:
         month = project.date.month  # months number
-
-        if month not in grouped_projects:
-            grouped_projects[month] = []
-        grouped_projects[month].append(project)
+        if project.date > current_date.date():  # or month >= current_month
+            if month not in grouped_projects:
+                grouped_projects[month] = []
+            grouped_projects[month].append(project)
 
     # Sort projects within each month
     for month, projects in grouped_projects.items():
