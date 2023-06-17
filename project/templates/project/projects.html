@@ -51,7 +51,7 @@
                         <div class="text-center">
                             <!-- Project name-->
                             <h5 class="fw-bolder">{{ project.title}}</h5>
-                            {{ project.specific.date }}<br>
+                            {{ project.specific.date|date:"d F Y" }}<br>
                             {{ project.specific.body|striptags|truncatechars:55 }}
                         </div>
                     </div>
