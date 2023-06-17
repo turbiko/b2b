@@ -15,7 +15,7 @@ import os
 from django.utils.translation import activate, gettext_lazy as _
 import logging
 
-
+DATE_FORMAT = 'd %B %Y'
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 

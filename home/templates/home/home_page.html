@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% load static wagtailimages_tags wagtailcore_tags %}
+{% load tz %}
+{% get_current_timezone as TIME_ZONE %}
 
 {% block body_class %}template-homepage{% endblock %}
 
@@ -31,7 +33,9 @@
                         <div class="text-center">
                             <!-- Project name-->
                             <h5 class="fw-bolder">{{ project.title}}</h5>
-                            {{ project.specific.date }}<br>
+
+                            {{ project.specific.date|date:"d F Y"}}<br>
+
                             {{ project.specific.body|striptags|truncatechars:55 }}
                         </div>
                     </div>
@@ -57,7 +61,7 @@
                         <div class="text-center">
                             <!-- Project name-->
                             <h5 class="fw-bolder">{{ project.title}}</h5>
-                            {{ project.specific.date }}<br>
+                            {{ project.specific.date|date:"d F Y" }}<br>
                             {{ project.specific.body|striptags|truncatechars:55 }}
                         </div>
                     </div>

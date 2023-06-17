@@ -3,6 +3,7 @@
 {% load l10n %}
 {% load get_months %}
 
+
 {% block body_class %}template-homepage{% endblock %}
 {% block extra_css %}
 {#<link rel="stylesheet" href="{% static 'css/project.css' %}" />#}
@@ -33,7 +34,7 @@
                         <div class="text-center">
                             <!-- Project name-->
                             <h5 class="fw-bolder">{{ project.title}}</h5>
-                            {{ project.date }}<br>
+                            {{ project.date|get_date }}<br>
                             {{ project.specific.body|striptags|truncatechars:55 }}
                         </div>
                     </div>

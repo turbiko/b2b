@@ -8,7 +8,14 @@ from django.utils.translation import gettext as _
 
 register = template.Library()
 
+
 @register.filter
 def months_by_num(value, months_number):
-	# fake func for example
-	return calendar.month_name[months_number]
+    # fake func for example
+    return calendar.month_name[months_number]
+
+
+@register.filter
+def get_date(value):
+    print(value)
+    return value.date()
