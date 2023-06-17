@@ -34,7 +34,7 @@
                         <div class="text-center">
                             <!-- Project name-->
                             <h5 class="fw-bolder">{{ project.title}}</h5>
-                            {{ project.date|get_date }}<br>
+                            {{ project.date|date:"d F Y"}}<br>
                             {{ project.specific.body|striptags|truncatechars:55 }}
                         </div>
                     </div>
