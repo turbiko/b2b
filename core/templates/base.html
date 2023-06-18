@@ -1,7 +1,8 @@
 {% load static i18n wagtailcore_tags wagtailuserbar menus_tags %}
-{% get_menu "top" as navigation %}
+
 <!DOCTYPE html>
 {% get_current_language as LANGUAGE_CODE %}
+{% get_menu "top" as navigation %}
 <html lang="{{ LANGUAGE_CODE }}">
     <head>
         <meta charset="utf-8" />
@@ -52,6 +53,13 @@
             {# endif #}
             </div>
             <div class="navbar-nav ms-auto">
+
+                {% for translation in page.get_translations.live %}
+                <a href="{% pageurl translation %}" rel="alternate" hreflang="{{ translation.locale.language_code }}" class="nav-item nav-link">
+                    {{ translation.locale.language_code|language_name_local }}
+                </a>
+                {% endfor %}
+
                 {% if request.user.is_authenticated %}
                 <a href="/logout/" class="nav-item nav-link">Logout</a>
                     {% else %}

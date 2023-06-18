@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 import locale
 import calendar
 
@@ -12,7 +12,9 @@ register = template.Library()
 @register.filter
 def months_by_num(value, months_number):
     # fake func for example
-    return calendar.month_name[months_number]
+    today = datetime.today()
+    datem = datetime(today.year, months_number, 1)
+    return datem
 
 
 @register.filter

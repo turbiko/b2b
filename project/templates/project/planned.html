@@ -16,7 +16,7 @@
     <div class="container px-4 px-lg-5 mt-5">
     {% for month, projects in grouped_projects.items %}
         <div style="margin-bottom: 10px">
-        <div><h2>{{ month_name|months_by_num:month }}</h2></div>
+        <div><h2>{{ month_name|months_by_num:month|date:"F" }}</h2></div>
         <div><hr></div>
         </div>
 

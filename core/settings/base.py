@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     "wagtail.search",
     "wagtail.admin",
     "wagtail",
+    "wagtail_localize",
+    "wagtail_localize.locales",
     # Django
     "django.contrib.admin",
     "django.contrib.auth",
@@ -82,6 +84,7 @@ MIDDLEWARE = [
     # 'django.middleware.common.BrokenLinkEmailsMiddleware',
     # CMS functionality
     "whitenoise.middleware.WhiteNoiseMiddleware",  # production caching
+    "django.middleware.locale.LocaleMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
     # Fetch from cache. Must be LAST.
     # "wagtailcache.cache.FetchFromCacheMiddleware",
@@ -103,6 +106,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "wagtail.contrib.settings.context_processors.settings",
+                'django.template.context_processors.i18n',
             ],
         },
     },
@@ -133,16 +137,18 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = "en"
+LANGUAGE_CODE = "uk"
 
-LANGUAGES  = WAGTAILADMIN_PERMITTED_LANGUAGES = [
-    ('en', _('English')),
+WAGTAIL_CONTENT_LANGUAGES = LANGUAGES = [
     ('uk', _('Ukrainian')),
+    ('en', _('English')),
 ]
 
 TIME_ZONE = "UTC"
 
 USE_I18N = True
+
+WAGTAIL_I18N_ENABLED = True
 
 USE_L10N = True
 

@@ -14,7 +14,7 @@ from project.models import Project
 
 class HomePage(Page):
     template = 'home/home_page.html'
-    max_count = 1
+    max_count = 2  # TODO: need for each locale 1 HomePage
 
     def get_context(self, request):
         # https://learnwagtail.com/tutorials/how-to-paginate-your-wagtail-pages/
