@@ -1,6 +1,5 @@
 import os
-
-from .base import *
+from .base import *  # noqa
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -11,6 +10,9 @@ STATIC_URL = "/static/"
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "dm*#_9rs0r0z$g)65#m12y6wxl@rpw$%1dxu@+(x^dm*#_9rs0r0z$g)65#m12y6wv!=2b%"
+
+
+WAGTAIL_CACHE = False
 
 DATABASES = {
     "default": {
@@ -31,10 +33,13 @@ ALLOWED_HOSTS = [
 
 ADMINS = [('test admin1', 'a.voznyuk@film.ua'), ('test admin2', 'avoznyuk@film.ua')]
 # EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-CSRF_TRUSTED_ORIGINS = ['https://*.argentum.ua','https://*.film.ua','https://127.0.0.1','https://10.1.100.222']
+CSRF_TRUSTED_ORIGINS = ['https://*.argentum.ua',
+                        'https://*.film.ua',
+                        'https://127.0.0.1',
+                        'https://10.1.100.222'
+                        ]
 
 DEBUG404 = False
 

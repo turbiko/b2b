@@ -12,10 +12,10 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-from django.utils.translation import activate, gettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 import logging
 
-DATE_FORMAT = 'd %B %Y'
+DATE_FORMAT = 'd F Y'
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 
@@ -27,7 +27,14 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 # Application definition
 
 INSTALLED_APPS = [
+    # This project
     "home",
+    # Wagtail CRX (CodeRed Extensions)
+    # "coderedcms",
+    "django_bootstrap5",
+    # "wagtailcache",
+    # "wagtailseo",
+    # Wagtail
     "search",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
@@ -40,15 +47,17 @@ INSTALLED_APPS = [
     "wagtail.search",
     "wagtail.admin",
     "wagtail",
-    "modelcluster",
-    "taggit",
+    # Django
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # added functionality/modules
+    "django.contrib.sitemaps",
+    # added other ready to use functionality/modules
+    "modelcluster",
+    "taggit",
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -58,15 +67,24 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    # Save pages to cache. Must be FIRST.
+    # "wagtailcache.cache.UpdateCacheMiddleware",
+    # Common functionality
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.common.CommonMiddleware",
+    # Security
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    #  Error reporting. Uncomment this to receive emails when a 404 is triggered.
+    # 'django.middleware.common.BrokenLinkEmailsMiddleware',
+    # CMS functionality
     "whitenoise.middleware.WhiteNoiseMiddleware",  # production caching
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
+    # Fetch from cache. Must be LAST.
+    # "wagtailcache.cache.FetchFromCacheMiddleware",
 ]
 
 ROOT_URLCONF = "core.urls"
@@ -84,6 +102,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "wagtail.contrib.settings.context_processors.settings",
             ],
         },
     },
@@ -117,8 +136,8 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = "en"
 
 LANGUAGES  = WAGTAILADMIN_PERMITTED_LANGUAGES = [
-    ('uk', _('Ukrainian')),
     ('en', _('English')),
+    ('uk', _('Ukrainian')),
 ]
 
 TIME_ZONE = "UTC"
@@ -153,11 +172,12 @@ STATIC_URL = "/static/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 
-
 # Wagtail
 
 WAGTAIL_SITE_NAME = "b2b.film.ua"
 WAGTAILADMIN_BASE_URL = "http://b2b.film.ua"
+
+WAGTAIL_ENABLE_UPDATE_CHECK = False
 
 # Search
 # https://docs.wagtail.org/en/stable/topics/search/backends.html
@@ -171,6 +191,14 @@ WAGTAILSEARCH_BACKENDS = {
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 WAGTAILADMIN_BASE_URL = "http://b2b.argentum.ua"
 
+# Tags
+
+TAGGIT_CASE_INSENSITIVE = True
+
+# Sets default for primary key IDs
+# See https://docs.djangoproject.com/en/4.1/ref/models/fields/#bigautofield
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
 # Wagtail settings options
 # https://docs.wagtail.org/en/stable/reference/settings.html
 DEFAULT_FROM_EMAIL = 'noreply@argentum.ua'
@@ -179,13 +207,18 @@ WAGTAILUSERS_PASSWORD_REQUIRED = True
 WAGTAILADMIN_NOTIFICATION_USE_HTML = True
 WAGTAILADMIN_NOTIFICATION_INCLUDE_SUPERUSERS = False
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'mail.argentum.ua'
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
 EMAIL_HOST_USER = 'noreply@argentum.ua'
 EMAIL_HOST_PASSWORD = '8gZ3yN8uYrvXXhL'
 EMAIL_SUBJECT_PREFIX = 'b2b |'
+
+# Login
+
+# LOGIN_URL = "wagtailadmin_login"
+# LOGIN_REDIRECT_URL = "wagtailadmin_home"
 
 # https://learnwagtail.com/tutorials/adding-user-authentication-registration-and-login-your-wagtail-website/
 LOGIN_URL = '/login/'

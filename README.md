@@ -113,3 +113,6 @@ docker-compose exec web python manage.py createsuperuser --settings=core.setting
 
 docker-compose exec web python manage.py sendchanges
 
+# found after all code ready 
+some ideas and tuned functionality from Wagtail CRX coderedcms==2.1.2
+
