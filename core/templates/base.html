@@ -3,6 +3,8 @@
 <!DOCTYPE html>
 {% get_current_language as LANGUAGE_CODE %}
 {% get_menu "top" as navigation %}
+{% get_menu "topen" as navigationen %}
+
 <html lang="{{ LANGUAGE_CODE }}">
     <head>
         <meta charset="utf-8" />
@@ -46,17 +48,25 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav">
             {# if request.user.is_authenticated #}
-            {% for item in navigation.menu_items.all %}
+            {% if LANGUAGE_CODE == 'en'%}
+                {% for item in navigationen.menu_items.all %}
                 <a href="{{ item.link }}" class="nav-item nav-link {% if item.link == request.path %}active{% endif %}">
                     {{ item.title }}</a>
             {% endfor %}
+             {% else %}
+                {% for item in navigation.menu_items.all %}
+                <a href="{{ item.link }}" class="nav-item nav-link {% if item.link == request.path %}active{% endif %}">
+                    {{ item.title }}</a>
+            {% endfor %}
+            {% endif %}
+
             {# endif #}
             </div>
             <div class="navbar-nav ms-auto">
 
                 {% for translation in page.get_translations.live %}
                 <a href="{% pageurl translation %}" rel="alternate" hreflang="{{ translation.locale.language_code }}" class="nav-item nav-link">
-                    {{ translation.locale.language_code|language_name_local }}
+                    {{ translation.locale.language_code|upper }}
                 </a>
                 {% endfor %}
 

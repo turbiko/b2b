@@ -2,6 +2,7 @@ from django.db import models
 from django.template import context
 from django.utils.translation import activate, gettext_lazy as _
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from wagtail.fields import RichTextField
 
 from wagtail.models import Page, Orderable
 from wagtail.admin.panels import FieldPanel, InlinePanel
@@ -41,3 +42,21 @@ class HomePage(Page):
         verbose_name = "B2B main page"
 
 
+class Contacts(Page):
+    template = 'home/contacts.html'
+
+    representative_image = models.ForeignKey(
+            'wagtailimages.Image',
+            null=True,
+            blank=True,
+            on_delete=models.SET_NULL,
+            related_name='+'
+    )
+    short_story = RichTextField(blank=True)
+    contacts_story = RichTextField(blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel('representative_image'),
+        FieldPanel('short_story'),
+        FieldPanel('contacts_story'),
+    ]
