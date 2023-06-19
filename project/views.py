@@ -65,8 +65,10 @@ def get_projects_for_user(request):
     user_groups = user.groups.all()
 
     projects = Project.objects.live()
-
-    projects_dict = projects.filter(locale=1)
+    # LAnguage codes
+    UKR_CODE = 2
+    ENGL_CODE = 1
+    projects_dict = projects.filter(locale=UKR_CODE)
 
     if user.is_superuser:
         return projects_dict

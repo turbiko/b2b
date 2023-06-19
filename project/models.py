@@ -109,8 +109,8 @@ class Planned(Page):
         for prj in projects:
             print(prj.locale.id)
         # LAnguage codes
-        UKR_CODE = 1
-        ENGL_CODE = 2
+        UKR_CODE = 2
+        ENGL_CODE = 1
 
         projects_dict = projects.filter(locale=UKR_CODE)
 
