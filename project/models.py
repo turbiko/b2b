@@ -1,13 +1,15 @@
 import os
 import pathlib
+import locale
 from datetime import datetime
 import uuid
+from operator import attrgetter
 
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.utils.timesince import timesince
-from django.utils.translation import activate, gettext_lazy as _
+from django.utils.translation import activate, gettext_lazy as _, get_language
 
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel, InlinePanel, TabbedInterface, ObjectList
@@ -52,13 +54,11 @@ class Project(Page):
     )
     body = RichTextField(blank=True)
     is_public = models.BooleanField(default=False)
-    # order_number = models.IntegerField(default=100)
 
     content_panels = Page.content_panels + [
         MultiFieldPanel([
             FieldPanel('date'),
             FieldPanel('is_public'),
-            # FieldPanel('order_number'),
             FieldPanel('body'),
             FieldPanel('representative_image'),
         ],
@@ -88,6 +88,60 @@ class Projects(Page):
     subpage_types = ['Project']
     parent_page_types = ['home.HomePage']
     page_description = _("Projects index page")
+
+
+class Planned(Page):
+    template = 'project' + os.sep + 'planned.html'
+    # max_count_per_parent = 2
+    parent_page_types = ['home.HomePage']
+
+    def get_context(self, request, *args, **kwargs):
+        current_date = datetime.now()
+        current_year = current_date.year
+        current_month = current_date.month
+        context = {}
+        language = get_language()
+
+        user = request.user
+        user_groups = user.groups.all()
+
+        projects = Project.objects.live()
+        for prj in projects:
+            print(prj.locale.id)
+        # LAnguage codes
+        UKR_CODE = 1
+        ENGL_CODE = 2
+
+        projects_dict = projects.filter(locale=UKR_CODE)
+
+        if not user.is_superuser:
+
+            if not user.is_authenticated:
+                return projects.filter(is_public=True)
+            elif user.is_authenticated:
+                return projects.filter(is_public=True) | projects.filter(slug__in=user_groups)
+
+        projects_current_year = projects_dict.filter(date__year=current_year)
+        # Group projects by month
+        grouped_projects = {}
+        for project in projects_current_year:
+            month = project.date.month  # months number
+            if project.date > current_date.date():  # or month >= current_month
+                if month not in grouped_projects:
+                    grouped_projects[month] = []
+                grouped_projects[month].append(project)
+            # Sort projects within each month
+            for month, projects in grouped_projects.items():
+                grouped_projects[month] = sorted(projects, key=attrgetter('date'))
+
+            # Sort months in ascending order
+            grouped_projects = dict(sorted(grouped_projects.items()))
+
+            # Get month names based on language
+            context['grouped_projects'] = grouped_projects
+            context['language'] = language
+
+        return context
 
 
 class FileFolder(Page):

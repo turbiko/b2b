@@ -66,7 +66,7 @@ def get_projects_for_user(request):
 
     projects = Project.objects.live()
 
-    projects_dict = projects
+    projects_dict = projects.filter(locale=1)
 
     if user.is_superuser:
         return projects_dict
