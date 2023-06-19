@@ -9,14 +9,14 @@
 
         <div class="row justify-content-center">
             <div class="col-md-4">
-                <a href="{{project_folder}}" class="btn btn-dark my-3">Go Back</a>
+                <a href="{{project_folder}}" class="btn btn-dark my-3">Назад</a>
                 <div class="card">
                     <form method='POST' action="" enctype="multipart/form-data">
                         {% csrf_token %}
 
 
                         <div class="form-group m-3">
-                            <label>Upload files</label>
+                            <label>Завантажити файли</label>
                             <input required name="images" type="file" multiple class="form-control-file">
                         </div>
 
@@ -29,7 +29,7 @@
     </div>
 {% else %}
 <div class="container justify-content-center">
-    <p>Restricted area. Please, visit homepage <a href="/">Home</a></p>
+    <p>Щось пішло не так. Завітайте на  <a href="/">головну сторінку</a></p>
 </div>
 
 {% endif %}

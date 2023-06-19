@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     # added code
     'menus.apps.MenusConfig',
     'project.apps.ProjectConfig',
+    'contacts.apps.ContactsConfig'
 ]
 
 MIDDLEWARE = [

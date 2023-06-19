@@ -41,22 +41,3 @@ class HomePage(Page):
     class Meta:
         verbose_name = "B2B main page"
 
-
-class Contacts(Page):
-    template = 'home/contacts.html'
-
-    representative_image = models.ForeignKey(
-            'wagtailimages.Image',
-            null=True,
-            blank=True,
-            on_delete=models.SET_NULL,
-            related_name='+'
-    )
-    short_story = RichTextField(blank=True)
-    contacts_story = RichTextField(blank=True)
-
-    content_panels = Page.content_panels + [
-        FieldPanel('representative_image'),
-        FieldPanel('short_story'),
-        FieldPanel('contacts_story'),
-    ]
