@@ -14,18 +14,16 @@
 <!-- Section-PROJECTS-PAGE -->
 <section class="py-5">
     <div class="container px-4 px-lg-5 mt-5">
+    <div class="d-flex justify-content-center"><h2>{% now 'Y' %}</h2></div>
     {% for month, projects in grouped_projects.items %}
         <div style="margin-bottom: 10px">
         <div><h2>{{ month_name|months_by_num:month|date:"F" }}</h2></div>
         <div><hr></div>
         </div>
-        <!-- {{ LANGUAGE_CODE }} -->
-        <!-- {{ user }} -->
-        <!-- {{ user.is_authenticated }} -->
+
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
 
             {% for project in projects %}
-                <!-- {{ project.locale }} -->
             <div class="col mb-5">
                 <div class="card h-100">
                     <!-- Project image-->
