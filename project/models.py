@@ -118,9 +118,9 @@ class Planned(Page):
         if not user.is_superuser:
 
             if not user.is_authenticated:
-                return projects.filter(is_public=True)
+                return projects_dict.filter(is_public=True)
             elif user.is_authenticated:
-                return projects.filter(is_public=True) | projects.filter(slug__in=user_groups)
+                return projects_dict.filter(is_public=True) | projects.filter(slug__in=user_groups)
 
         projects_current_year = projects_dict.filter(date__year=current_year)
         # Group projects by month
