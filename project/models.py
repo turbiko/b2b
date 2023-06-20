@@ -122,10 +122,8 @@ class Planned(Page):
         #         projects = projects.filter(is_public=True) | projects.filter(slug__in=user_groups)
 
         projects_dict = projects
-        print('projects_dict: ', projects_dict)
 
         projects_current_year = projects_dict.filter(date__year=current_year)
-        print('projects_current_year: ', projects_current_year)
 
         # Group projects by month
         grouped_projects = {}
@@ -142,8 +140,17 @@ class Planned(Page):
             # Sort months in ascending order
             grouped_projects = dict(sorted(grouped_projects.items()))
 
+            # Next year projects
+            next_year = current_year + 1
+            projects = Project.objects.live().filter(locale=Locale.get_active())
+            projects_next_year = projects.filter(date__year=next_year)
+
             # Get month names based on language
             context['grouped_projects'] = grouped_projects
+
+            context['next_year'] = next_year
+            context['next_year_projects'] = projects_next_year
+
             context['language'] = language
 
         return context
