@@ -16,7 +16,7 @@ from wagtail.admin.panels import FieldPanel, MultiFieldPanel, InlinePanel, Tabbe
 from wagtail.fields import RichTextField
 from wagtail.documents.models import Document, AbstractDocument
 
-from wagtail.models import Page, Orderable
+from wagtail.models import Page, Orderable, Locale
 from . import blocks
 from core import tools
 
@@ -112,6 +112,7 @@ class Planned(Page):
         UKR_CODE = 2
         ENGL_CODE = 1
 
+        # projects_dict = projects.filter(locale=UKR_CODE)
         projects_dict = projects.filter(locale=UKR_CODE)
 
         if not user.is_superuser:

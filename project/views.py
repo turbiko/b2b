@@ -1,4 +1,3 @@
-
 import datetime
 import locale
 import calendar
@@ -14,6 +13,8 @@ from django.shortcuts import render, redirect
 # from .models import FilesToFolder, Photo
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+
+from wagtail.models import Locale
 
 from core.settings.base import PREVIEW_EXT
 
@@ -65,10 +66,9 @@ def get_projects_for_user(request):
     user_groups = user.groups.all()
 
     projects = Project.objects.live()
-    # LAnguage codes
-    UKR_CODE = 2
-    ENGL_CODE = 1
-    projects_dict = projects.filter(locale=UKR_CODE)
+    #  .filter(locale=Locale.get_active())
+    # projects_dict = projects.filter(locale=UKR_CODE)
+    projects_dict = projects.filter(locale=Locale.get_active())
 
     if user.is_superuser:
         return projects_dict

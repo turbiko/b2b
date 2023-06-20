@@ -1,7 +1,7 @@
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.template.response import TemplateResponse
 
-from wagtail.models import Page
+from wagtail.models import Page, Locale
 from wagtail.search.models import Query
 
 
@@ -11,7 +11,7 @@ def search(request):
 
     # Search
     if search_query:
-        search_results = Page.objects.live().search(search_query)
+        search_results = Page.objects.live().filter(locale=Locale.get_active()).search(search_query)
         query = Query.get(search_query)
 
         # Record hit
