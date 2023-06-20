@@ -49,7 +49,7 @@ CACHES = {
         "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
         "LOCATION": os.path.join(BASE_DIR, "cache"),  # noqa
         "KEY_PREFIX": "b2b_cache",
-        "TIMEOUT": 14400,  # in seconds
+        "TIMEOUT": 120,  # in seconds 14400
     }
 }
 
