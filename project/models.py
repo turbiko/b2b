@@ -112,17 +112,13 @@ class Planned(Page):
         for prj in projects:
             print(prj.locale.id)
 
-
-        # projects_dict = projects.filter(locale=UKR_CODE)
-        projects_dict = projects
-
         if not user.is_superuser:
-
             if not user.is_authenticated:
-                return projects.filter(is_public=True)
+                projects = projects.filter(is_public=True)
             elif user.is_authenticated:
-                return projects.filter(is_public=True) | projects.filter(slug__in=user_groups)
+                projects = projects.filter(is_public=True) | projects.filter(slug__in=user_groups)
 
+        projects_dict = projects
         projects_current_year = projects_dict.filter(date__year=current_year)
         # Group projects by month
         grouped_projects = {}
