@@ -95,7 +95,7 @@ class Planned(Page):
     # max_count_per_parent = 2
     parent_page_types = ['home.HomePage']
 
-    def get_context(self, request, *args, **kwargs):
+    def get_context(self, request):
         current_date = datetime.now()
         current_year = current_date.year
         current_month = current_date.month
@@ -126,6 +126,7 @@ class Planned(Page):
 
         projects_current_year = projects_dict.filter(date__year=current_year)
         print('projects_current_year: ', projects_current_year)
+
         # Group projects by month
         grouped_projects = {}
         for project in projects_current_year:

@@ -7,7 +7,6 @@ WORKDIR $DockerHOME
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-RUN pip install "gunicorn==20.0.4"
 # Install system packages required by Wagtail and Django.
 # Install server packages
 RUN apk update \
@@ -16,10 +15,11 @@ RUN apk update \
 
 # Install python packages
 RUN pip install --upgrade pip
+
 RUN pip install "gunicorn==20.0.4"
 COPY ./requirements.txt /usr/src/app/requirements.txt
 RUN pip install -r requirements.txt
 
 # Postgres Entrypoint
-COPY entrypoint.sh /usr/src/app/entrypoint.sh
+#COPY entrypoint.sh /usr/src/app/entrypoint.sh
 COPY entrypoint.prod.sh /usr/src/app/entrypoint.prod.sh
