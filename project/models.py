@@ -104,23 +104,24 @@ class Planned(Page):
 
         user = request.user
         user_groups = user.groups.all()
-
-        projects = Project.objects.live()
-        for prj in projects:
-            print(prj.locale.id)
         # LAnguage codes
         UKR_CODE = 2
         ENGL_CODE = 1
+        projects = Project.objects.live().filter(locale=UKR_CODE)
+
+        for prj in projects:
+            print(prj.locale.id)
+
 
         # projects_dict = projects.filter(locale=UKR_CODE)
-        projects_dict = projects.filter(locale=UKR_CODE)
+        projects_dict = projects
 
         if not user.is_superuser:
 
             if not user.is_authenticated:
-                return projects_dict.filter(is_public=True)
+                return projects.filter(is_public=True)
             elif user.is_authenticated:
-                return projects_dict.filter(is_public=True) | projects.filter(slug__in=user_groups)
+                return projects.filter(is_public=True) | projects.filter(slug__in=user_groups)
 
         projects_current_year = projects_dict.filter(date__year=current_year)
         # Group projects by month
