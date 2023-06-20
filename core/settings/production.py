@@ -41,6 +41,7 @@ SERVER_EMAIL = "Error " + DEFAULT_FROM_EMAIL
 ALLOWED_HOSTS = [
     "b2b.argentum.ua",
     "b2b.film.ua",
+    "10.1.100.222",
 ]
 
 CACHES = {
