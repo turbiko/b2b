@@ -77,8 +77,8 @@ class Project(Page):
         return context
 
     class Meta:
-        verbose_name = "Project"
-        verbose_name_plural = "Projects"
+        verbose_name = _("Project")
+        verbose_name_plural = _("Projects")
         # ordering = ['-date']
 
 
@@ -98,28 +98,20 @@ class Planned(Page):
     def get_context(self, request):
         current_date = datetime.now()
         current_year = current_date.year
-        current_month = current_date.month
         context = {}
 
         language = get_language()
-        print('language: ', language)
 
         user = request.user
         user_groups = user.groups.all()
 
-        # LAnguage codes
-        UKR_CODE = 2
-        ENGL_CODE = 1
-        projects = Project.objects.live().filter(locale=UKR_CODE)
+        projects = Project.objects.live().filter(locale=Locale.get_active())
 
-        for prj in projects:
-            print(prj.locale.id)
-        # not user.is_authenticated users seen 2 lang on one page
-        # if not user.is_superuser:
-        #     if not user.is_authenticated:
-        #         projects = projects.filter(is_public=True)
-        #     elif user.is_authenticated:
-        #         projects = projects.filter(is_public=True) | projects.filter(slug__in=user_groups)
+        if not user.is_superuser:
+            if not user.is_authenticated:
+                projects = projects.filter(is_public=True)
+            elif user.is_authenticated:
+                projects = projects.filter(is_public=True) | projects.filter(slug__in=user_groups)
 
         projects_dict = projects
 
@@ -165,8 +157,8 @@ class FileFolder(Page):
     description = RichTextField(blank=True, null=True)
 
     class Meta:
-        verbose_name = "Project folder"
-        verbose_name_plural = "Project folders"
+        verbose_name = _("Project folder")
+        verbose_name_plural = _("Project folders")
 
     def get_project(self):
         """
@@ -193,7 +185,6 @@ class FileFolder(Page):
 
 
 class FileInFolder(Orderable):  # TODO: create page for file if can_preview like /filefolder/file/<pk>
-    # title = models.CharField(max_length=255, blank=True, null=True)
     page = ParentalKey(FileFolder, on_delete=models.CASCADE, related_name='file_in_folder')
     name = models.CharField(max_length=255, blank=True, null=True)
     can_preview = models.BooleanField(default=False)  # TODO: if picture = auto set to True
@@ -216,7 +207,7 @@ class FileInFolder(Orderable):  # TODO: create page for file if can_preview like
         """
         return self.get_ancestors().type(Project).last()
 
-    def is_open(selfself):
+    def is_open(self):
         parent_project = self.get_ancestors().type(Project).last()
         return parent_project.is_public
 
@@ -271,7 +262,7 @@ class NewsArticle(Page):
 
     ]
 
-    def is_open(selfself):
+    def is_open(self):
         parent_project = self.get_ancestors().type(Project).last()
         return parent_project.is_public
 
@@ -290,7 +281,7 @@ class NewsArticle(Page):
         """
         return self.get_ancestors().type(Project).last()
 
-    def is_open(selfself):
+    def is_open(self):
         parent_project = self.get_ancestors().type(Project).last()
         return parent_project.is_public
 
@@ -310,15 +301,14 @@ class FilesToFolder(models.Model):
         """
         return self.get_ancestors().type(Project).last()
 
-    def is_open(selfself):
+    def is_open(self):
         parent_project = self.get_ancestors().type(Project).last()
         return parent_project.is_public
 
-
 class Photo(models.Model):
     class Meta:
-        verbose_name = 'Photo'
-        verbose_name_plural = 'Photos'
+        verbose_name = _('Photo')
+        verbose_name_plural = _('Photos')
 
     filegroup = models.ForeignKey(
             FileInFolder, on_delete=models.SET_NULL, null=True, blank=True)
