@@ -3,22 +3,42 @@
 <!-- Section-PROJECT-PAGE -->
 <section class="py-5">
     <div class="container px-4 px-lg-5 my-5">
-        <div class="row gx-4 gx-lg-5 align-items-center">
-
-            <div class="col-md-6">
-                {% image page.specific.representative_image max-600x700 as tizer %}
-                <img class="card-img-top mb-5 mb-md-0" src="{{ tizer.url }}" alt="{{ page.title }}" /></div>
-            <div class="col-md-6">
-                <div class="small mb-1">Початок: {{ page.date }}</div>
-                <h1 class="display-5 fw-bolder">{{ page.title }}</h1>
-                <div class="fs-5 mb-5">
+        <div class="row gx-4 gx-lg-5 align-items-start">
+            <div class="w-25 d-flex flex-column justify-content-between img-block">
+                <div class="w-100">
+                    {% image page.specific.representative_image max-600x700 as tizer %}
+                    <img class="card-img-top mb-5 mb-md-0" src="{{ tizer.url }}" alt="{{ page.title }}" />
+                </div>
+                {% if page.youtube_video_id %}
+                <iframe width="100%"  src="https://www.youtube.com/embed/{{ page.youtube_video_id }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                {% endif %}
+            </div>
+            <div class="col d-flex flex-column justify-content-between h-100">
+                <h1 class="display-5 fw-bolder mb-2">{{ page.title|safe }}</h1>
+                <div class="small mb-2">Початок: {{ page.date }}</div>
+                <div class="fs-5 mb-2">
                     <span>Жанр: {% for genre in page.project_genres.all %}{{ genre.genre.name }}
                         {% if forloop.last %} <br> {% else %}, {% endif %}
                         {% endfor %}
                     </span>
                 </div>
-                <p class="lead">{{ page.specific.body | safe }}</p>
-
+                <p class="lead  mb-2">{{ page.specific.body | safe }}</p>
+                <div class="container px-1 px-lg-1 my-2"> {# folders.live #}
+                {% for folder in folders.live %}
+                    <div class="panel panel-default">
+                        <div class="d-flex flex-row align-bottom panel-body">
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" fill="currentColor" class="bi bi-folder-fill" viewBox="0 0 16 16">
+                                  <path d="M9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.825a2 2 0 0 1-1.991-1.819l-.637-7a1.99 1.99 0 0 1 .342-1.31L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3zm-8.322.12C1.72 3.042 1.95 3 2.19 3h5.396l-.707-.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139z"/>
+                                </svg>&nbsp;
+                            </div>
+                        <div class="b-project-title">
+                                <a href="{{folder.url}}" onclick="" class="link-dark"> <h1>
+                                   {{folder.title|truncatechars:55}}</h1></a></div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div> {# folders.live #}
             </div>
         </div>
 
@@ -26,24 +46,7 @@
 </section>
 <!-- END Project description section-->
 
-<div class="container px-4 px-lg-5 my-5">
 
-{% for folder in folders.live %}
-    <div class="panel panel-default">
-        <div class="d-flex flex-row align-bottom panel-body">
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" fill="currentColor" class="bi bi-folder-fill" viewBox="0 0 16 16">
-                  <path d="M9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.825a2 2 0 0 1-1.991-1.819l-.637-7a1.99 1.99 0 0 1 .342-1.31L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3zm-8.322.12C1.72 3.042 1.95 3 2.19 3h5.396l-.707-.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139z"/>
-                </svg>&nbsp;
-            </div>
-        <div class="b-project-title">
-                <a href="{{folder.url}}" onclick="" class="link-dark"> <h1>
-                   {{folder.title|truncatechars:55}}</h1></a></div>
-        </div>
-    </div>
-{% endfor %}
-
-</div>
 
 <section class="py-5"> {# project news #}
     <div class="container px-4 px-lg-5 mt-5">

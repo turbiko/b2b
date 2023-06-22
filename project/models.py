@@ -52,6 +52,7 @@ class Project(Page):
             on_delete=models.SET_NULL,
             related_name='+'
     )
+    youtube_video_id = models.CharField(_('Youtube video ID'), max_length=50, blank=True, null=True,)
     body = RichTextField(blank=True)
     is_public = models.BooleanField(default=False)
 
@@ -60,6 +61,7 @@ class Project(Page):
             FieldPanel('date'),
             FieldPanel('is_public'),
             FieldPanel('body'),
+            FieldPanel('youtube_video_id'),
             FieldPanel('representative_image'),
         ],
                 heading=_("Project Options"),

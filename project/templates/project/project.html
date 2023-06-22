@@ -4,7 +4,9 @@
 {% block body_class %}template-homepage{% endblock %}
 {% block extra_css %}
 
-{% endblock extra_css %} {% block content %}
+{% endblock extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/project.css' %}">
+{% block content %}
 
 {% if page.specific.is_public %} {# public pages & user auth #}
 {% include "oneproject.html" %}
