@@ -1,17 +1,17 @@
 from django.db import models
 from django.template import context
-from django.utils.translation import activate, gettext_lazy as _
+from django.utils.translation import activate, gettext_lazy as _, get_language
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from wagtail.fields import RichTextField
 
-from wagtail.models import Page, Orderable
+from wagtail.models import Page, Orderable, Locale
 from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.search import index
 from wagtail.admin.panels import (
     ObjectList,
     TabbedInterface,
 )
-from project.models import Project
+from project.models import Project, Projects
 
 class HomePage(Page):
     template = 'home/home_page.html'
@@ -23,19 +23,20 @@ class HomePage(Page):
         context = super().get_context(request)
         user = request.user
         user_groups = user.groups.all()
-        projects = Project.objects.live()
-        projects_dict = projects
-        if user.is_superuser:
-            context['projects'] = projects_dict
-            return context
+        language = get_language()
 
-        if not user.is_authenticated:
-            projects_dict = projects.filter(is_public=True)
-        else:
-            projects_dict = projects.filter(is_public=True) | projects.filter(slug__in=user_groups)
+        projects = Project.objects.live().filter(locale=Locale.get_active())
 
-        context['projects'] = projects_dict
+        if not user.is_superuser:
+            if not user.is_authenticated:
+                projects = projects.filter(is_public=True)
+            elif user.is_authenticated:
+                projects = projects.filter(is_public=True) | projects.filter(slug__in=user_groups)
 
+        context['projects'] = projects
+
+        print(f'{user=} {user_groups=}' )
+        print(f'{projects=} {projects.count()}' )
         return context
 
     class Meta:

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static wagtailimages_tags wagtailcore_tags %}
+{% load static i18n wagtailimages_tags wagtailcore_tags %}
 
 {% block body_class %}template-homepage{% endblock %}
 
@@ -14,7 +14,7 @@
 
 {% else %}
 <div class="container justify-content-center">
-    <p>Ви не зареєструвалися. Будь ласка, <a href="/login/">заходьте</a></p>
+    <p>{% translate "Ви не зареєструвалися. Будь ласка" %}, <a href="/login/">{% translate "заходьте" %}</a></p>
 </div>
 {% endif %}
 

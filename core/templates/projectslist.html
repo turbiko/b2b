@@ -1,5 +1,4 @@
-{% load static wagtailimages_tags wagtailcore_tags %}
-
+{% load static i18n wagtailimages_tags wagtailcore_tags %}
 
 <div class="col mb-5">
     <div class="card h-100">
@@ -16,7 +15,11 @@
         </div>
         <!-- Product actions-->
         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ project.full_url }}">Докладніше</a></div>
+            <div class="text-center">
+                <a class="btn btn-outline-dark mt-auto" href="{{ project.full_url }}">
+                    {% translate "Докладніше" %}
+                </a>
+            </div>
         </div>
     </div>
 </div>

@@ -1,4 +1,4 @@
-
+{% load i18n %}
     <hr>
     <footer class="py-2">
         <div class="row">
@@ -6,9 +6,9 @@
                 <p>Copyright &copy; {% now 'Y' %} Film.ua Group</p>
             </div>
             <div class="col-md-6 text-md-end">
-                <a href="#" class="text-dark">Terms of Use</a>
+                <a href="#" class="text-dark">{% translate "Terms of Use" %}</a>
                 <span class="text-muted mx-2">|</span>
-                <a href="#" class="text-dark">Privacy Policy</a>
+                <a href="#" class="text-dark">{% translate "Privacy Policy" %}</a>
             </div>
         </div>
     </footer>

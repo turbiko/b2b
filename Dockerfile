@@ -1,6 +1,5 @@
 FROM python:3.10.4-alpine3.14
 
-
 ENV DockerHOME=/usr/src/app
 RUN mkdir -p $DockerHOME
 WORKDIR $DockerHOME  
@@ -14,11 +13,12 @@ RUN apk update \
     && apk add jpeg-dev libwebp-dev zlib-dev freetype-dev lcms2-dev openjpeg-dev tiff-dev tk-dev tcl-dev libxml2-dev libxslt-dev libxml2
 
 # Install python packages
-RUN pip install --upgrade pip
+RUN pip install --no-cache-dir --upgrade pip
 
 RUN pip install "gunicorn==20.0.4"
+
 COPY ./requirements.txt /usr/src/app/requirements.txt
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Postgres Entrypoint
 #COPY entrypoint.sh /usr/src/app/entrypoint.sh

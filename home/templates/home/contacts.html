@@ -33,13 +33,16 @@
                         <div class="text-center">
                             <!-- Project name-->
                             <h5 class="fw-bolder">{{ project.title}}</h5>
-
                             {{ project.specific.date|date:"d F Y"}}<br>
                         </div>
                     </div>
                     <!-- Product actions-->
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ project.url }}">Докладніше</a></div>
+                        <div class="text-center">
+                            <a class="btn btn-outline-dark mt-auto" href="{{ project.url }}">
+                                {% translate "Докладніше" %}
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -64,7 +67,11 @@
                     </div>
                     <!-- Product actions-->
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ project.url }}">Докладніше</a></div>
+                        <div class="text-center">
+                            <a class="btn btn-outline-dark mt-auto" href="{{ project.url }}">
+                                {% translate "Докладніше" %}
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

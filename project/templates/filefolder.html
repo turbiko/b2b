@@ -1,4 +1,4 @@
-{% load static wagtailimages_tags wagtailcore_tags %}
+{% load static i18n wagtailimages_tags wagtailcore_tags %}
 
 <!-- Section-PROJECT-PAGE -->
 <section class="py-2">
@@ -9,7 +9,7 @@
             {#    <img class="card-img-top mb-5 mb-md-0" src="{{ tizer.url }}" alt="{{ project.title }}" />#}
            </div>
             <div class="col-md-8">
-                <div class="small mb-1">Створено: {{ page.specific.folder_date }}</div>
+                <div class="small mb-1">{% translate Створено %}: {{ page.specific.folder_date }}</div>
                 <h1 class="display-5 fw-bolder"> {{ page.title }}</h1><br>
                 <p class="lead">{{ page.specific.description | safe }}</p>
             </div>
@@ -43,9 +43,9 @@
   <div class="row g-0">
     <div class="col-md-1"> {# placeholder pic or icon is automatic in model method #}
         {%if file_item.have_preview%} {# can_preview was not automatic #}
-            <img src="{{file_item.preview_ico}}"   width="100%" class="rounded-start p-2" alt="{{file_item.name}}">
+            <img src="{{file_item.preview_ico}}" width="100%" class="rounded-start p-2" alt="{{file_item.name}}">
         {%else%}
-            <img src="{{file_item.preview_ico}}"  width="100%" class="rounded-start p-2" alt="{{file_item.name}}">
+            <img src="{{file_item.preview_ico}}" width="100%" class="rounded-start p-2" alt="{{file_item.name}}">
         {%endif%}
     </div>
     <div class="col-md-8">
@@ -60,7 +60,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">{{file_item.name}}</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% translate Close %}"></button>
       </div>
       <div class="modal-body">
           {%if file_item.preview_link_pic%}

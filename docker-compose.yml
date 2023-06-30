@@ -3,6 +3,7 @@ version: '3.7'
 services:
   b2bweb:
     build: .
+    container_name: b2b-backend
     command: sh entrypoint.prod.sh
     volumes:
       - .:/usr/src/app/
@@ -12,6 +13,7 @@ services:
       - .env.dev
     depends_on:
       - dbd
+      - redis
 
   dbd:
     image: postgres
@@ -35,3 +37,9 @@ services:
     depends_on:
       - dbd
       - b2bweb
+
+  redis:
+    image: redis:latest
+    container_name: docker-b2b-redis
+    ports:
+      - "6379:6379"

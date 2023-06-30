@@ -52,9 +52,9 @@ sudo docker images
 
 docker container ls
 
-sudo docker build -t ucc .
+sudo docker build -t b2b .
 
-sudo docker run ucc
+sudo docker run b2b
 
 sudo docker exec -it <container_id> /bin/bash
 
@@ -103,6 +103,7 @@ https://www.phooky.com/blog/dockerize-wagtail-postgresql-as-a-development-enviro
 
 docker-compose up -d --build
 docker-compose up  --build
+docker-compose down
 
 docker-compose exec web python manage.py createsuperuser --settings=core.settings.dev
 
