@@ -1,3 +1,4 @@
+import calendar
 import os
 import pathlib
 import locale
@@ -5,11 +6,13 @@ from datetime import datetime
 import uuid
 from operator import attrgetter
 
+from django import forms
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.utils.timesince import timesince
 from django.utils.translation import activate, gettext_lazy as _, get_language
+from django.shortcuts import render
 
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel, InlinePanel, TabbedInterface, ObjectList
@@ -19,6 +22,10 @@ from wagtail.documents.models import Document, AbstractDocument
 from wagtail.models import Page, Orderable, Locale
 from . import blocks
 from core import tools
+
+# Constants
+ALL_YEARS = True  # if no years filtered
+ALL_MONTHS = True  # if no months filtered
 
 
 # Genres functionality
@@ -52,7 +59,7 @@ class Project(Page):
             on_delete=models.SET_NULL,
             related_name='+'
     )
-    youtube_video_id = models.CharField(_('Youtube video ID'), max_length=50, blank=True, null=True,)
+    youtube_video_id = models.CharField(_('Youtube video ID'), max_length=50, blank=True, null=True, )
     body = RichTextField(blank=True)
     is_public = models.BooleanField(default=False)
 
@@ -91,12 +98,6 @@ class Projects(Page):
     parent_page_types = ['home.HomePage']
     page_description = _("Projects index page")
 
-
-class Planned(Page):
-    template = 'project' + os.sep + 'planned.html'
-    # max_count_per_parent = 2
-    parent_page_types = ['home.HomePage']
-
     def get_context(self, request):
         current_date = datetime.now()
         current_year = current_date.year
@@ -108,45 +109,138 @@ class Planned(Page):
         user_groups = user.groups.all()
 
         projects = Project.objects.live().filter(locale=Locale.get_active())
-
+        # projects = self.get_children().type(Project).live().filter(locale=Locale.get_active())
         if not user.is_superuser:
             if not user.is_authenticated:
                 projects = projects.filter(is_public=True)
             elif user.is_authenticated:
                 projects = projects.filter(is_public=True) | projects.filter(slug__in=user_groups)
 
-        projects_dict = projects
+        context['projects'] = projects
 
-        projects_current_year = projects_dict.filter(date__year=current_year)
+        context['language'] = language
 
-        # Group projects by month
+        return context
+
+
+class FilterForm(forms.Form):
+    months = forms.MultipleChoiceField(
+            choices=[(i, month_name) for i, month_name in enumerate(calendar.month_name)][1:],
+            widget=forms.CheckboxSelectMultiple,
+            required=False
+    )
+    years = forms.MultipleChoiceField(
+            choices=[(year, year) for year in range(datetime.now().year, datetime.now().year + 2)],
+            widget=forms.CheckboxSelectMultiple,
+            required=False
+    )
+
+
+class Planned(Page):
+    template = 'project' + os.sep + 'planned.html'
+    # max_count_per_parent = 2
+    parent_page_types = ['home.HomePage']
+
+    filter_form = FilterForm()
+
+    content_panels = Page.content_panels + []
+
+    def get_releases(self, request):
+        """
+        get list of projects, that not released.
+        from today to the future
+        visible depend of user groups
+        """
+        current_date = datetime.today()
+
+        user = request.user
+        user_groups = user.groups.all()
+        # all releases from today to the future
+        projects = Project.objects.live().filter(locale=Locale.get_active(), date__gte=current_date)
+        # filter releases by user access groups
+        if not user.is_superuser:
+            if not user.is_authenticated:
+                return projects.filter(is_public=True)
+            elif user.is_authenticated:
+                return projects.filter(is_public=True) | projects.filter(slug__in=user_groups)
+        return projects
+
+    def get_context(self, request, *args, **kwargs):
+        """
+        Releases page
+        this year projects grouped by month
+        next year releases grouped by year
+        if selected query for month filter current year releases other as usual
+        if selected only year - ignore all except selected year
+        """
+        MONTHS_FILTERING = False
+        YEARS_FILTERING = False
+
+        current_date = datetime.today()
+        context = super().get_context(request, *args, **kwargs)
+        context['releases'] = self.get_releases(request)
+        # Group projects by month in current year
+        projects_dict = self.get_releases(request)
+        print('projects_dict: ', projects_dict)
+
+        # get filtering options
+        filter_for_months = request.GET.getlist('months')
+        if filter_for_months:
+            MONTHS_FILTERING = True
+        filter_for_years = request.GET.getlist('years')
+        if filter_for_years:
+            YEARS_FILTERING = True
+
+        # this year projects
+        this_year_months = []
         grouped_projects = {}
-        for project in projects_current_year:
-            month = project.date.month  # months number
-            if project.date > current_date.date():  # or month >= current_month
-                if month not in grouped_projects:
-                    grouped_projects[month] = []
-                grouped_projects[month].append(project)
-            # Sort projects within each month
-            for month, projects in grouped_projects.items():
-                grouped_projects[month] = sorted(projects, key=attrgetter('date'))
 
+        if (YEARS_FILTERING and MONTHS_FILTERING) or \
+                (YEARS_FILTERING and (str(current_date.year) in filter_for_years)) or \
+                not YEARS_FILTERING:
+            this_year_projects = projects_dict.filter(date__year=current_date.year)
+            for project in this_year_projects:
+                month = project.date.month  # months number
+                if project.date > current_date.date():  # or month >= current_month
+                    if int(month) not in this_year_months:
+                        this_year_months.append(int(month))
+                    if MONTHS_FILTERING:
+                        if str(month) in filter_for_months:
+                            if month not in grouped_projects:
+                                grouped_projects[month] = []
+                            grouped_projects[month].append(project)
+                    else:
+                        if month not in grouped_projects:
+                            grouped_projects[month] = []
+                        grouped_projects[month].append(project)
+                # Sort projects within each month
+                for month, projects in grouped_projects.items():
+                    grouped_projects[month] = sorted(projects, key=attrgetter('date'))
             # Sort months in ascending order
             grouped_projects = dict(sorted(grouped_projects.items()))
 
-            # Next year projects
-            next_year = current_year + 1
-            projects = Project.objects.live().filter(locale=Locale.get_active())
-            projects_next_year = projects.filter(date__year=next_year)
+        # next years projects
+        next_years_projects = projects_dict.filter(date__year__gt=current_date.year)
+        next_years = [str(current_date.year)]
+        next_years_grouped_projects = {}
+        for project in next_years_projects:
+            year = str(project.date.year)  # months number
+            if year not in next_years:
+                next_years.append(year)
+            if YEARS_FILTERING and (year not in filter_for_years):
+                continue
+            if year not in next_years_grouped_projects:
+                next_years_grouped_projects[year] = []
+            next_years_grouped_projects[year].append(project)
+            # Sort projects within each month
+            for year, projects in next_years_grouped_projects.items():
+                next_years_grouped_projects[year] = sorted(projects, key=attrgetter('date'))
 
-            # Get month names based on language
-            context['grouped_projects'] = grouped_projects
-
-            context['next_year'] = next_year
-            context['next_year_projects'] = projects_next_year
-
-            context['language'] = language
-
+        # context for rendering
+        context['grouped_projects'] = grouped_projects
+        context['months'] = this_year_months
+        context['next_years'] = next_years
+        context['next_years_grouped_projects'] = next_years_grouped_projects
         return context
 
 
@@ -181,7 +275,7 @@ class FileFolder(Page):
     def get_context(self, request):  # https://stackoverflow.com/questions/32626815/wagtail-views-extra-context
         context = super().get_context(request)
         context['parent_project'] = self.get_ancestors().type(
-            Project).last()  # get Project for FileFolder because have recursion for FileFolder
+                Project).last()  # get Project for FileFolder because have recursion for FileFolder
 
         return context
 
@@ -191,7 +285,7 @@ class FileInFolder(Orderable):  # TODO: create page for file if can_preview like
     name = models.CharField(max_length=255, blank=True, null=True)
     can_preview = models.BooleanField(default=False)  # TODO: if picture = auto set to True
     file = models.FileField(
-        upload_to=tools.file_path)  # TODO: upload_to method need to know project and folder name for create dirs
+            upload_to=tools.file_path)  # TODO: upload_to method need to know project and folder name for create dirs
 
     panels = [
         FieldPanel('name'),
@@ -248,7 +342,7 @@ class FileInFolder(Orderable):  # TODO: create page for file if can_preview like
 
 class NewsArticle(Page):
     template = 'project' + os.sep + 'news_article.html'
-    parent_page_types = ['Project']
+    parent_page_types = ['Project', 'Projects']
     subpage_types = []
     author = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, default=None)
     news_project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, default=None)
@@ -288,6 +382,22 @@ class NewsArticle(Page):
         return parent_project.is_public
 
 
+class NewsPage(Page):
+    template = 'project' + os.sep + 'news_page.html'
+    max_count_per_parent = 1
+    subpage_types = []
+    parent_page_types = ['home.HomePage']
+    page_description = _("News index page")
+
+    def __str__(self):
+        return self.title
+
+    def get_context(self, request):  # https://stackoverflow.com/questions/32626815/wagtail-views-extra-context
+        context = super().get_context(request)
+        context['news'] = NewsArticle.objects.all().live()
+        return context
+
+
 class FilesToFolder(models.Model):
     user = models.ForeignKey(
             FileFolder, on_delete=models.SET_NULL, null=True, blank=True)
@@ -306,6 +416,7 @@ class FilesToFolder(models.Model):
     def is_open(self):
         parent_project = self.get_ancestors().type(Project).last()
         return parent_project.is_public
+
 
 class Photo(models.Model):
     class Meta:
