@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static i18n wagtailimages_tags wagtailcore_tags %}
+
+{% block body_class %}template-homepage{% endblock %}
+{% block extra_css %}
+{#<link rel="stylesheet" href="{% static 'css/project.css' %}" />#}
+{% endblock extra_css %} {% block content %}
+
+
+{# if request.user.is_authenticated #}
+<!-- Section-PROJECTS-PAGE -->
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+
+            {% for article in news %}
+           <div class="col mb-5">
+                <div class="card h-100">
+                    <!-- News image-->
+                    <img class="card-img-top" src="{{ article.featured_image.url }}" alt="{{ article.title}}" />
+                    <!-- article details-->
+                    <div class="card-body p-4">
+
+                        <div class="text-center">
+                            <!-- article name-->
+                            <h5 class="fw-bolder">{{ article.title}}</h5>
+                            {{ article.specific.article_date|date}}<br>
+                            {{ article.specific.body|striptags|truncatechars:55 }}
+                        </div>
+                    </div>
+                    <!-- article actions-->
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div class="text-center">
+                            <a class="btn btn-outline-dark mt-auto" href="{{ article.url }}">
+                                {% translate "Докладніше" %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

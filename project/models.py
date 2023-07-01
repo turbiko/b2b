@@ -2,8 +2,8 @@ import calendar
 import os
 import pathlib
 import locale
-from datetime import datetime
 import uuid
+from datetime import datetime
 from operator import attrgetter
 
 from django import forms
@@ -387,7 +387,7 @@ class NewsPage(Page):
     max_count_per_parent = 1
     subpage_types = []
     parent_page_types = ['home.HomePage']
-    page_description = _("News index page")
+    page_description = _("Новини")
 
     def __str__(self):
         return self.title
