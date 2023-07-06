@@ -22,7 +22,9 @@ class HomePage(Page):
         # https://stackoverflow.com/questions/32626815/wagtail-views-extra-context
         context = super().get_context(request)
         user = request.user
-        user_groups = user.groups.all()
+        user_groups = []
+        for group in user.groups.all():
+            user_groups.append(group.name)
         language = get_language()
 
         projects = Project.objects.live().filter(locale=Locale.get_active())

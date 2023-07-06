@@ -106,7 +106,9 @@ class Projects(Page):
         language = get_language()
 
         user = request.user
-        user_groups = user.groups.all()
+        user_groups = []
+        for group in user.groups.all():
+            user_groups.append(group.name)
 
         projects = Project.objects.live().filter(locale=Locale.get_active())
         # projects = self.get_children().type(Project).live().filter(locale=Locale.get_active())
@@ -154,7 +156,9 @@ class Planned(Page):
         current_date = datetime.today()
 
         user = request.user
-        user_groups = user.groups.all()
+        user_groups = []
+        for group in user.groups.all():
+            user_groups.append(group.name)
         # all releases from today to the future
         projects = Project.objects.live().filter(locale=Locale.get_active(), date__gte=current_date)
         # filter releases by user access groups
@@ -162,7 +166,9 @@ class Planned(Page):
             if not user.is_authenticated:
                 return projects.filter(is_public=True)
             elif user.is_authenticated:
-                return projects.filter(is_public=True) | projects.filter(slug__in=user_groups)
+                projects1 = projects.filter(is_public=True)
+                projects2 = projects.filter(slug__in=user_groups)
+                return projects1 | projects2
         return projects
 
     def get_context(self, request, *args, **kwargs):
@@ -181,6 +187,7 @@ class Planned(Page):
         context['releases'] = self.get_releases(request)
         # Group projects by month in current year
         projects_dict = self.get_releases(request)
+
         print('projects_dict: ', projects_dict)
 
         # get filtering options
