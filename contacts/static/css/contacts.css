@@ -18,6 +18,12 @@
   margin: 10px 5px;
 }
 
+.photo img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+}
+
 .photo1 {
   width: 120px;
   height: 120px;

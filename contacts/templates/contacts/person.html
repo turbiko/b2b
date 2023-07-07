@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static i18n wagtailimages_tags wagtailcore_tags %}
+
+{% block body_class %}template-homepage{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/contacts.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+
+  <div class="container">
+
+    <div class="row">
+
+      <div class="block">
+        <div class="photo">
+            {% image self.specific.representative_image fill-120x120 %}
+        </div>
+        <div class="text">
+          <span><b>{{ self.title }}</b></span><br>
+          <span><b>{{ self.name }}</b></span><br>
+          <span>{{ self.company_position }}</span><br>
+          <span>{{ self.company }}</span><br><br>
+          <span><b>{{ self.email }}</b></span><br>
+        </div>
+      </div>
+
+
+    </div>
+
+  </div>
+{% endblock content %}

@@ -23,6 +23,7 @@ class HomePage(Page):
         context = super().get_context(request)
         user = request.user
         user_groups = []
+
         for group in user.groups.all():
             user_groups.append(group.name)
         language = get_language()
