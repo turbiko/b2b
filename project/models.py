@@ -91,12 +91,30 @@ class Project(Page):
         # ordering = ['-date']
 
 
+
+
 class Projects(Page):
     template = 'project' + os.sep + 'projects.html'
     max_count_per_parent = 1
     subpage_types = ['Project']
     parent_page_types = ['home.HomePage']
     page_description = _("Projects index page")
+
+    @classmethod
+    def accessible(cls, request):
+        active_projects = Project.objects.live().filter(locale=Locale.get_active())
+        user = request.user
+        user_groups = []
+        for group in user.groups.all():
+            user_groups.append(group.name)
+
+        if not user.is_superuser:
+            if not user.is_authenticated:
+                return active_projects.filter(is_public=True)
+            elif user.is_authenticated:
+                return active_projects.filter(is_public=True) | active_projects.filter(slug__in=user_groups)
+
+        return active_projects
 
     def get_context(self, request):
         current_date = datetime.now()
@@ -105,18 +123,7 @@ class Projects(Page):
 
         language = get_language()
 
-        user = request.user
-        user_groups = []
-        for group in user.groups.all():
-            user_groups.append(group.name)
-
-        projects = Project.objects.live().filter(locale=Locale.get_active())
-        # projects = self.get_children().type(Project).live().filter(locale=Locale.get_active())
-        if not user.is_superuser:
-            if not user.is_authenticated:
-                projects = projects.filter(is_public=True)
-            elif user.is_authenticated:
-                projects = projects.filter(is_public=True) | projects.filter(slug__in=user_groups)
+        projects = self.accessible(request=request)
 
         context['projects'] = projects
 
