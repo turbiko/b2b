@@ -27,10 +27,13 @@ logger = logging.getLogger(__name__)
 
 
 def add_photo(request, pk):
+    logger.info(f'Page (add_photo) was accessed by {request.user} ')
+
     project_folder = FileFolder.objects.get(pk=pk)
     previev_selector = True
 
     if request.method == 'POST':
+        logger.info(f'Action POST (add_photo)  by {request.user} started')
         data = request.POST
         images = request.FILES.getlist('images')
 
@@ -48,6 +51,8 @@ def add_photo(request, pk):
                     can_preview=previev_selector,
             )
         project_folder.save()  # TODO change time in  last_published_at
+
+        logger.info(f'Action POST (add_photo)  by {request.user} sucsessful')
         return redirect(project_folder.url)
 
     logger.info(project_folder.url + " | " + request.user.username)
