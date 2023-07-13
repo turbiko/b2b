@@ -406,3 +406,4 @@ media/news
 /static/
 .postgres_data/
 warning.log
+
