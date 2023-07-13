@@ -12,8 +12,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from django.core.management import utils
 from django.utils.translation import gettext_lazy as _
-import logging
 
 DATE_FORMAT = 'd F Y'
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,6 +23,8 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
+SECRET_KEY = utils.get_random_secret_key()
+print('SECRET_KEY: ', SECRET_KEY)
 
 # Application definition
 
@@ -36,6 +38,7 @@ INSTALLED_APPS = [
     # "wagtailseo",
     # Wagtail
     "search",
+    'wagtail.api.v2',
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
     "wagtail.embeds",
@@ -269,17 +272,35 @@ LOGGING = {
     'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
-            'format': '{name} {levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'format': '{asctime} {name} {levelname} {module} {message}',
             'style':  '{',
         },
         'simple':  {
-            'format': '{levelname} {message}',
+            'format': '{asctime} {levelname} {message}',
             'style':  '{',
+        },
+    },
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
         },
     },
     # django uses some of its own loggers for internal operations. In case you want to disable them just replace the False above with true.
     # A handler for WARNING. It is basically writing the WARNING messages into a file called WARNING.log
+
+    #    DEBUG (10) detailed
+    #    INFO (20) informational, all ok but let me know that
+    #    WARNING (30) something wrong, but application will continue
+    #    ERROR (40) application can`t do someting
+    #    CRITICAL (50) application will crash
+
     'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
         'file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
@@ -291,14 +312,14 @@ LOGGING = {
     'loggers': {
         'project': {
             'handlers':  ['file'],  # notice how file variable is called in handler which has been defined above
-            'level':     'INFO',
+            'level':     'INFO',  # CRITICAL ERROR WARNING INFO DEBUG
             'propagate': True,
             'formatter': 'verbose'
         },
        # notice the blank '', Usually you would put built in loggers like django or root here based on your needs
         '': {
-            'handlers': ['file'], #notice how file variable is called in handler which has been defined above
-            'level': 'INFO',
+            'handlers': ['console', 'file'], #notice how file variable is called in handler which has been defined above
+            'level': 'DEBUG',
             'propagate': True,
             'formatter': 'verbose'
         },
