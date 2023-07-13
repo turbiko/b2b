@@ -8,10 +8,6 @@ print('DEBUG.dev= ', DEBUG)
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = "/static/"
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "dm*#_9rs0r0z$g)65#m12y6wxl@rpw$%1dxu@+(x^dm*#_9rs0r0z$g)65#m12y6wv!=2b%"
-
-
 WAGTAIL_CACHE = False
 
 DATABASES = {
