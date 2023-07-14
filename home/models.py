@@ -17,7 +17,6 @@ from wagtail.admin.panels import (
 from project.models import Project, Projects
 
 logger = logging.getLogger('project')
-# logger.setLevel(logging.DEBUG)
 
 class HomePage(Page):
     template = 'home/home_page.html'
@@ -27,23 +26,20 @@ class HomePage(Page):
         # https://learnwagtail.com/tutorials/how-to-paginate-your-wagtail-pages/
         # https://stackoverflow.com/questions/32626815/wagtail-views-extra-context
         logger.info(f'Homepage (get_context) was accessed by {request.user} ')
-        logger.critical(f'Homepage (get_context) was accessed by ={request.user}= ')
         context = super().get_context(request)
         user = request.user
         user_groups = []
 
         for group in user.groups.all():
             user_groups.append(group.name)
-        language = get_language()
 
         projects = Projects.accessible(request=request)
 
         context['projects'] = projects
 
-        print(f'{user=} {user_groups=}' )
-        print(f'{projects=} {projects.count()}' )
+        logger.info(f'Homepage (get_context): {user} {projects.count()=}')
+
         return context
 
     class Meta:
         verbose_name = "B2B main page"
-
