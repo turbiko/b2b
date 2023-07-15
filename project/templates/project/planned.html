@@ -10,80 +10,66 @@
 {% endblock extra_css %}
 
 {% block content %}
+<!--
 <section class="py-5">
-<div class="container px-4 px-lg-5">
+    <div class="container px-4 px-lg-5">
+        <form id="filterForm"  class="float-end">
+        {% for month in months %}
+            <div class="form-check form-check-inline">
+                <input type="checkbox" type="checkbox" name="months" value="{{ month }}">
+                <label class="form-check-label" for="inlineCheckbox1">{{ month_name|months_by_num:month|date:"F" }}</label>
+            </div>
+        {% endfor %}
+        {% for year in years %}
+            <div class="form-check form-check-inline">
+                <input type="checkbox" type="checkbox" name="years" value="{{ year }}">
+                <label class="form-check-label" for="inlineCheckbox1">{{ year }}</label>
+            </div>
+        {% endfor %}
+            {# Add more year checkboxes as needed #}
+          <button type="submit" class="btn btn-outline-dark mt-auto">{% translate "Обрати" %}</button>
+        </form>
+        <script>
+        document.getElementById("filterForm").addEventListener("submit", function(event) {
+          event.preventDefault(); // Prevent the form from submitting normally
+          var form = event.target;
+          var formData = new FormData(form);
+          var selectedMonths = Array.from(formData.getAll("months"));
+          var selectedYears = Array.from(formData.getAll("years"));
+          // Construct the URL with active checkbox values
+          var url = "{{ request.path }}?" + constructQueryString({ months: selectedMonths, years: selectedYears });
+          // Redirect to the constructed URL
+          window.location.href = url;
+        });
 
-<form id="filterForm"  class="float-end">
-
-{% for month in months %}
-    <div class="form-check form-check-inline">
-        <input type="checkbox" type="checkbox" name="months" value="{{ month }}">
-        <label class="form-check-label" for="inlineCheckbox1">{{ month_name|months_by_num:month|date:"F" }}</label>
+        function constructQueryString(params) {
+          var queryString = "";
+          for (var key in params) {
+            if (params.hasOwnProperty(key)) {
+              var paramValue = params[key];
+              // Skip empty parameters
+              if (paramValue.length === 0) {
+                continue;
+              }
+              // Join multiple values with commas
+              if (Array.isArray(paramValue)) {
+                paramValue = paramValue.join(",");
+              }
+              // Encode parameter key and value
+              var encodedKey = encodeURIComponent(key);
+              var encodedValue = encodeURIComponent(paramValue);
+              // Append the parameter to the query string
+              queryString += encodedKey + "=" + encodedValue + "&";
+            }
+          }
+          // Remove the trailing "&" and return the constructed query string
+          return queryString.slice(0, -1);
+        }
+        </script>
     </div>
-{% endfor %}
-
-{% for year in next_years %}
-    <div class="form-check form-check-inline">
-        <input type="checkbox" type="checkbox" name="years" value="{{ year }}">
-        <label class="form-check-label" for="inlineCheckbox1">{{ year }}</label>
-    </div>
-{% endfor %}
-    {# Add more year checkboxes as needed #}
-  <button type="submit" class="btn btn-outline-dark mt-auto">{% translate "Обрати" %}</button>
-
-</form>
-
-<script>
-document.getElementById("filterForm").addEventListener("submit", function(event) {
-  event.preventDefault(); // Prevent the form from submitting normally
-
-  var form = event.target;
-  var formData = new FormData(form);
-
-  var selectedMonths = Array.from(formData.getAll("months"));
-  var selectedYears = Array.from(formData.getAll("years"));
-
-  // Construct the URL with active checkbox values
-  var url = "{{ request.path }}?" + constructQueryString({ months: selectedMonths, years: selectedYears });
-
-  // Redirect to the constructed URL
-  window.location.href = url;
-});
-
-function constructQueryString(params) {
-  var queryString = "";
-
-  for (var key in params) {
-    if (params.hasOwnProperty(key)) {
-      var paramValue = params[key];
-
-      // Skip empty parameters
-      if (paramValue.length === 0) {
-        continue;
-      }
-
-      // Join multiple values with commas
-      if (Array.isArray(paramValue)) {
-        paramValue = paramValue.join(",");
-      }
-
-      // Encode parameter key and value
-      var encodedKey = encodeURIComponent(key);
-      var encodedValue = encodeURIComponent(paramValue);
-
-      // Append the parameter to the query string
-      queryString += encodedKey + "=" + encodedValue + "&";
-    }
-  }
-
-  // Remove the trailing "&" and return the constructed query string
-  return queryString.slice(0, -1);
-}
-
-</script>
-
-</div>
 </section>
+-->
+
 <!-- Section-PROJECTS-PAGE -->
 
 <section class="py-5">
@@ -129,7 +115,7 @@ function constructQueryString(params) {
     {% endfor %}
     </div>
     {% endif %}
-{# next_year list #}
+{# years list #}
     <div class="container px-4 px-lg-5 mt-5">
     {% for year, projects in next_years_grouped_projects.items %}
     <div class="d-flex justify-content-center"><h2>{{ year }}</h2></div>
