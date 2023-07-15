@@ -88,7 +88,7 @@ class Project(Page):
     class Meta:
         verbose_name = _("Project")
         verbose_name_plural = _("Projects")
-        # ordering = ['-date']
+        ordering = ['date']
 
 
 
@@ -101,9 +101,12 @@ class Projects(Page):
     page_description = _("Projects index page")
 
     @classmethod
-    def accessible(cls, request):
-        active_projects = Project.objects.live().filter(locale=Locale.get_active())
+    def accessible(cls, request):  # Projects
+        active_projects = Project.objects.live().filter(locale=Locale.get_active()).order_by('date')
+        print('active_projects', active_projects)
+
         user = request.user
+        print('user', user)
         user_groups = []
         for group in user.groups.all():
             user_groups.append(group.name)
@@ -116,18 +119,74 @@ class Projects(Page):
 
         return active_projects
 
-    def get_context(self, request):
+    def get_context(self, request):  # Projects
+
+        MONTHS_FILTERING = False
+        YEARS_FILTERING = False
+
         current_date = datetime.now()
         current_year = current_date.year
-        context = {}
 
-        language = get_language()
+        this_year_projects = []
+        other_years_projects = []
 
-        projects = self.accessible(request=request)
+        # get filtering options
+        filter_for_months = request.GET.getlist('months')
+        filter_for_months = [eval(i) for i in filter_for_months]  # months as integer
+        print('filter_for_months', filter_for_months)
+        if filter_for_months:
+            MONTHS_FILTERING = True
 
-        context['projects'] = projects
+        filter_for_years = request.GET.getlist('years')
+        filter_for_years = [eval(i) for i in filter_for_years]  # years as integer
+        if filter_for_years:
+            YEARS_FILTERING = True
+            if MONTHS_FILTERING:
+                if current_year not in filter_for_years:
+                    filter_for_years.append(current_year)
 
-        context['language'] = language
+        all_projects = self.accessible(request=request)
+        print('all_projects', all_projects)
+
+        this_year_projects = all_projects.filter(date__year=current_year)
+        print(f'this_year_projects {filter_for_months}:', this_year_projects)
+
+        other_years_projects = all_projects.exclude(date__year=current_year)
+        print(f'other_years_projects{filter_for_years}', other_years_projects)
+
+        # this year filtering
+        this_year_months = []
+        filtered_this_year_projects = set()
+        for project in this_year_projects:  # get all projects months in current year
+            month = project.date.month
+            if month not in this_year_months:
+                this_year_months.append(month)
+            filtered_this_year_projects.add(project)
+
+        print('filtered_this_year_projects', filtered_this_year_projects)
+
+        # years filtering
+        all_years = []
+        filtered_other_years_projects = set()
+        for project in all_projects:
+            year = project.date.year
+            if year not in all_years:
+                all_years.append(year)
+            filtered_other_years_projects.add(project)
+
+        print('filtered_other_years_projects', filtered_other_years_projects)
+
+        # =====================finish===============================
+        # context for rendering
+        print('months', this_year_months)
+        print('all_years', all_years)
+        projects = filtered_this_year_projects | filtered_other_years_projects
+        projects = sorted(projects, key=attrgetter('date'))
+        context = {
+            'projects': projects,
+            'months': sorted(this_year_months),
+            'years': sorted(all_years),
+        }
 
         return context
 
@@ -154,7 +213,7 @@ class Planned(Page):
 
     content_panels = Page.content_panels + []
 
-    def get_releases(self, request):
+    def get_releases(self, request):  # Planned
         """
         get list of projects, that not released.
         from today to the future
@@ -178,7 +237,7 @@ class Planned(Page):
                 return projects1 | projects2
         return projects
 
-    def get_context(self, request, *args, **kwargs):
+    def get_context(self, request, *args, **kwargs):  # Planned
         """
         Releases page
         this year projects grouped by month
@@ -253,7 +312,7 @@ class Planned(Page):
         # context for rendering
         context['grouped_projects'] = grouped_projects
         context['months'] = this_year_months
-        context['next_years'] = next_years
+        context['years'] = next_years
         context['next_years_grouped_projects'] = next_years_grouped_projects
         return context
 
