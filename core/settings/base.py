@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECRET_KEY = utils.get_random_secret_key()
-SECRET_KEY = 'ryu_zr&i&2ne6kt9uib5oy8rca6ygb5tv!5hbdpo-%%9hn2_43k'
+SECRET_KEY = 'ryu_zr&i&2ne6kt9uib5oy8rca6ygb5tv!5hb#po-%%9hn2_43k'
 print('SECRET_KEY: ', SECRET_KEY)
 
 # Application definition
