@@ -134,10 +134,14 @@ class Projects(Page):
         this_year_months = set()
         all_years = set()
         if all_projects:
-            for project in all_projects:
-                all_years.add(project.date.year)
-                if project.date.year == current_year:
-                    this_year_months.add(project.date.month)
+            try:
+                for project in all_projects:
+                    all_years.add(project.date.year)
+                    if project.date.year == current_year:
+                        this_year_months.add(project.date.month)
+            except AttributeError as e:
+                # Handle the 'NoneType' attribute error here
+                logger.error(f"Error: {e} 'NoneType' object has no attribute 'year'")
         print('all_years', all_years)
         print('this_year_months', this_year_months)
 
