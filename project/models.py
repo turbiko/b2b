@@ -1,8 +1,7 @@
 import calendar
 import os
 import pathlib
-import locale
-import uuid
+import logging
 from datetime import datetime
 from operator import attrgetter
 
@@ -22,6 +21,8 @@ from wagtail.documents.models import Document, AbstractDocument
 from wagtail.models import Page, Orderable, Locale
 from . import blocks
 from core import tools
+
+logger = logging.getLogger('project')
 
 # Constants
 ALL_YEARS = True  # if no years filtered
@@ -101,7 +102,7 @@ class Projects(Page):
     @classmethod
     def accessible(cls, request):  # Projects
         active_projects = Project.objects.live().filter(locale=Locale.get_active()).order_by('date')
-        print('active_projects', active_projects)
+        # active_projects = Project.objects.live().filter(locale=Locale.get_active())
 
         user = request.user
         print('user', user)
@@ -115,11 +116,13 @@ class Projects(Page):
             elif user.is_authenticated:
                 return active_projects.filter(is_public=True) | active_projects.filter(slug__in=user_groups)
 
+        logger.info(f'Projects (accessible) for {request.user} {active_projects.count()=}')
         return active_projects
 
     def get_context(self, request):  # Projects
         # Get projects accessible for user
         all_projects = self.accessible(request=request)
+        logger.info(f'Projects (get_context) for {request.user} {all_projects.count()=}')
 
         MONTHS_FILTERING = False
         YEARS_FILTERING = False
@@ -130,10 +133,11 @@ class Projects(Page):
         # set filtering options
         this_year_months = set()
         all_years = set()
-        for project in all_projects:
-            all_years.add(project.date.year)
-            if project.date.year == current_year:
-                this_year_months.add(project.date.month)
+        if all_projects:
+            for project in all_projects:
+                all_years.add(project.date.year)
+                if project.date.year == current_year:
+                    this_year_months.add(project.date.month)
         print('all_years', all_years)
         print('this_year_months', this_year_months)
 
