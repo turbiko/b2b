@@ -3,13 +3,16 @@ from .models import Genre, ProjectGenres, Project, Projects, FileFolder, FileInF
 
 admin.site.register(Genre)
 admin.site.register(ProjectGenres)
-admin.site.register(Project)
+# admin.site.register(Project)
 admin.site.register(FileFolder)
 # admin.site.register(FileInFolder)
 admin.site.register(NewsArticle)
 admin.site.register(FilesToFolder)
 admin.site.register(Photo)
 
+@admin.register(Project)
+class YourModelAdmin(admin.ModelAdmin):
+    list_display = ('title', 'is_public', 'date', 'slug' )
 @admin.register(FileInFolder)
 class FileInFolderAdmin(admin.ModelAdmin):
     list_display = ("name", "page")
