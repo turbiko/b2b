@@ -91,8 +91,6 @@ class Project(Page):
         ordering = ['date']
 
 
-
-
 class Projects(Page):
     template = 'project' + os.sep + 'projects.html'
     max_count_per_parent = 1
@@ -120,6 +118,8 @@ class Projects(Page):
         return active_projects
 
     def get_context(self, request):  # Projects
+        # Get projects accessible for user
+        all_projects = self.accessible(request=request)
 
         MONTHS_FILTERING = False
         YEARS_FILTERING = False
@@ -127,63 +127,54 @@ class Projects(Page):
         current_date = datetime.now()
         current_year = current_date.year
 
-        this_year_projects = []
-        other_years_projects = []
+        # set filtering options
+        this_year_months = set()
+        all_years = set()
+        for project in all_projects:
+            all_years.add(project.date.year)
+            if project.date.year == current_year:
+                this_year_months.add(project.date.month)
+        print('all_years', all_years)
+        print('this_year_months', this_year_months)
 
         # get filtering options
         filter_for_months = request.GET.getlist('months')
         filter_for_months = [eval(i) for i in filter_for_months]  # months as integer
-        print('filter_for_months', filter_for_months)
+        filter_for_years = request.GET.getlist('years')
+        filter_for_years = [eval(i) for i in filter_for_years]  # years as integer
+
+        # set filtering switches
         if filter_for_months:
             MONTHS_FILTERING = True
 
-        filter_for_years = request.GET.getlist('years')
-        filter_for_years = [eval(i) for i in filter_for_years]  # years as integer
         if filter_for_years:
             YEARS_FILTERING = True
-            if MONTHS_FILTERING:
-                if current_year not in filter_for_years:
-                    filter_for_years.append(current_year)
 
-        all_projects = self.accessible(request=request)
-        print('all_projects', all_projects)
+        print('filter_for_months', filter_for_months)
 
-        this_year_projects = all_projects.filter(date__year=current_year)
+        this_year_projects = all_projects.none()
+        other_years_projects = all_projects.none()
+
         print(f'this_year_projects {filter_for_months}:', this_year_projects)
+        if MONTHS_FILTERING:
+            this_year_projects = all_projects.filter(date__year=current_year)
+            this_year_projects = this_year_projects.filter(date__month__in=filter_for_months)
 
-        other_years_projects = all_projects.exclude(date__year=current_year)
-        print(f'other_years_projects{filter_for_years}', other_years_projects)
+        if YEARS_FILTERING:
+            other_years_projects = all_projects.filter(date__year__in=filter_for_years)
 
-        # this year filtering
-        this_year_months = []
-        filtered_this_year_projects = set()
-        for project in this_year_projects:  # get all projects months in current year
-            month = project.date.month
-            if month not in this_year_months:
-                this_year_months.append(month)
-            filtered_this_year_projects.add(project)
+        if YEARS_FILTERING and not MONTHS_FILTERING:
+            other_years_projects = all_projects.filter(date__year__in=filter_for_years)
 
-        print('filtered_this_year_projects', filtered_this_year_projects)
-
-        # years filtering
-        all_years = []
-        filtered_other_years_projects = set()
-        for project in all_projects:
-            year = project.date.year
-            if year not in all_years:
-                all_years.append(year)
-            filtered_other_years_projects.add(project)
-
-        print('filtered_other_years_projects', filtered_other_years_projects)
+        if not YEARS_FILTERING and not MONTHS_FILTERING:
+            other_years_projects = all_projects
 
         # =====================finish===============================
         # context for rendering
-        print('months', this_year_months)
-        print('all_years', all_years)
-        projects = filtered_this_year_projects | filtered_other_years_projects
-        projects = sorted(projects, key=attrgetter('date'))
+        projects = this_year_projects | other_years_projects
+
         context = {
-            'projects': projects,
+            'projects': sorted(projects, key=attrgetter('date')),
             'months': sorted(this_year_months),
             'years': sorted(all_years),
         }
