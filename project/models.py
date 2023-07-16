@@ -180,11 +180,14 @@ class Projects(Page):
         # =====================finish===============================
         # context for rendering
         projects = this_year_projects | other_years_projects
-
+        # projects = sorted(projects, key=attrgetter('date'))
+        projects = sorted(projects, key=attrgetter('id'))
+        months = sorted(this_year_months)
+        years = sorted(all_years)
         context = {
-            'projects': sorted(projects, key=attrgetter('date')),
-            'months': sorted(this_year_months),
-            'years': sorted(all_years),
+            'projects': projects,
+            'months': months,
+            'years': years,
         }
 
         return context
