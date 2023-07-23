@@ -406,4 +406,6 @@ media/news
 /static/
 .postgres_data/
 warning.log
-
+.env.prod
+.env.dev
+.env.db

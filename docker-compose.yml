@@ -27,7 +27,7 @@ services:
   nginx:
     image: library/nginx:latest
     container_name: docker-b2b-nginx
-    ports:
+    ports:  # host-port 8083 (:) container-port 8090
       - "8083:8090"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
