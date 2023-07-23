@@ -60,7 +60,7 @@ INSTALLED_APPS = [
     'menus.apps.MenusConfig',
     'project.apps.ProjectConfig',
     'contacts.apps.ContactsConfig',
-    'company.apps.CompanyConfig',
+    # 'company.apps.CompanyConfig',
 ]
 
 MIDDLEWARE = [
