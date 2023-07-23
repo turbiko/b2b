@@ -12,6 +12,22 @@ DATABASES = {
     }
 }
 
+"""
+#  https://learndjango.com/tutorials/django-docker-and-postgresql-tutorial
+# psycopg2-binary
+# python -m pip install psycopg2-binary==2.9.6
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "postgres",
+        "USER": "postgres",
+        "PASSWORD": "postgres",
+        "HOST": "db",  # set in docker-compose.yml
+        "PORT": 5432,  # default postgres port
+    }
+}
+"""
+
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 DEFAULT_FROM_EMAIL = "b2b.film.ua <noreply@argentum.ua>"
 
@@ -45,6 +61,7 @@ CACHES = {
         "TIMEOUT": 120,  # in seconds 14400
     }
 }
+
 
 try:
     from .local import *
