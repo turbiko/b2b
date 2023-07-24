@@ -20,7 +20,8 @@ logger = logging.getLogger('project')
 
 class HomePage(Page):
     template = 'home/home_page.html'
-    max_count = 2  # TODO: need for each locale 1 HomePage
+    parent_page_types = ['wagtailcore.Page']
+    max_count = 1  # TODO: need for each locale 1 HomePage
 
     def get_context(self, request):
         # https://learnwagtail.com/tutorials/how-to-paginate-your-wagtail-pages/

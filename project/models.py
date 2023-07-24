@@ -58,11 +58,13 @@ class Project(Page):
             null=True,
             blank=True,
             on_delete=models.SET_NULL,
-            related_name='+'
+            related_name='+',
+            help_text='picture of the representative of the project'
     )
     youtube_video_id = models.CharField(_('Youtube video ID'), max_length=50, blank=True, null=True, )
     body = RichTextField(blank=True)
-    is_public = models.BooleanField(default=False)
+    is_public = models.BooleanField(default=False,
+                                    help_text='if True - acessible for all visitors')
 
     content_panels = Page.content_panels + [
         MultiFieldPanel([

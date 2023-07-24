@@ -12,97 +12,21 @@
   <div class="container">
 
     <div class="row">
+{% for contact in contact_list %}
       <div class="block">
-        <div class="photo1"></div>
+        <div class="photo">{% image contact.representative_image width-100 %}</div>
         <div class="text">
-          <span><b>Надія Коротушка</b></span><br>
-          <span>Директорка прокату</span><br>
-          <span>FILM.UA Distribution</span><br><br>
-          <span><b>n.korotushka@film.ua</b></span><br>
+          <span><b>{{ contact.name }}</b></span><br>
+          <span>{{ contact.company_position }}</span><br>
+          <span>{{ contact.company }}</span><br><br>
+          <span><b>{{ contact.email }}</b></span><br>
         </div>
       </div>
-
-	  <div class="block">
-        <div class="photo3"></div>
-        <div class="text">
-          <span><b>Наталія Павленко</b></span><br>
-          <span>Менеджер із закупівель департаменту збуту </span><br>
-          <span>FILM.UA Distribution</span><br><br>
-          <span><b>n.pavlenko@film.ua</b></span><br>
-        </div>
-      </div>
-	  
-      <div class="block">
-        <div class="photo8"></div>
-        <div class="text">
-          <span><b>Марія Феленко</b></span><br>
-          <span>Фахівець з комунікацій</span><br>
-          <span>FILM.UA Group</span><br><br>
-          <span><b>m.felenko@film.ua</b></span><br>
-        </div>
-      </div>
-	  
-      <div class="block">
-        <div class="photo2"></div>
-        <div class="text">
-          <span><b>Валентина Стеценко</b></span><br>
-          <span>Менеджерка прокату</span><br>
-          <span>FILM.UA Distribution</span><br><br>
-          <span><b>v.stetsenko@film.ua</b></span><br>
-        </div>
-      </div>
-
-      <div class="block">
-        <div class="photo5"></div>
-        <div class="text">
-          <span><b>Валерія Литвиненко</b></span><br>
-          <span>Промо-продюсерка повнометражних фільмів </span><br>
-          <span>FILM.UA Group</span><br><br>
-          <span><b>v.lytvynenko@film.ua</b></span><br>
-        </div>
-      </div>
-
-      <div class="block">
-        <div class="photo7"></div>
-        <div class="text">
-          <span><b>Катерина Зіміна (Косенко)</b></span><br>
-          <span>PR-директорка </span><br>
-          <span>FILM.UA Group</span><br><br>
-          <span><b>k.zimina@film.ua</b></span><br>
-        </div>
-      </div>
-	  
-      <div class="block">
-        <div class="photo4"></div>
-        <div class="text">
-          <span><b>Дмитро Майстренко</b></span><br>
-          <span>Керівник промо-відділу повнометражних фільмів</span><br>
-          <span>FILM.UA Group</span><br><br>
-          <span><b>d.maistrenko@film.ua</b></span><br>
-        </div>
-      </div>
-
-      <div class="block">
-        <div class="photo9"></div>
-        <div class="text">
-          <span><b>Іра Станкевич</b></span><br>
-          <span>Керівниця SMM департаменту </span><br>
-          <span>FILM.UA Group</span><br><br>
-          <span><b>i.stankevich@film.ua</b></span><br>
-        </div>
-      </div>
-
-	  <div class="block">
-        <div class="photo6"></div>
-        <div class="text">
-          <span><b>Марія Лісніченко</b></span><br>
-          <span>Промо-продюсерка, менеджерка фестивального напрямку</span><br>
-          <span>FILM.UA Group</span><br><br>
-          <span><b>m.lisnichenko@film.ua</b></span><br>
-        </div>
-      </div>
+{% endfor %}
 
     </div>
 
   </div>
+
+
 {% endblock content %}

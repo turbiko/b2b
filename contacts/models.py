@@ -4,22 +4,32 @@ from django.db import models
 
 from wagtail.admin.panels import FieldPanel
 from wagtail.fields import RichTextField
-from wagtail.models import Page
+from wagtail.models import Page, Orderable, Locale
 from wagtail.users.forms import User
-
 
 
 class Contacts(Page):
     template = 'contacts' + os.sep + 'contacts.html'
     parent_page_types = ['home.HomePage']
 
-    short_story = RichTextField(blank=True)
-    contacts_story = RichTextField(blank=True)
+    short_story = RichTextField(blank=True,
+                                help_text='Short description of contacts')
+    contacts_story = RichTextField(blank=True,
+                                   help_text='Description of contacts')
 
     content_panels = Page.content_panels + [
         FieldPanel('short_story'),
         FieldPanel('contacts_story'),
     ]
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        context['user'] = request.user
+        contact_list = Person.objects.all().filter(locale=Locale.get_active()).filter(is_contact=True)
+        print("contact_list: ", contact_list)
+        context['contact_list'] = contact_list
+
+        return context
 
 
 class Person(Page):
@@ -46,6 +56,7 @@ class Person(Page):
 
     content_panels = Page.content_panels + [
         FieldPanel('user'),
+        FieldPanel('is_contact'),
         FieldPanel('representative_image'),
         FieldPanel('name'),
         FieldPanel('email'),
