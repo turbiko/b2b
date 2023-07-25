@@ -19,6 +19,8 @@ from wagtail.fields import RichTextField
 from wagtail.documents.models import Document, AbstractDocument
 
 from wagtail.models import Page, Orderable, Locale
+
+from contacts.models import ProjectRole
 from . import blocks
 from core import tools
 
@@ -84,8 +86,15 @@ class Project(Page):
 
     def get_context(self, request):  # https://stackoverflow.com/questions/32626815/wagtail-views-extra-context
         context = super(Project, self).get_context(request)
+        # get child pages
+        positions = self.get_children().live().type(ProjectRole)
         context['folders'] = self.get_children().type(FileFolder)
         context['news'] = self.get_children().type(NewsArticle)
+        context['positions'] = positions
+        print('positions', positions)
+        for position in positions:
+            print('position', position)
+            print('position.persons.all()', position.specific.persons.all())
         return context
 
     class Meta:

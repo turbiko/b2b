@@ -79,9 +79,12 @@ class ProjectRole(Page):
         FieldPanel('persons'),
     ]
 
+    def all_persons(self, request, *args, **kwargs):
+        return self.persons.filter(locale=Locale.get_active()).all()
+
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
         context['user'] = request.user
-        context['person_list'] = self.persons.all()
-        print("person_list: ", self.persons.filter(locale=Locale.get_active()).all())
+        context['person_list'] = self.all_persons(request)
+        print("person_list: ", self.all_persons(request))
         return context

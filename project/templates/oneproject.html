@@ -22,6 +22,16 @@
                         {% endfor %}
                     </span>
                 </div>
+                <div class="fs-5 mb-2">
+                    <span>
+                        {% for position in positions %}{{ position.title }}:
+                            {% for person in position.specific.persons.all %}{{ person.name }}:
+
+                                {% if forloop.last %} <br> {% else %}, {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </span>
+                </div>
                 <p class="lead  mb-2">{{ page.specific.body | safe }}</p>
                 <div class="container px-1 px-lg-1 my-2"> {# folders.live #}
                 {% for folder in folders.live %}
