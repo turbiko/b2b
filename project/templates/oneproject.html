@@ -25,8 +25,7 @@
                 <div class="fs-5 mb-2">
                     <span>
                         {% for position in positions %}{{ position.title }}:
-                            {% for person in position.specific.persons.all %}{{ person.name }}:
-
+                            {% for person in position.specific.persons.all %}{{ person.name }}
                                 {% if forloop.last %} <br> {% else %}, {% endif %}
                             {% endfor %}
                         {% endfor %}
