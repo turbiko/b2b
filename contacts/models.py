@@ -64,3 +64,23 @@ class Person(Page):
         FieldPanel('company'),
         FieldPanel('company_position'),
     ]
+
+
+class ProjectRole(Page):
+    template = 'contacts' + os.sep + 'project_role.html'
+    parent_page_types = ['project.Project']
+
+    role = models.CharField(max_length=100)
+    persons = models.ManyToManyField(Person)
+
+    content_panels = Page.content_panels + [
+        FieldPanel('role'),
+        FieldPanel('persons'),
+    ]
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        context['user'] = request.user
+        context['person_list'] = self.persons.all()
+        print("person_list: ", self.persons.all())
+        return context

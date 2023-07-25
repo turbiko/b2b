@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static i18n wagtailimages_tags wagtailcore_tags %}
+
+{% block content %}
+    <h1>{{ page.title }}</h1>
+    <p>Role: {{ page.role }}</p>
+
+    <h2>Associated Persons:</h2>
+    <ul>
+        {% for person_role in person_list %}
+            {{ person_role.person.name }}<br>
+        {% endfor %}
+    </ul>
+{% endblock content %}
