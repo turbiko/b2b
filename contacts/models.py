@@ -1,6 +1,7 @@
 import os
 
 from django.db import models
+from django.forms import CheckboxSelectMultiple
 
 from wagtail.admin.panels import FieldPanel
 from wagtail.fields import RichTextField
@@ -71,7 +72,7 @@ class ProjectRole(Page):
     parent_page_types = ['project.Project']
 
     role = models.CharField(max_length=100)
-    persons = models.ManyToManyField(Person)
+    persons = models.ManyToManyField(Person, blank=True)
 
     content_panels = Page.content_panels + [
         FieldPanel('role'),
@@ -82,5 +83,5 @@ class ProjectRole(Page):
         context = super().get_context(request, *args, **kwargs)
         context['user'] = request.user
         context['person_list'] = self.persons.all()
-        print("person_list: ", self.persons.all())
+        print("person_list: ", self.persons.filter(locale=Locale.get_active()).all())
         return context
