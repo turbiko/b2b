@@ -10,7 +10,6 @@ from operator import attrgetter
 from django.utils.translation import get_language
 from django.utils.translation import gettext as _
 from django.shortcuts import render, redirect
-# from .models import FilesToFolder, Photo
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
@@ -30,7 +29,7 @@ def add_photo(request, pk):
     logger.info(f'Page (add_photo) was accessed by {request.user} ')
 
     project_folder = FileFolder.objects.get(pk=pk)
-    previev_selector = True
+    preview_selector = True
 
     if request.method == 'POST':
         logger.info(f'Action POST (add_photo)  by {request.user} started')
@@ -40,25 +39,24 @@ def add_photo(request, pk):
         for image in images:
             _, extension = splitext(image.name)
             if extension.lower() in PREVIEW_EXT:
-                previev_selector = True
+                preview_selector = True
             else:
-                previev_selector = False
+                preview_selector = False
 
             photo = FileInFolder.objects.create(
                     page=project_folder,
                     name=image.name,
                     file=image,
-                    can_preview=previev_selector,
+                    can_preview=preview_selector,
             )
         project_folder.save()  # TODO change time in  last_published_at
 
         logger.info(f'Action POST (add_photo)  by {request.user} sucsessful')
         return redirect(project_folder.url)
-
-    logger.info(project_folder.url + " | " + request.user.username)
-    context = {'filefolder': project_folder, 'project_folder':project_folder.url}
-    return render(request, 'project/addfiles.html', context)
-
+    #
+    # logger.info(project_folder.url + " | " + request.user.username)
+    # context = {'filefolder': project_folder, 'project_folder':project_folder.url}
+    # return render(request, 'project/addfiles.html', context)
 
     logger.info(f'{datetime.datetime.now()} | add file(s) to {project_folder.name} | {project_folder.url} | {request.user.username}')
     context = {'filefolder': project_folder, 'project_folder': project_folder.url}

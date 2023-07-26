@@ -483,26 +483,26 @@ class NewsPage(Page):
         context['news'] = NewsArticle.objects.all().live()
         return context
 
-
-class FilesToFolder(models.Model):
-    user = models.ForeignKey(
-            FileFolder, on_delete=models.SET_NULL, null=True, blank=True)
-    name = models.CharField(max_length=100, null=False, blank=False)
-
-    def __str__(self):
-        return self.name
-
-    def get_project(self):
-        """
-        get first parent type: Project
-        :return: top parent project
-        """
-        return self.get_ancestors().type(Project).last()
-
-    def is_open(self):
-        parent_project = self.get_ancestors().type(Project).last()
-        return parent_project.is_public
-
+#
+# class FilesToFolder(models.Model):
+#     user = models.ForeignKey(
+#             FileFolder, on_delete=models.SET_NULL, null=True, blank=True)
+#     name = models.CharField(max_length=100, null=False, blank=False)
+#
+#     def __str__(self):
+#         return self.name
+#
+#     def get_project(self):
+#         """
+#         get first parent type: Project
+#         :return: top parent project
+#         """
+#         return self.get_ancestors().type(Project).last()
+#
+#     def is_open(self):
+#         parent_project = self.get_ancestors().type(Project).last()
+#         return parent_project.is_public
+#
 
 class Photo(models.Model):
     class Meta:
