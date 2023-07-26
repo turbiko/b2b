@@ -66,7 +66,6 @@ class Menu(ClusterableModel):
 
     title = models.CharField(max_length=100)
     slug = AutoSlugField(populate_from="title", editable=True)
-    # slug = models.SlugField()
 
     panels = [
         MultiFieldPanel([
