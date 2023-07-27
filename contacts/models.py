@@ -79,6 +79,15 @@ class ProjectRole(Page):
         FieldPanel('persons'),
     ]
 
+    def __str__(self):
+        return f'{self.get_parent_title()} - {self.role}'
+
+    def get_parent_title(self):
+        parent_page = self.get_parent()
+        if parent_page:
+            return parent_page.title
+        return None
+
     def all_persons(self, request, *args, **kwargs):
         return self.persons.filter(locale=Locale.get_active()).all()
 
