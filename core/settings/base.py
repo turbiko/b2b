@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "wagtail",
     "wagtail_localize",
     "wagtail_localize.locales",
+    "wagtail.contrib.modeladmin",
     # Django
     "django.contrib.admin",
     "django.contrib.auth",
