@@ -61,12 +61,16 @@ class Project(Page):
             blank=True,
             on_delete=models.SET_NULL,
             related_name='+',
-            help_text='picture of the representative of the project'
+            help_text=_('picture of the representative of the project')
     )
     youtube_video_id = models.CharField(_('Youtube video ID'), max_length=50, blank=True, null=True, )
     body = RichTextField(blank=True)
+    status = models.CharField(_('Status'), max_length=50, blank=True, null=True, )
+    production = models.CharField(_('Production'), max_length=150, blank=True, null=True, )
+    running_time_minutes = models.IntegerField(_('Running time'), blank=True, null=True, )
+    project_site_link = models.URLField(_('Project site link'), blank=True, null=True, )
     is_public = models.BooleanField(default=False,
-                                    help_text='if True - acessible for all visitors')
+                                    help_text=_('if True - acessible for all visitors'))
 
     content_panels = Page.content_panels + [
         MultiFieldPanel([
@@ -135,8 +139,8 @@ class Projects(Page):
         all_projects = self.accessible(request=request)
         logger.info(f'Projects (get_context) for {request.user} {all_projects.count()=}')
 
-        MONTHS_FILTERING = False
-        YEARS_FILTERING = False
+        months_filtering = False
+        years_filtering = False
 
         current_date = datetime.now()
         current_year = current_date.year
@@ -153,8 +157,8 @@ class Projects(Page):
             except AttributeError as e:
                 # Handle the 'NoneType' attribute error here
                 logger.error(f"Error: {e} 'NoneType' object has no attribute 'year'")
-        print('all_years', all_years)
-        print('this_year_months', this_year_months)
+        logger.info(f'all_years { all_years}, \nthis_year_months {this_year_months}')
+        print(f' ')
 
         # get filtering options
         filter_for_months = request.GET.getlist('months')
@@ -164,10 +168,10 @@ class Projects(Page):
 
         # set filtering switches
         if filter_for_months:
-            MONTHS_FILTERING = True
+            months_filtering = True
 
         if filter_for_years:
-            YEARS_FILTERING = True
+            years_filtering = True
 
         print('filter_for_months', filter_for_months)
 
@@ -175,17 +179,17 @@ class Projects(Page):
         other_years_projects = all_projects.none()
 
         print(f'this_year_projects {filter_for_months}:', this_year_projects)
-        if MONTHS_FILTERING:
+        if months_filtering:
             this_year_projects = all_projects.filter(date__year=current_year)
             this_year_projects = this_year_projects.filter(date__month__in=filter_for_months)
 
-        if YEARS_FILTERING:
+        if years_filtering:
             other_years_projects = all_projects.filter(date__year__in=filter_for_years)
 
-        if YEARS_FILTERING and not MONTHS_FILTERING:
+        if years_filtering and not months_filtering:
             other_years_projects = all_projects.filter(date__year__in=filter_for_years)
 
-        if not YEARS_FILTERING and not MONTHS_FILTERING:
+        if not years_filtering and not months_filtering:
             other_years_projects = all_projects
 
         # =====================finish===============================
@@ -197,8 +201,8 @@ class Projects(Page):
         years = sorted(all_years)
         context = {
             'projects': projects,
-            'months': months,
-            'years': years,
+            'months':   months,
+            'years':    years,
         }
 
         return context
@@ -226,7 +230,8 @@ class Planned(Page):
 
     content_panels = Page.content_panels + []
 
-    def get_releases(self, request):  # Planned
+    @staticmethod
+    def get_releases(request):  # Planned
         """
         get list of projects, that not released.
         from today to the future
@@ -258,8 +263,8 @@ class Planned(Page):
         if selected query for month filter current year releases other as usual
         if selected only year - ignore all except selected year
         """
-        MONTHS_FILTERING = False
-        YEARS_FILTERING = False
+        months_filtering = False
+        years_filtering = False
 
         current_date = datetime.today()
         context = super().get_context(request, *args, **kwargs)
@@ -272,25 +277,25 @@ class Planned(Page):
         # get filtering options
         filter_for_months = request.GET.getlist('months')
         if filter_for_months:
-            MONTHS_FILTERING = True
+            months_filtering = True
         filter_for_years = request.GET.getlist('years')
         if filter_for_years:
-            YEARS_FILTERING = True
+            years_filtering = True
 
         # this year projects
         this_year_months = []
         grouped_projects = {}
 
-        if (YEARS_FILTERING and MONTHS_FILTERING) or \
-                (YEARS_FILTERING and (str(current_date.year) in filter_for_years)) or \
-                not YEARS_FILTERING:
+        if (years_filtering and months_filtering) or \
+                (years_filtering and (str(current_date.year) in filter_for_years)) or \
+                not years_filtering:
             this_year_projects = projects_dict.filter(date__year=current_date.year)
             for project in this_year_projects:
                 month = project.date.month  # months number
                 if project.date > current_date.date():  # or month >= current_month
                     if int(month) not in this_year_months:
                         this_year_months.append(int(month))
-                    if MONTHS_FILTERING:
+                    if months_filtering:
                         if str(month) in filter_for_months:
                             if month not in grouped_projects:
                                 grouped_projects[month] = []
@@ -313,7 +318,7 @@ class Planned(Page):
             year = str(project.date.year)  # months number
             if year not in next_years:
                 next_years.append(year)
-            if YEARS_FILTERING and (year not in filter_for_years):
+            if years_filtering and (year not in filter_for_years):
                 continue
             if year not in next_years_grouped_projects:
                 next_years_grouped_projects[year] = []
@@ -482,6 +487,7 @@ class NewsPage(Page):
         context = super().get_context(request)
         context['news'] = NewsArticle.objects.all().live()
         return context
+
 
 #
 # class FilesToFolder(models.Model):
