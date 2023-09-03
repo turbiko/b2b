@@ -12,6 +12,7 @@ admin.site.register(Photo)
 @admin.register(Project)
 class YourModelAdmin(admin.ModelAdmin):
     list_display = ('title', 'is_public', 'date', 'slug' )
+
 @admin.register(FileInFolder)
 class FileInFolderAdmin(admin.ModelAdmin):
     list_display = ("name", "page")
