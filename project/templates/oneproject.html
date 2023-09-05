@@ -10,18 +10,52 @@
                     <img class="card-img-top mb-5 mb-md-0" src="{{ tizer.url }}" alt="{{ page.title }}" />
                 </div>
                 {% if page.youtube_video_id %}
-                <iframe width="100%"  src="https://www.youtube.com/embed/{{ page.youtube_video_id }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                <iframe width="100%"  src="https://www.youtube.com/embed/{{ page.youtube_video_id }}"
+                        title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
+                        clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen>
+                </iframe>
                 {% endif %}
             </div>
             <div class="col d-flex flex-column justify-content-between h-100">
                 <h1 class="display-5 fw-bolder mb-2">{{ page.title|safe }}</h1>
-                <div class="small mb-2">Початок: {{ page.date }}</div>
+                <div class="small mb-2">{% translate "Початок" %}: {{ page.date }}</div>
+
                 <div class="fs-5 mb-2">
-                    <span>Жанр: {% for genre in page.project_genres.all %}{{ genre.genre.name }}
+                {% if page.project_genres.all %}
+                    <span>{% translate "Жанр" %}: {% for genre in page.project_genres.all %}{{ genre.genre.name }}
                         {% if forloop.last %} <br> {% else %}, {% endif %}
                         {% endfor %}
                     </span>
+                {% endif %}
                 </div>
+            {% if page.project_type %}
+                <div class="fs-5 mb-2">
+                    <span>{% translate "Статус" %}: {{ page.project_type }}
+                    </span>
+                </div>{% endif %}
+            {% if page.status %}
+                <div class="fs-5 mb-2">
+                    <span>{% translate "Статус" %}: {{ page.status }}
+                    </span>
+                </div>{% endif %}
+            {% if page.production %}
+                <div class="fs-5 mb-2">
+                    <span>{% translate "Виробництво" %}: {{ page.production }}
+                    </span>
+                </div>{% endif %}
+            {% if page.running_time_minutes %}
+                <div class="fs-5 mb-2">
+                    <span>{% translate "Тривалість" %}: {{ page.running_time_minutes }}{% translate " хв." %}
+                    </span>
+                </div>{% endif %}
+            {% if page.project_site_link %}
+                <div class="fs-5 mb-2">
+                    <span>{% translate "project_site" %}: {{ page.project_site_link }}
+                    </span>
+                </div>{% endif %}
+
+
                 <div class="fs-5 mb-2">
                     <span>
                         {% for position in positions %}{{ position.title }}:

@@ -54,37 +54,43 @@ class Project(Page):
     template = 'project' + os.sep + 'project.html'
     parent_page_types = ['Projects']
 
-    date = models.DateField(verbose_name=_('Started'), auto_now_add=False, blank=True, null=True, )
+    date = models.DateField(verbose_name=_('Початок'), auto_now_add=False, blank=True, null=True, )
     representative_image = models.ForeignKey(
             'wagtailimages.Image',
             null=True,
             blank=True,
             on_delete=models.SET_NULL,
             related_name='+',
-            help_text=_('picture of the representative of the project')
+            help_text=_('малюнок заголовку проекту')
     )
     youtube_video_id = models.CharField(_('Youtube video ID'), max_length=50, blank=True, null=True, )
     body = RichTextField(blank=True)
-    status = models.CharField(_('Status'), max_length=50, blank=True, null=True, )
-    production = models.CharField(_('Production'), max_length=150, blank=True, null=True, )
-    running_time_minutes = models.IntegerField(_('Running time'), blank=True, null=True, )
-    project_site_link = models.URLField(_('Project site link'), blank=True, null=True, )
+    status = models.CharField(_('Статус'), max_length=50, blank=True, null=True, )
+    project_type = models.CharField(_('Тип проекту'), max_length=50, blank=True, null=True, )
+    production = models.CharField(_('Виробництво'), max_length=150, blank=True, null=True, )
+    running_time_minutes = models.IntegerField(_('Тривалість'), blank=True, null=True, )
+    project_site_link = models.URLField(_('Посилання на сторінку проекту'), blank=True, null=True, )
     is_public = models.BooleanField(default=False,
-                                    help_text=_('if True - acessible for all visitors'))
+                                    help_text=_('якщо увімкнуто - бачать усі відвідувачі'))
 
     content_panels = Page.content_panels + [
         MultiFieldPanel([
             FieldPanel('date'),
             FieldPanel('is_public'),
             FieldPanel('body'),
+            FieldPanel('status'),
+            FieldPanel('production'),
+            FieldPanel('project_type'),
+            FieldPanel('running_time_minutes'),
+            FieldPanel('project_site_link'),
             FieldPanel('youtube_video_id'),
             FieldPanel('representative_image'),
         ],
                 heading=_("Project Options"),
         ),
         MultiFieldPanel(
-                [InlinePanel("project_genres", label=_("Genre"))],
-                heading=_("Additional data"),
+                [InlinePanel("project_genres", label=_("Жанр"))],
+                heading=_("Додаткова інформація"),
         ),
     ]
 
@@ -102,8 +108,8 @@ class Project(Page):
         return context
 
     class Meta:
-        verbose_name = _("Project")
-        verbose_name_plural = _("Projects")
+        verbose_name = _("Проект")
+        verbose_name_plural = _("Проекти")
         ordering = ['date']
 
 
@@ -116,7 +122,7 @@ class Projects(Page):
 
     @classmethod
     def accessible(cls, request):  # Projects
-        active_projects = Project.objects.live().filter(locale=Locale.get_active()).order_by('date')
+        active_projects = Project.objects.live().filter(locale=Locale.get_active())  #.order_by('date')
         # active_projects = Project.objects.live().filter(locale=Locale.get_active())
 
         user = request.user
@@ -344,8 +350,8 @@ class FileFolder(Page):
     description = RichTextField(blank=True, null=True)
 
     class Meta:
-        verbose_name = _("Project folder")
-        verbose_name_plural = _("Project folders")
+        verbose_name = _("Папка проекту")
+        verbose_name_plural = _("Папки проекту")
 
     def get_project(self):
         """
@@ -437,7 +443,7 @@ class NewsArticle(Page):
     subpage_types = []
     author = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, default=None)
     news_project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, default=None)
-    article_date = models.DateField(verbose_name=_('Created'), auto_now_add=True, )
+    article_date = models.DateField(verbose_name=_('Створено'), auto_now_add=True, )
     featured_image = models.FileField(upload_to=tools.file_path, blank=True, null=True)
     body = RichTextField(blank=True)
 
@@ -512,8 +518,8 @@ class NewsPage(Page):
 
 class Photo(models.Model):
     class Meta:
-        verbose_name = _('Photo')
-        verbose_name_plural = _('Photos')
+        verbose_name = _('Фото')
+        verbose_name_plural = _('Фотографії')
 
     filegroup = models.ForeignKey(
             FileInFolder, on_delete=models.SET_NULL, null=True, blank=True)
