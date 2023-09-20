@@ -72,11 +72,13 @@ class Project(Page):
     project_site_link = models.URLField(_('Посилання на сторінку проекту'), blank=True, null=True, )
     is_public = models.BooleanField(default=False,
                                     help_text=_('якщо увімкнуто - бачать усі відвідувачі'))
+    top_priority = models.IntegerField(default=100, null=True, blank=True)
 
     content_panels = Page.content_panels + [
         MultiFieldPanel([
             FieldPanel('date'),
             FieldPanel('is_public'),
+            FieldPanel('top_priority'),
             FieldPanel('body'),
             FieldPanel('status'),
             FieldPanel('production'),
@@ -202,7 +204,7 @@ class Projects(Page):
         # context for rendering
         projects = this_year_projects | other_years_projects
         # projects = sorted(projects, key=attrgetter('date'))
-        projects = sorted(projects, key=attrgetter('id'))
+        projects = sorted(projects, key=attrgetter('top_priority'))
         months = sorted(this_year_months)
         years = sorted(all_years)
         context = {
