@@ -12,7 +12,7 @@
 #    echo "PostgreSQL started"
 #fi
 echo "production started...."
-python manage.py makemigrations --settings=core.settings.production
+#python manage.py makemigrations --settings=core.settings.production
 python manage.py migrate --settings=core.settings.production
 python manage.py collectstatic --settings=core.settings.production --no-input --clear
 python manage.py update_index --settings=core.settings.production
