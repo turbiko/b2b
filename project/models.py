@@ -204,7 +204,7 @@ class Projects(Page):
         # context for rendering
         projects = this_year_projects | other_years_projects
         # projects = sorted(projects, key=attrgetter('date'))
-        projects = sorted(projects, key=attrgetter('top_priority'))
+        projects = sorted(projects, key=lambda x: (x.top_priority,x.date))
         months = sorted(this_year_months)
         years = sorted(all_years)
         context = {
