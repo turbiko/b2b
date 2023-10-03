@@ -2,6 +2,7 @@ import calendar
 import os
 import pathlib
 import logging
+
 from datetime import datetime
 from operator import attrgetter
 
@@ -9,9 +10,9 @@ from django import forms
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
-from django.utils.timesince import timesince
+# from django.utils.timesince import timesince
 from django.utils.translation import activate, gettext_lazy as _, get_language
-from django.shortcuts import render
+# from django.shortcuts import render
 
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel, InlinePanel, TabbedInterface, ObjectList
@@ -21,7 +22,7 @@ from wagtail.documents.models import Document, AbstractDocument
 from wagtail.models import Page, Orderable, Locale
 
 from contacts.models import ProjectRole
-from . import blocks
+
 from core import tools
 
 logger = logging.getLogger('project')
@@ -112,7 +113,7 @@ class Project(Page):
     class Meta:
         verbose_name = _("Проект")
         verbose_name_plural = _("Проекти")
-        ordering = ['date']
+        ordering = ['top_priority', '-date']
 
 
 class Projects(Page):
@@ -124,20 +125,24 @@ class Projects(Page):
 
     @classmethod
     def accessible(cls, request):  # Projects
-        active_projects = Project.objects.live().filter(locale=Locale.get_active())  #.order_by('date')
+        active_projects = Project.objects.live().filter(locale=Locale.get_active()).order_by('-date')  # .order_by('top_priority')
         # active_projects = Project.objects.live().filter(locale=Locale.get_active())
 
         user = request.user
-        print('user', user)
+
         user_groups = []
         for group in user.groups.all():
             user_groups.append(group.name)
+        if user.is_authenticated:
+            print(f"{user=}, {user_groups=} ")
 
-        if not user.is_superuser:
-            if not user.is_authenticated:
-                return active_projects.filter(is_public=True)
-            elif user.is_authenticated:
-                return active_projects.filter(is_public=True) | active_projects.filter(slug__in=user_groups)
+        if user.is_superuser:
+            return active_projects
+
+        if not user.is_authenticated:
+            return active_projects.filter(is_public=True)
+        if user.is_authenticated:
+            return active_projects.filter(is_public=True) | active_projects.filter(slug__in=user_groups)
 
         logger.info(f'Projects (accessible) for {request.user} {active_projects.count()=}')
         return active_projects
@@ -154,19 +159,23 @@ class Projects(Page):
         current_year = current_date.year
 
         # set filtering options
-        this_year_months = set()
-        all_years = set()
-        if all_projects:
-            try:
-                for project in all_projects:
-                    all_years.add(project.date.year)
-                    if project.date.year == current_year:
-                        this_year_months.add(project.date.month)
-            except AttributeError as e:
-                # Handle the 'NoneType' attribute error here
-                logger.error(f"Error: {e} 'NoneType' object has no attribute 'year'")
+        this_year_months = {project.date.month for project in all_projects if
+                            project.date and project.date.year == current_year}
+        all_years = {project.date.year for project in all_projects if project.date}
+
+        # this_year_months = set()
+        # all_years = set()
+        #
+        # if all_projects:
+        #     try:
+        #         for project in all_projects:
+        #             all_years.add(project.date.year)
+        #             if project.date.year == current_year:
+        #                 this_year_months.add(project.date.month)
+        #     except AttributeError as e:
+        #         # Handle the 'NoneType' attribute error here
+        #         logger.error(f"Error: {e} 'NoneType' object has no attribute 'year'")
         logger.info(f'all_years { all_years}, \nthis_year_months {this_year_months}')
-        print(f' ')
 
         # get filtering options
         filter_for_months = request.GET.getlist('months')
@@ -186,6 +195,7 @@ class Projects(Page):
         this_year_projects = all_projects.none()
         other_years_projects = all_projects.none()
 
+
         print(f'this_year_projects {filter_for_months}:', this_year_projects)
         if months_filtering:
             this_year_projects = all_projects.filter(date__year=current_year)
@@ -195,16 +205,17 @@ class Projects(Page):
             other_years_projects = all_projects.filter(date__year__in=filter_for_years)
 
         if years_filtering and not months_filtering:
-            other_years_projects = all_projects.filter(date__year__in=filter_for_years)
+            other_years_projects = all_projects.filter(date__year__in=filter_for_years).order_by('-date')
 
         if not years_filtering and not months_filtering:
-            other_years_projects = all_projects
+            other_years_projects = all_projects.order_by('-date')
 
         # =====================finish===============================
         # context for rendering
         projects = this_year_projects | other_years_projects
         # projects = sorted(projects, key=attrgetter('date'))
-        projects = sorted(projects, key=lambda x: (x.top_priority,x.date))
+        # projects = sorted(projects, key=lambda x: (x.top_priority,x.date))
+        projects = sorted(projects, key=lambda x: (x.top_priority))
         months = sorted(this_year_months)
         years = sorted(all_years)
         context = {
@@ -497,7 +508,7 @@ class NewsPage(Page):
         return context
 
 
-#
+# 2023-08-29
 # class FilesToFolder(models.Model):
 #     user = models.ForeignKey(
 #             FileFolder, on_delete=models.SET_NULL, null=True, blank=True)
@@ -518,15 +529,16 @@ class NewsPage(Page):
 #         return parent_project.is_public
 #
 
-class Photo(models.Model):
-    class Meta:
-        verbose_name = _('Фото')
-        verbose_name_plural = _('Фотографії')
-
-    filegroup = models.ForeignKey(
-            FileInFolder, on_delete=models.SET_NULL, null=True, blank=True)
-    image = models.ImageField(null=False, blank=False)
-    description = models.TextField()
-
-    def __str__(self):
-        return self.description
+# 2023-09-26
+# class Photo(models.Model):
+#     class Meta:
+#         verbose_name = _('Фото')
+#         verbose_name_plural = _('Фотографії')
+#
+#     filegroup = models.ForeignKey(
+#             FileInFolder, on_delete=models.SET_NULL, null=True, blank=True)
+#     image = models.ImageField(null=False, blank=False)
+#     description = models.TextField()
+#
+#     def __str__(self):
+#         return self.description
