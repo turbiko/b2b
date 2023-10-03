@@ -14,6 +14,7 @@ from wagtail.admin.panels import (
     ObjectList,
     TabbedInterface,
 )
+
 from project.models import Project, Projects
 
 logger = logging.getLogger('project')
@@ -27,12 +28,9 @@ class HomePage(Page):
         # https://learnwagtail.com/tutorials/how-to-paginate-your-wagtail-pages/
         # https://stackoverflow.com/questions/32626815/wagtail-views-extra-context
         logger.info(f'Homepage (get_context) was accessed by {request.user} ')
+
         context = super().get_context(request)
         user = request.user
-        user_groups = []
-
-        for group in user.groups.all():
-            user_groups.append(group.name)
 
         projects = Projects.accessible(request=request)
 
