@@ -1,13 +1,20 @@
 from django.contrib import admin
-from .models import Genre, ProjectGenres, Project, Projects, FileFolder, FileInFolder, NewsArticle,  Photo
+from .models import (
+    Genre,
+    ProjectGenres,
+    Project,
+    Projects,
+    FileFolder,
+    FileInFolder,
+    NewsArticle
+)
 
 admin.site.register(Genre)
 admin.site.register(ProjectGenres)
-# admin.site.register(Project)
+admin.site.register(Projects)
 admin.site.register(FileFolder)
-# admin.site.register(FileInFolder)
 admin.site.register(NewsArticle)
-admin.site.register(Photo)
+# admin.site.register(Photo)
 
 @admin.register(Project)
 class YourModelAdmin(admin.ModelAdmin):
