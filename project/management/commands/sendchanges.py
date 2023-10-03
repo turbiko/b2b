@@ -11,12 +11,14 @@ from django.core.mail import EmailMessage
 from wagtail.models import Page, Orderable
 
 from home.models import HomePage
-from project.models import Projects, \
-    Project, \
-    FileFolder, \
-    FileInFolder, \
-    NewsArticle, \
-    Photo
+from project.models import (
+    Projects,
+    Project,
+    FileFolder,
+    FileInFolder,
+    NewsArticle
+)
+
 
 DAYS_FOR_SENDCHANGES = 7
 
