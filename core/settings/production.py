@@ -5,6 +5,10 @@ from .base import *  # noqa
 DEBUG = False
 print('DEBUG.prod= ', DEBUG)
 
+# SECRET_KEY = utils.get_random_secret_key()
+SECRET_KEY = os.getenv("SECRET_KEY", "prod-secret-key-ryu_zr&i&2ne6kXt9uib5oy8rca6ygb5tv!5hb#po-%%9hn2_43k")
+print('prod SECRET_KEY: ', SECRET_KEY)
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -63,7 +67,7 @@ CACHES = {
 }
 
 
-try:
-    from .local import *
-except ImportError:
-    pass
+# try:
+#     from .local import *
+# except ImportError:
+#     pass

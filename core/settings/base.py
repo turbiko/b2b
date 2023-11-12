@@ -1,8 +1,12 @@
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from dotenv import load_dotenv
 
 from django.core.management import utils
 from django.utils.translation import gettext_lazy as _
+
+
+load_dotenv()
 
 DATE_FORMAT = 'd F Y'
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -12,9 +16,7 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
-# SECRET_KEY = utils.get_random_secret_key()
-SECRET_KEY = os.getenv("SECRET_KEY", "ryu_zr&i&2ne6kXt9uib5oy8rca6ygb5tv!5hb#po-%%9hn2_43k")
-print('SECRET_KEY: ', SECRET_KEY)
+
 
 # Application definition
 
@@ -57,6 +59,8 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'rest_framework',
+
     # added code
     'menus.apps.MenusConfig',
     'project.apps.ProjectConfig',

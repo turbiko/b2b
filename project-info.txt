@@ -1,0 +1,22 @@
+Frontend
+anonimous and authorized users can access
+some project accessible only by authorized users that have rights to access project data.
+main lang Ukrainian
+second English
+
+1. Homepage: http://b2b.film.ua
+1.1 Projects sorted with priority (in_top) and by date
+1.2 (planned) News
+
+2. Projects
+this year projects releases
+released projects (from newest to oldest)
+next years releases
+projects filter (this year months, next years releases)
+
+3. Releases
+project with release date in the future
+This year by months
+Next years by year
+
+4. Contacts

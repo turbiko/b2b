@@ -18,6 +18,7 @@ from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel, InlinePanel, TabbedInterface, ObjectList
 from wagtail.fields import RichTextField
 from wagtail.documents.models import Document, AbstractDocument
+from wagtail.api import APIField
 
 from wagtail.models import Page, Orderable, Locale
 
@@ -46,6 +47,9 @@ class ProjectGenres(Orderable):
     page = ParentalKey('project.Project', related_name='project_genres')
     panels = [
         FieldPanel('genre'),
+    ]
+    api_fields = [
+        APIField('genre'),
     ]
 
 
@@ -96,6 +100,20 @@ class Project(Page):
                 heading=_("Додаткова інформація"),
         ),
     ]
+    api_fields = [
+        APIField('date'),
+        APIField('is_public'),
+        APIField('top_priority'),
+        APIField('body'),
+        APIField('status'),
+        APIField('production'),
+        APIField('project_type'),
+        APIField('running_time_minutes'),
+        APIField('project_site_link'),
+        APIField('youtube_video_id'),
+        APIField('representative_image'),
+        APIField('project_genres'),
+]
 
     def get_context(self, request):  # https://stackoverflow.com/questions/32626815/wagtail-views-extra-context
         context = super(Project, self).get_context(request)
@@ -208,7 +226,7 @@ class Projects(Page):
             other_years_projects = all_projects.filter(date__year__in=filter_for_years).order_by('-date')
 
         if not years_filtering and not months_filtering:
-            other_years_projects = all_projects.order_by('-date')
+            other_years_projects = all_projects.order_by('top_priority', '-date')
 
         # =====================finish===============================
         # context for rendering

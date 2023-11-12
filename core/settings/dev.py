@@ -5,6 +5,10 @@ from .base import *  # noqa
 DEBUG = True
 print('DEBUG.dev= ', DEBUG)
 
+# SECRET_KEY = utils.get_random_secret_key()
+SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-key-ryu_zr&i&2ne6kXt9uib5oy8rca6ygb5tv!5hb#po-%%9hn2_43k")
+print('dev SECRET_KEY: ', SECRET_KEY)
+
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = "/static/"
 
@@ -31,6 +35,7 @@ ADMINS = [('test admin1', 'a.voznyuk@film.ua'), ('test admin2', 'avoznyuk@film.u
 # EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 CSRF_TRUSTED_ORIGINS = ['https://*.argentum.ua',
                         'https://*.film.ua',
                         'https://127.0.0.1',
@@ -39,7 +44,7 @@ CSRF_TRUSTED_ORIGINS = ['https://*.argentum.ua',
 
 DEBUG404 = False
 
-try:
-    from .local import *
-except ImportError:
-    pass
+# try:
+#     from .local import *
+# except ImportError:
+#     pass
