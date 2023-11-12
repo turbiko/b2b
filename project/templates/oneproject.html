@@ -4,7 +4,7 @@
 <section class="py-5">
     <div class="container px-4 px-lg-5 my-5">
         <div class="row gx-4 gx-lg-5 align-items-start">
-            <div class="w-25 d-flex flex-column justify-content-between img-block">
+            <div class="col-md-3">
                 <div class="w-100">
                     {% image page.specific.representative_image max-600x700 as tizer %}
                     <img class="card-img-top mb-5 mb-md-0" src="{{ tizer.url }}" alt="{{ page.title }}" />
@@ -17,10 +17,12 @@
                 </iframe>
                 {% endif %}
             </div>
-            <div class="col d-flex flex-column justify-content-between h-100">
-                <h1 class="display-5 fw-bolder mb-2">{{ page.title|safe }}</h1>
-                <div class="small mb-2">{% translate "Початок" %}: {{ page.date }}</div>
 
+            <div class="col ">
+                <h1 class="display-5 fw-bolder mb-2">{{ page.title|safe }}</h1>
+                <div class="small mb-2">
+                    {% translate "Початок" %}: {{ page.date }}
+                </div>
                 <div class="fs-5 mb-2">
                 {% if page.project_genres.all %}
                     <span>{% translate "Жанр" %}: {% for genre in page.project_genres.all %}{{ genre.genre.name }}
