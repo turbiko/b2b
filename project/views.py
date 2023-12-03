@@ -22,9 +22,6 @@ from .models import FileFolder, FileInFolder, Project
 logger = logging.getLogger(__name__)
 
 
-logger = logging.getLogger(__name__)
-
-
 def add_photo(request, pk):
     logger.info(f'Page (add_photo) was accessed by {request.user} ')
 
@@ -44,10 +41,10 @@ def add_photo(request, pk):
                 preview_selector = False
 
             photo = FileInFolder.objects.create(
-                    page=project_folder,
-                    name=image.name,
-                    file=image,
-                    can_preview=preview_selector,
+                page=project_folder,
+                name=image.name,
+                file=image,
+                can_preview=preview_selector,
             )
         project_folder.save()  # TODO change time in  last_published_at
 
@@ -58,13 +55,13 @@ def add_photo(request, pk):
     # context = {'filefolder': project_folder, 'project_folder':project_folder.url}
     # return render(request, 'project/addfiles.html', context)
 
-    logger.info(f'{datetime.datetime.now()} | add file(s) to {project_folder.name} | {project_folder.url} | {request.user.username}')
+    logger.info(
+        f'{datetime.datetime.now()} | add file(s) to {project_folder.name} | {project_folder.url} | {request.user.username}')
     context = {'filefolder': project_folder, 'project_folder': project_folder.url}
     return render(request, 'project/addfiles.html', context)
 
 
 def get_projects_for_user(request):
-
     user = request.user
     user_groups = user.groups.all()
 
@@ -117,5 +114,3 @@ def projects_planned(request):
     context['grouped_projects'] = grouped_projects
     context['language'] = language
     return render(request, 'project/planned.html', context)
-
-
