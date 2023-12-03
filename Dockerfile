@@ -1,4 +1,7 @@
-FROM python:3.10.4-alpine3.14
+# syntax = docker/dockerfile:1
+
+ARG PYTHON_VERSION=3.10.4
+FROM python:${PYTHON_VERSION}-alpine3.14 as base
 
 ENV DockerHOME=/usr/src/app
 RUN mkdir -p $DockerHOME
