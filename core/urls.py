@@ -18,9 +18,7 @@ urlpatterns = [
     path("search/", search_views.search, name="search"),
     path('project/', include('project.urls')),
     path('api/v2/', api_router.urls),
-
 ]
-
 
 if settings.DEBUG:
     from django.conf.urls.static import static
