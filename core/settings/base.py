@@ -222,7 +222,7 @@ EMAIL_HOST = 'mail.argentum.ua'
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
 EMAIL_HOST_USER = 'noreply@argentum.ua'
-EMAIL_HOST_PASSWORD = '8gZ3yN8uYrvXXhL'
+EMAIL_HOST_PASSWORD = '8gZ3---XXhL'
 EMAIL_SUBJECT_PREFIX = 'b2b |'
 
 # Login
